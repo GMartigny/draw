@@ -1,5 +1,5 @@
 [![Code Climate](https://codeclimate.com/github/GMartigny/drawLib/badges/gpa.svg)](https://codeclimate.com/github/GMartigny/drawLib)
-
+[![Inline docs](http://inch-ci.org/github/GMartigny/drawLib.svg?branch=master)](http://inch-ci.org/github/GMartigny/drawLib)
 
 # drawLib
 
