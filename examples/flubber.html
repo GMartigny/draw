@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flubber</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #drawing {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="drawing"></canvas>
+    <script src="../drawLib.js"></script>
+    <script>
+        var canvas = document.getElementById("drawing");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        var scene = new Scene(canvas);
+
+        var points = [];
+        var num = 20;
+        var radius = 200;
+        for (var i = 0; i < num; ++i) {
+            var pos = scene.center();
+            var delta = (i / num) * 2 * Math.PI;
+            pos.addX(Math.sin(delta) * radius);
+            pos.addY(Math.cos(delta) * radius);
+            var c = new Circle(pos, 2);
+            c.animateWith(Animation.Circle(Math.random()*10+5, Math.random()/20+0.1, Math.random() > 0.5));
+            points.push(c);
+            scene.add(c);
+        }
+
+        var poly = new Blob(points, 0.4, {
+            fillColor: "#0F0"
+        });
+        scene.add(poly);
+
+        scene.startAnimation();
+    </script>
+</body>
+</html>

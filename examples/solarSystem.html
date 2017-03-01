@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solar System</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #drawing {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="drawing"></canvas>
+    <script src="../drawLib.js"></script>
+    <script>
+        var canvas = document.getElementById("drawing");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        var scene = new Scene(canvas, {
+            fillColor: "#FFF"
+        });
+        scene.background("#111");
+
+        var y = 365.25;
+        var data = {
+            sun: {
+                color: "#FEE21F",
+                size: 180,
+                children: {
+                    mercury: {
+                        color: "#A57D59",
+                        size: 4.9,
+                        ellipse: 57.9,
+                        speed: 88
+                    },
+                    venus: {
+                        color: "#E47F00",
+                        size: 12.1,
+                        ellipse: 108.2,
+                        speed: 224.7
+                    },
+                    earth: {
+                        color: "#2976FF",
+                        size: 12.8,
+                        ellipse: 149.6,
+                        speed: y,
+                        children: {
+                            moon: {
+                                color: "",
+                                size: 3.4,
+                                ellipse: 0.4,
+                                speed: 27.3
+                            }
+                        }
+                    },
+                    mars: {
+                        color: "#F50B00",
+                        size: 6.8,
+                        ellipse: 227.9,
+                        speed: 687
+                    },
+                    jupiter: {
+                        color: "#9D4833",
+                        size: 143,
+                        ellipse: 778.6,
+                        speed: 11.9 * y,
+                        children: {
+                            io: {
+                                color: "#FEEC6F",
+                                size: 3.6,
+                                ellipse: 0.4,
+                                speed: 1.8
+                            },
+                            europa: {
+                                color: "#A99676",
+                                size: 3.1,
+                                ellipse: 0.7,
+                                speed: 3.5
+                            },
+                            ganymede: {
+                                color: "#AA9A8A",
+                                size: 5.2,
+                                ellipse: 1,
+                                speed: 7
+                            },
+                            callisto: {
+                                color: "#523B45",
+                                size: 4.8,
+                                ellipse: 1.8,
+                                speed: 16
+                            }
+                        }
+                    },
+                    saturn: {
+                        color: "#E4B184",
+                        size: 120.5,
+                        ellipse: 1426.7,
+                        speed: 29.5 * y,
+                        children: {
+                            titan: {
+                                color: "#DAC461",
+                                size: 5.1,
+                                ellipse: 1.2,
+                                speed: 16
+                            }
+                        },
+                        rings: {
+                            c: {
+                                color: "#382E36",
+                                gap: 74.6,
+                                thickness: 17.5
+                            },
+                            b: {
+                                color: "#BAB6AD",
+                                gap: 92,
+                                thickness: 25.5
+                            },
+                            a: {
+                                color: "#919894",
+                                gap: 122.2,
+                                thickness: 14.6
+                            },
+                            f: {
+                                color: "#FFF",
+                                gap: 140.2,
+                                thickness: 0.5
+                            }
+                        }
+                    },
+                    uranus: {
+                        color: "#BAFEFF",
+                        size: 51.1,
+                        ellipse: 2871,
+                        speed: 84 * y,
+                        children: {
+                            titania: {
+                                color: "",
+                                size: 1.6,
+                                ellipse: 0.4,
+                                speed: 8.7
+                            },
+                            oberon: {
+                                color: "",
+                                size: 1.5,
+                                ellipse: 0.6,
+                                speed: 13.4
+                            }
+                        },
+                        rings: {
+                            ε: {
+                                color: "#FFF",
+                                gap: 51.1,
+                                thickness: 0.7
+                            }
+                        }
+                    },
+                    neptune: {
+                        color: "#2D47A6",
+                        size: 49.5,
+                        ellipse: 4498.3,
+                        speed: 164.8 * y,
+                        chidlren: {
+                            triton: {
+                                color: "",
+                                size: 2.7,
+                                ellipse: 0.3,
+                                speed: -5.9
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        var canvasSize = Math.min(canvas.width, canvas.height) / 2;
+        var radiusRatio = 25 / data.sun.size;
+        var ellipseRatio = (canvasSize - data.sun.size * radiusRatio - 15) / (data.sun.children.neptune.ellipse);
+        var speedRatio = 0.3;
+        function createPlanet (data, parent) {
+            if (data.size * radiusRatio > 0.5) {
+                var planet = new Circle(parent || scene.center(), data.size * radiusRatio, {
+                    fillColor: data.color
+                });
+                if (data.rings) {
+                    for (var ringName in data.rings) {
+                        var ring = createRing(data.rings[ringName], planet);
+                        if (ring) {
+                            scene.add(ring);
+                        }
+                    }
+                }
+                if (data.ellipse !== undefined && parent) {
+                    planet.animateWith(Animation.Circle(parent.radius + (data.ellipse * ellipseRatio), speedRatio / data.speed));
+                }
+                if (data.children) {
+                    for (var childName in data.children) {
+                        var child = createPlanet(data.children[childName], planet);
+                        if (child) {
+                            var name = childName[0].toUpperCase() + childName.substr(1);
+                            var text = new Text(name, child);
+                            text.position.addX(child.radius + 5);
+                            scene.add(child);
+                            scene.add(text, 1);
+                        }
+                    }
+                }
+                return planet;
+            }
+            else {
+                return null;
+            }
+        }
+        function createRing (data, planet) {
+            var thickness = data.thickness * radiusRatio;
+            if (thickness > 0.05) {
+                var ring = new Circle(planet, planet.radius + (thickness / 2) + (data.gap * radiusRatio), {
+                    fillColor: null,
+                    strokeColor: data.color,
+                    strokeWidth: thickness
+                });
+                return ring;
+            }
+        }
+
+        scene.add(createPlanet(data.sun));
+
+        scene.startAnimation();
+    </script>
+</body>
+</html>
