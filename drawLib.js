@@ -1,3 +1,5 @@
+/** Copyright (c) 2017 Guillaume Martigny - MIT License - v0.1.0 */
+
 /**
  * Lends useful functions for the project
  * @type {Object}

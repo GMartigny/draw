@@ -7,7 +7,7 @@ The easiest to use drawing library.
 
 ## How to use
 
-Grab the [drawLib.js (or drawLib.min.js for a compressed version) file](https://github.com/GMartigny/drawLib/archive/release.zip), slap it to any HTML page and you're good to go.
+Grab the [drawLib.js file(or drawLib.min.js for a compressed version)](https://github.com/GMartigny/drawLib/archive/release.zip), slap it to any HTML page and you're good to go.
 
 Check the [quick start guide](https://github.com/GMartigny/drawLib/wiki/quick-start) or the [documentations](https://github.com/GMartigny/drawLib/wiki/documentation) for more informations.
 
