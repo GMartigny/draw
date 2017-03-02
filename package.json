@@ -1,6 +1,6 @@
 {
   "name": "draw-lib",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The easiest to use drawing library.",
   "main": "drawLib.js",
   "directories": {
