@@ -14,7 +14,7 @@ function Line (startPoint, endPoint, options) {
 Utils.extends(Line, Polygon, {
     /**
      * One can't fill a line
-     * @override Polygon.fill
+     * @override
      * @memberOf Line#
      */
     fill: function() {},

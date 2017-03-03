@@ -6,7 +6,6 @@
  * @param {Number} height - Height of the rectangle
  * @param {Object} options - Specific options for this shape
  * @constructor
- * @constructs
  */
 function Rectangle (startPoint, width, height, options) {
     Utils.assertLength(arguments, 2);
@@ -29,10 +28,10 @@ Rectangle.fromPointToPoint = function(from, to, options) {
     rect.isLinkedToOthers = true;
     return rect;
 };
-Utils.extends(Rectangle, Polygon, /** @lends Rectangle */ {
+Utils.extends(Rectangle, Polygon, {
     /**
      * Trace the rectangle
-     * @override Shape.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Rectangle#
      */
@@ -62,9 +61,17 @@ Utils.extends(Rectangle, Polygon, /** @lends Rectangle */ {
         this.endPoint.setY(this.startPoint.getY() + value);
         return this;
     },
+    /**
+     * Get this rectangle's width
+     * @returns {Number}
+     */
     width: function() {
         return Line.prototype.width.call(this);
     },
+    /**
+     * Get this rectangle's height
+     * @returns {Number}
+     */
     height: function() {
         return Line.prototype.height.call(this);
     }

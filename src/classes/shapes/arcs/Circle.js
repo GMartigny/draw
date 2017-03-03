@@ -3,7 +3,7 @@
  * @extends Arc
  * @param {Position|Shape} position - Its position on the scene
  * @param {Number} radius - The radius of the circle (in pixel)
- * @param {Object} [options] - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Circle (position, radius, options) {
@@ -11,10 +11,18 @@ function Circle (position, radius, options) {
 
     Arc.call(this, position, radius, 0, 2 * Utils.PI, true, options);
 }
-Utils.extends(Circle, Arc, /** @lends Circle */ {
+Utils.extends(Circle, Arc, {
+    /**
+     * Get this circle's width
+     * @returns {Number}
+     */
     width: function() {
         return this.radius * 2;
     },
+    /**
+     * Get this circle's height
+     * @returns {Number}
+     */
     height: function() {
         return this.radius * 2;
     }

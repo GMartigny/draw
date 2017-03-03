@@ -6,7 +6,7 @@
  * @param {Number} [startAngle=0] - The angle from to start the arc (in radian, 0 is north)
  * @param {Number} [endAngle=PI] - The angle where to end the arc (in radian, 0 is north)
  * @param {Boolean} [clockwise=false] - The direction of rotation is clockwise (false for anti-clockwise)
- * @param {Object} [options] - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Arc (position, radius, startAngle, endAngle, clockwise, options) {
@@ -21,7 +21,7 @@ function Arc (position, radius, startAngle, endAngle, clockwise, options) {
 Utils.extends(Arc, Shape, {
     /**
      * Trace the arc
-     * @override Shape.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Arc#
      */

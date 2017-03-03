@@ -30,8 +30,8 @@ var Utils = {
     },
     /**
      * Create a class prototype from a parent
-     * @param {Object} self - An object needing a prototype
-     * @param {Object} parent - A parent to draw prototype from
+     * @param {Function} self - An class needing a prototype
+     * @param {Function} parent - A parent to draw prototype from
      * @param {Object} override - A map like object with overrides
      */
     extends: function(self, parent, override) {
@@ -78,6 +78,7 @@ function Animation(func) {
  * @param {Number} [speed=0.1] - Speed ratio of the animation
  * @param {Boolean} [counterClockWise=false] - Circle counter clockwise
  * @return {Animation}
+ * @static
  */
 Animation.Circle = function(radius, speed, counterClockWise) {
     Utils.assertLength(arguments, 1);
@@ -94,6 +95,7 @@ Animation.Circle = function(radius, speed, counterClockWise) {
  * @param {Number} [speed=0.1] - Speed ratio of the animation
  * @param {Boolean} [counterClockWise=false] - Rotate counter clockwise
  * @return {Animation}
+ * @static
  */
 Animation.Rotate = function(speed, counterClockWise) {
     speed = speed || .1;
@@ -110,6 +112,7 @@ Animation.Rotate = function(speed, counterClockWise) {
  * @param {Number} [ground] - Value where position bounce
  * @param {Number} [bounce=0.3] - Vertical restitution of bounce (0 = no bounce, 1 = infinite bounce)
  * @return {Animation}
+ * @static
  */
 Animation.Gravity = function(ground, bounce) {
     bounce = bounce === undefined ? .3 : bounce;
@@ -144,22 +147,36 @@ Animation.prototype = {
 };
 
 /**
+ * @typedef {Object} GradientParams
+ * @param {...Number} [0-100] - A color stop, key for the position and value for the color
+ * @example { 0: "red", 50: "green", 100: "blue" }
+ */
+/**
  * A generic background class
  * @param {String} color - Any color string
  * @constructor
  */
 function Background(color) {
+    Utils.assertLength(arguments, 1);
     this.style = color;
     this.animation = null;
 }
 
 Background.prototype = {
+    /**
+     * Return the current style of this background
+     * @returns {String}
+     */
     getStyle: function() {
         if (this.animation) {
             this.animation.run();
         }
         return this.style;
     },
+    /**
+     * Add an animation to this background
+     * @param {Animation} animation - Any animation
+     */
     animateWith: function(animation) {
         this.animation = animation;
     }
@@ -210,14 +227,9 @@ Utils.extends(BackgroundImage, Background, {
 });
 
 /**
- * @typedef {Object} GradientParams
- * @param {...Number} [0-100] - A color stop, key for the position and value for the color
- * @example { 0: "red", 50: "green", 100: "blue" }
- */
-/**
  * A linear gradient background
  * @extends Background
- * @param {Number|} [angle=0] - The gradient orientation
+ * @param {Number} [angle=0] - The gradient orientation
  * @param {GradientParams} params - The gradient definition
  * @constructor
  */
@@ -279,7 +291,12 @@ Utils.extends(LinearGradient, Background, {
  * @constructor
  */
 function RadialGradient(center, params) {
-    this.center = center;
+    Utils.assertLength(arguments, 1);
+    if (center instanceof Shape) {
+        this.center = center.position;
+    } else if (center instanceof Position) {
+        this.center = center;
+    }
     this.params = params;
 }
 
@@ -471,12 +488,17 @@ Position.prototype = {
 
 /**
  * Represent a display, can be fill with different shape and image
- * @param {HTMLElement} canvas - The canvas element for drawing
- * @param {Object} [options] - Global options for the scene
+ * @param {HTMLCanvasElement} canvas - The canvas element for drawing
+ * @param {ShapeOptions} [options] - Global options for the scene, will serves as default for all shapes
  * @constructor
  */
 function Scene(canvas, options) {
     Utils.assertLength(arguments, 1);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.display = "block";
     this.context = canvas.getContext("2d");
     this.options = options || {};
     this.shapes = [];
@@ -526,7 +548,7 @@ Scene.prototype = {
             this.shapes[zIndex] = [];
         }
         this.shapes[zIndex].push(shape);
-        shape.completeOptions(this.options);
+        shape._completeOptions(this.options);
     },
     /**
      * Add a background color to the scene
@@ -568,9 +590,15 @@ Scene.prototype = {
 };
 
 /**
+ * @typedef {Object} ShapeOptions
+ * @param {String|Background} fillColor - A color string or a background to fill the shape
+ * @param {String} strokeColor - A color string for the shape's outlines
+ * @param {Number} strokeWidth - The width of the shape's outlines (need a strokeColor to take effect)
+ */
+/**
  * A generic shape
  * @param {Position|Shape} position - Its position on the scene
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Shape(position, options) {
@@ -653,9 +681,10 @@ Shape.prototype = {
     },
     /**
      * Add options to the shape without override
-     * @param {Object} moreOptions - A map like object
+     * @param {ShapeOptions} moreOptions - A map like object
+     * @private
      */
-    completeOptions: function(moreOptions) {
+    _completeOptions: function(moreOptions) {
         for (var key in moreOptions) {
             if (moreOptions.hasOwnProperty(key) && this.options[key] === undefined) {
                 this.options[key] = moreOptions[key];
@@ -678,7 +707,7 @@ Shape.prototype = {
  * @param {Number} [startAngle=0] - The angle from to start the arc (in radian, 0 is north)
  * @param {Number} [endAngle=PI] - The angle where to end the arc (in radian, 0 is north)
  * @param {Boolean} [clockwise=false] - The direction of rotation is clockwise (false for anti-clockwise)
- * @param {Object} [options] - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Arc(position, radius, startAngle, endAngle, clockwise, options) {
@@ -693,7 +722,7 @@ function Arc(position, radius, startAngle, endAngle, clockwise, options) {
 Utils.extends(Arc, Shape, {
     /**
      * Trace the arc
-     * @override Shape.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Arc#
      */
@@ -707,7 +736,7 @@ Utils.extends(Arc, Shape, {
  * @extends Arc
  * @param {Position|Shape} position - Its position on the scene
  * @param {Number} radius - The radius of the circle (in pixel)
- * @param {Object} [options] - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Circle(position, radius, options) {
@@ -715,10 +744,18 @@ function Circle(position, radius, options) {
     Arc.call(this, position, radius, 0, 2 * Utils.PI, true, options);
 }
 
-Utils.extends(Circle, Arc, /** @lends Circle */ {
+Utils.extends(Circle, Arc, {
+    /**
+     * Get this circle's width
+     * @returns {Number}
+     */
     width: function() {
         return this.radius * 2;
     },
+    /**
+     * Get this circle's height
+     * @returns {Number}
+     */
     height: function() {
         return this.radius * 2;
     }
@@ -738,6 +775,12 @@ function Polygon(points, options) {
     this.options = options || {};
     this.points = [];
     this.isLinkedToOthers = false;
+    this.extremes = {
+        minX: null,
+        maxX: null,
+        minY: null,
+        maxY: null
+    };
     var sumX = 0;
     var sumY = 0;
     var l = points.length;
@@ -752,6 +795,7 @@ function Polygon(points, options) {
         if (p) {
             sumX += p.getX();
             sumY += p.getY();
+            this._checkForExtreme(p);
             this.position.addLink(p);
             this.points.push(p);
         } else {
@@ -763,8 +807,28 @@ function Polygon(points, options) {
 
 Utils.extends(Polygon, Shape, {
     /**
+     *
+     * @param {Position} position -
+     * @private
+     * @memberOf Polygon#
+     */
+    _checkForExtreme: function(position) {
+        var x = position.getX();
+        var y = position.getY();
+        if (this.extremes.minX === null || x < this.extremes.minX) {
+            this.extremes.minX = x;
+        } else if (this.extremes.maxX === null || x > this.extremes.maxX) {
+            this.extremes.maxX = x;
+        }
+        if (this.extremes.minY === null || y < this.extremes.minY) {
+            this.extremes.minY = y;
+        } else if (this.extremes.maxY === null || y > this.extremes.maxY) {
+            this.extremes.maxY = y;
+        }
+    },
+    /**
      * Trace the polygon
-     * @override Shape.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Polygon#
      */
@@ -773,13 +837,14 @@ Utils.extends(Polygon, Shape, {
         ctx.moveTo(first.getX(), first.getY());
         for (var i = 1, l = this.points.length; i < l; ++i) {
             var p = this.points[i];
+            this._checkForExtreme(p);
             ctx.lineTo(p.getX(), p.getY());
         }
         ctx.lineTo(first.getX(), first.getY());
     },
     /**
      * Check if polygon can be animated
-     * @override Shape.animateWith
+     * @override
      * @param {Animation} animation - Any animation
      * @memberOf Polygon#
      */
@@ -789,6 +854,22 @@ Utils.extends(Polygon, Shape, {
         } else {
             this._animateWith(animation);
         }
+    },
+    /**
+     * Get this shape's width
+     * @return {Number}
+     * @memberOf Polygon#
+     */
+    width: function() {
+        return this.extremes.maxX - this.extremes.minX;
+    },
+    /**
+     * Get this shape's height
+     * @return {Number}
+     * @memberOf Polygon#
+     */
+    height: function() {
+        return this.extremes.maxY - this.extremes.minY;
     }
 });
 
@@ -836,7 +917,7 @@ Blob._getControlPoints = function(p0, p1, p2, tension) {
 Utils.extends(Blob, Polygon, {
     /**
      * Trace the blob
-     * @override Polygon.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Blob#
      */
@@ -869,7 +950,7 @@ function Line(startPoint, endPoint, options) {
 Utils.extends(Line, Polygon, {
     /**
      * One can't fill a line
-     * @override Polygon.fill
+     * @override
      * @memberOf Line#
      */
     fill: function() {},
@@ -899,7 +980,6 @@ Utils.extends(Line, Polygon, {
  * @param {Number} height - Height of the rectangle
  * @param {Object} options - Specific options for this shape
  * @constructor
- * @constructs
  */
 function Rectangle(startPoint, width, height, options) {
     Utils.assertLength(arguments, 2);
@@ -922,10 +1002,10 @@ Rectangle.fromPointToPoint = function(from, to, options) {
     return rect;
 };
 
-Utils.extends(Rectangle, Polygon, /** @lends Rectangle */ {
+Utils.extends(Rectangle, Polygon, {
     /**
      * Trace the rectangle
-     * @override Shape.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Rectangle#
      */
@@ -952,9 +1032,17 @@ Utils.extends(Rectangle, Polygon, /** @lends Rectangle */ {
         this.endPoint.setY(this.startPoint.getY() + value);
         return this;
     },
+    /**
+     * Get this rectangle's width
+     * @returns {Number}
+     */
     width: function() {
         return Line.prototype.width.call(this);
     },
+    /**
+     * Get this rectangle's height
+     * @returns {Number}
+     */
     height: function() {
         return Line.prototype.height.call(this);
     }
@@ -965,7 +1053,7 @@ Utils.extends(Rectangle, Polygon, /** @lends Rectangle */ {
  * @extends Rectangle
  * @param {Position|Shape} startPoint - Position of the upper-left corner
  * @param {Number} size - Length of the sides (in pixels)
- * @param {Object} [options] - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Square(startPoint, size, options) {
@@ -992,11 +1080,19 @@ function Triangle(firstPoint, secondPoint, thirdPoint, options) {
 Utils.extends(Triangle, Polygon);
 
 /**
+ * @typedef {Object} TextOptions
+ * @extends ShapeOptions
+ * @param {String} [font="sans-serif"} - The font's name
+ * @param {String} [fontSize=10] - The font's size
+ * @param {String} [align="left"] - The text's vertical alignment
+ * @param {String} [baseline="alphabetic"] - The text's baseline position
+ */
+/**
  * Draw a text
  * @extends Shape
  * @param {String} text - Content of the text
- * @param {Position|Shape} position - Position
- * @param {Object} options - Specific options for this shape
+ * @param {Position|Shape} position - Position of the text
+ * @param {TextOptions} options - Specific options for this shape
  * @constructor
  */
 function Text(text, position, options) {
@@ -1005,11 +1101,12 @@ function Text(text, position, options) {
     Shape.call(this, position, options);
 }
 
-Utils.extends(Text, Shape, /** @lends Text */ {
+Utils.extends(Text, Shape, {
     /**
      * Trace the text
-     * @override Shape.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Text#
      */
     trace: function(ctx) {
         ctx.font = this.options.font || "10px sans-serif";
@@ -1019,6 +1116,7 @@ Utils.extends(Text, Shape, /** @lends Text */ {
     /**
      * Fill the text
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Text#
      */
     fill: function(ctx) {
         if (this.options.fillColor) {
@@ -1030,6 +1128,7 @@ Utils.extends(Text, Shape, /** @lends Text */ {
     /**
      * Stroke the text outline
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Text#
      */
     stroke: function(ctx) {
         if (this.options.strokeColor) {

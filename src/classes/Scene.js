@@ -1,11 +1,17 @@
 /**
  * Represent a display, can be fill with different shape and image
- * @param {HTMLElement} canvas - The canvas element for drawing
- * @param {Object} [options] - Global options for the scene
+ * @param {HTMLCanvasElement} canvas - The canvas element for drawing
+ * @param {ShapeOptions} [options] - Global options for the scene, will serves as default for all shapes
  * @constructor
  */
 function Scene (canvas, options) {
     Utils.assertLength(arguments, 1);
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.display = "block";
 
     this.context = canvas.getContext("2d");
     this.options = options || {};
@@ -58,7 +64,7 @@ Scene.prototype = {
         }
 
         this.shapes[zIndex].push(shape);
-        shape.completeOptions(this.options);
+        shape._completeOptions(this.options);
     },
     /**
      * Add a background color to the scene

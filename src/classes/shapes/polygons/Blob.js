@@ -46,7 +46,7 @@ Blob._getControlPoints = function (p0, p1, p2, tension) {
 Utils.extends(Blob, Polygon, {
     /**
      * Trace the blob
-     * @override Polygon.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Blob#
      */

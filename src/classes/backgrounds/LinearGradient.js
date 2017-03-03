@@ -1,13 +1,7 @@
 /**
- * @typedef {Object} GradientParams
- * @param {...Number} [0-100] - A color stop, key for the position and value for the color
- * @example { 0: "red", 50: "green", 100: "blue" }
- */
-
-/**
  * A linear gradient background
  * @extends Background
- * @param {Number|} [angle=0] - The gradient orientation
+ * @param {Number} [angle=0] - The gradient orientation
  * @param {GradientParams} params - The gradient definition
  * @constructor
  */

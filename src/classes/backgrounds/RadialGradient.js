@@ -6,7 +6,14 @@
  * @constructor
  */
 function RadialGradient (center, params) {
-    this.center = center;
+    Utils.assertLength(arguments, 1);
+
+    if (center instanceof Shape) {
+        this.center = center.position;
+    }
+    else if (center instanceof Position) {
+        this.center = center;
+    }
     this.params = params;
 }
 Utils.extends(RadialGradient, Background, {

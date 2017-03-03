@@ -28,8 +28,8 @@ var Utils = {
     },
     /**
      * Create a class prototype from a parent
-     * @param {Object} self - An object needing a prototype
-     * @param {Object} parent - A parent to draw prototype from
+     * @param {Function} self - An class needing a prototype
+     * @param {Function} parent - A parent to draw prototype from
      * @param {Object} override - A map like object with overrides
      */
     extends: function(self, parent, override) {

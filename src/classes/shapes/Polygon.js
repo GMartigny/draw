@@ -14,6 +14,13 @@ function Polygon (points, options) {
     this.points = [];
     this.isLinkedToOthers = false;
 
+    this.extremes = {
+        minX: null,
+        maxX: null,
+        minY: null,
+        maxY: null
+    };
+
     var sumX = 0;
     var sumY = 0;
     var l = points.length;
@@ -29,6 +36,7 @@ function Polygon (points, options) {
         if (p) {
             sumX += p.getX();
             sumY += p.getY();
+            this._checkForExtreme(p);
             this.position.addLink(p);
             this.points.push(p);
         }
@@ -40,8 +48,31 @@ function Polygon (points, options) {
 }
 Utils.extends(Polygon, Shape, {
     /**
+     *
+     * @param {Position} position -
+     * @private
+     * @memberOf Polygon#
+     */
+    _checkForExtreme: function(position) {
+        var x = position.getX();
+        var y = position.getY();
+        if (this.extremes.minX === null || x < this.extremes.minX) {
+            this.extremes.minX = x;
+        }
+        else if (this.extremes.maxX === null || x > this.extremes.maxX) {
+            this.extremes.maxX = x;
+        }
+
+        if (this.extremes.minY === null || y < this.extremes.minY) {
+            this.extremes.minY = y;
+        }
+        else if (this.extremes.maxY === null || y > this.extremes.maxY) {
+            this.extremes.maxY = y;
+        }
+    },
+    /**
      * Trace the polygon
-     * @override Shape.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Polygon#
      */
@@ -51,6 +82,7 @@ Utils.extends(Polygon, Shape, {
 
         for (var i = 1, l = this.points.length; i < l; ++i) {
             var p = this.points[i];
+            this._checkForExtreme(p);
             ctx.lineTo(p.getX(), p.getY());
         }
 
@@ -58,7 +90,7 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Check if polygon can be animated
-     * @override Shape.animateWith
+     * @override
      * @param {Animation} animation - Any animation
      * @memberOf Polygon#
      */
@@ -69,5 +101,21 @@ Utils.extends(Polygon, Shape, {
         else {
             this._animateWith(animation);
         }
+    },
+    /**
+     * Get this shape's width
+     * @return {Number}
+     * @memberOf Polygon#
+     */
+    width: function() {
+        return this.extremes.maxX - this.extremes.minX;
+    },
+    /**
+     * Get this shape's height
+     * @return {Number}
+     * @memberOf Polygon#
+     */
+    height: function() {
+        return this.extremes.maxY - this.extremes.minY;
     }
 });

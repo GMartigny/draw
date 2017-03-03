@@ -3,7 +3,7 @@
  * @extends Rectangle
  * @param {Position|Shape} startPoint - Position of the upper-left corner
  * @param {Number} size - Length of the sides (in pixels)
- * @param {Object} [options] - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Square (startPoint, size, options) {

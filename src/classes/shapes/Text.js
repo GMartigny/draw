@@ -1,9 +1,18 @@
 /**
+ * @typedef {Object} TextOptions
+ * @extends ShapeOptions
+ * @param {String} [font="sans-serif"} - The font's name
+ * @param {String} [fontSize=10] - The font's size
+ * @param {String} [align="left"] - The text's vertical alignment
+ * @param {String} [baseline="alphabetic"] - The text's baseline position
+ */
+
+/**
  * Draw a text
  * @extends Shape
  * @param {String} text - Content of the text
- * @param {Position|Shape} position - Position
- * @param {Object} options - Specific options for this shape
+ * @param {Position|Shape} position - Position of the text
+ * @param {TextOptions} options - Specific options for this shape
  * @constructor
  */
 function Text (text, position, options) {
@@ -12,11 +21,12 @@ function Text (text, position, options) {
     this.text = text;
     Shape.call(this, position, options);
 }
-Utils.extends(Text, Shape, /** @lends Text */ {
+Utils.extends(Text, Shape, {
     /**
      * Trace the text
-     * @override Shape.trace
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Text#
      */
     trace: function(ctx) {
         ctx.font = this.options.font || "10px sans-serif";
@@ -26,6 +36,7 @@ Utils.extends(Text, Shape, /** @lends Text */ {
     /**
      * Fill the text
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Text#
      */
     fill: function(ctx) {
         if (this.options.fillColor) {
@@ -37,6 +48,7 @@ Utils.extends(Text, Shape, /** @lends Text */ {
     /**
      * Stroke the text outline
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Text#
      */
     stroke: function(ctx) {
         if (this.options.strokeColor) {

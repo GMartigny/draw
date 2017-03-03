@@ -1,7 +1,14 @@
 /**
+ * @typedef {Object} ShapeOptions
+ * @param {String|Background} fillColor - A color string or a background to fill the shape
+ * @param {String} strokeColor - A color string for the shape's outlines
+ * @param {Number} strokeWidth - The width of the shape's outlines (need a strokeColor to take effect)
+ */
+
+/**
  * A generic shape
  * @param {Position|Shape} position - Its position on the scene
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Shape (position, options) {
@@ -87,9 +94,10 @@ Shape.prototype = {
     },
     /**
      * Add options to the shape without override
-     * @param {Object} moreOptions - A map like object
+     * @param {ShapeOptions} moreOptions - A map like object
+     * @private
      */
-    completeOptions: function(moreOptions) {
+    _completeOptions: function(moreOptions) {
         for (var key in moreOptions) {
             if (moreOptions.hasOwnProperty(key) && this.options[key] === undefined) {
                 this.options[key] = moreOptions[key];

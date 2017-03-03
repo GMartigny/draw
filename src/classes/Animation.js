@@ -13,6 +13,7 @@ function Animation (func) {
  * @param {Number} [speed=0.1] - Speed ratio of the animation
  * @param {Boolean} [counterClockWise=false] - Circle counter clockwise
  * @return {Animation}
+ * @static
  */
 Animation.Circle = function(radius, speed, counterClockWise) {
     Utils.assertLength(arguments, 1);
@@ -28,6 +29,7 @@ Animation.Circle = function(radius, speed, counterClockWise) {
  * @param {Number} [speed=0.1] - Speed ratio of the animation
  * @param {Boolean} [counterClockWise=false] - Rotate counter clockwise
  * @return {Animation}
+ * @static
  */
 Animation.Rotate = function(speed, counterClockWise) {
     speed = speed || .1;
@@ -43,6 +45,7 @@ Animation.Rotate = function(speed, counterClockWise) {
  * @param {Number} [ground] - Value where position bounce
  * @param {Number} [bounce=0.3] - Vertical restitution of bounce (0 = no bounce, 1 = infinite bounce)
  * @return {Animation}
+ * @static
  */
 Animation.Gravity = function(ground, bounce) {
     bounce = bounce === undefined ? 0.3 : bounce;
