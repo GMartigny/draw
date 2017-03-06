@@ -13,35 +13,45 @@
     <canvas id="drawing"></canvas>
     <script src="../drawLib.js"></script>
     <script>
-        var scene = new Scene(document.getElementById("drawing"), {
-            fillColor: "red"
-        });
+        // Create a new scene from this canvas
+        var scene = new Scene(document.getElementById("drawing"));
 
+        // Let's create some points
         var points = [];
         var num = 20;
         var radius = 200;
         for (var i = 0; i < num; ++i) {
+
+            // Starting from the center
             var pos = scene.center();
-            var delta = (i / num) * 2 * Math.PI;
-            pos.addX(Math.sin(delta) * radius);
-            pos.addY(Math.cos(delta) * radius);
-            var c = new Circle(pos, 0);
-            c.animateWith(Animation.Circle(Math.random()*10+5, Math.random()/20+0.1, Math.random() > 0.5));
+            var delta = (i / num) * Math.PI * 2;
+            // Move position in a circle fashion
+            pos.addX(Math.sin(delta) * radius).addY(Math.cos(delta) * radius);
+
+            // Just a basic point in space
+            var c = new Point(pos);
             points.push(c);
+            // Add an animation to it
+            c.animateWith(Animation.Swirl(Math.random()*10+5, Math.random()/20+0.1, Math.random() > 0.5));
+            // Then add it to the scene
             scene.add(c);
         }
 
+        // We can create a blob from the points
         var poly = new Blob(points, 0.4, {
             fillColor: "#0F0"
         });
+        // With a background
         var radialCenter = Position.createFrom(poly);
         radialCenter.addX(-radius/3).addY(-radius/3);
         poly.background(new RadialGradient(radialCenter, {
             0: "#9effbe",
             100: "#46b737"
         }));
+        // And add it to the scene too
         scene.add(poly);
 
+        // Start animating and rendering everything
         scene.startAnimation();
     </script>
 </body>

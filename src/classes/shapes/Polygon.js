@@ -30,13 +30,13 @@ function Polygon (points, options) {
             this.isLinkedToOthers = true;
             p = Position.createFrom(points[i]);
         }
-        else if (points[i] instanceof Position) {
+        else if (points[i] instanceof Position) {
             p = points[i];
         }
         if (p) {
             sumX += p.getX();
             sumY += p.getY();
-            this._checkForExtreme(p);
+            this._saveExtremes(p);
             this.position.addLink(p);
             this.points.push(p);
         }
@@ -49,13 +49,14 @@ function Polygon (points, options) {
 Utils.extends(Polygon, Shape, {
     /**
      *
-     * @param {Position} position -
+     * @param {Position} position - Any position part of this polygon
      * @private
      * @memberOf Polygon#
      */
-    _checkForExtreme: function(position) {
+    _saveExtremes: function(position) {
         var x = position.getX();
         var y = position.getY();
+        this.extremes.minX = Utils.min(this.extremes.minX, x);
         if (this.extremes.minX === null || x < this.extremes.minX) {
             this.extremes.minX = x;
         }
@@ -82,7 +83,7 @@ Utils.extends(Polygon, Shape, {
 
         for (var i = 1, l = this.points.length; i < l; ++i) {
             var p = this.points[i];
-            this._checkForExtreme(p);
+            this._saveExtremes(p);
             ctx.lineTo(p.getX(), p.getY());
         }
 

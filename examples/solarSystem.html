@@ -13,13 +13,14 @@
     <canvas id="drawing"></canvas>
     <script src="../drawLib.js"></script>
     <script>
-        var canvas = document.getElementById("drawing");
-
-        var scene = new Scene(canvas, {
+        // Create a new scene from this canvas with a default fill color to white
+        var scene = new Scene(document.getElementById("drawing"), {
             fillColor: "#FFF"
         });
+        // Add a simple color background
         scene.background("#111");
 
+        // Whole solar system data
         var y = 365.25;
         var data = {
             sun: {
@@ -171,10 +172,12 @@
             }
         };
 
-        var canvasSize = Math.min(canvas.width, canvas.height) / 2;
+        // Wee need some ratio link to keep relativity between planets
+        var sceneSize = Math.min(scene.width(), scene.height()) / 2;
         var radiusRatio = 25 / data.sun.size;
-        var ellipseRatio = (canvasSize - data.sun.size * radiusRatio - 15) / (data.sun.children.neptune.ellipse);
+        var ellipseRatio = (sceneSize - data.sun.size * radiusRatio - 15) / (data.sun.children.neptune.ellipse);
         var speedRatio = 0.3;
+        // A recursive function that draw a planet and calls itself for satellites
         function createPlanet (data, parent) {
             if (data.size * radiusRatio > 0.5) {
                 var planet = new Circle(parent || scene.center(), data.size * radiusRatio, {
@@ -189,7 +192,7 @@
                     }
                 }
                 if (data.ellipse !== undefined && parent) {
-                    planet.animateWith(Animation.Circle(parent.radius + (data.ellipse * ellipseRatio), speedRatio / data.speed));
+                    planet.animateWith(Animation.Swirl(parent.radius + (data.ellipse * ellipseRatio), speedRatio / data.speed));
                 }
                 if (data.children) {
                     for (var childName in data.children) {
@@ -221,8 +224,10 @@
             }
         }
 
+        // We begin adding planet starting from the sun
         scene.add(createPlanet(data.sun));
 
+        // And finally animate and render everything
         scene.startAnimation();
     </script>
 </body>

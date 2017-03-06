@@ -8,14 +8,14 @@ function Animation (func) {
     this.func = func;
 }
 /**
- * Give an animation for circling
- * @param {Number} radius - Radius of the circling
+ * Give an animation for swirling
+ * @param {Number} radius - Radius of the swirling
  * @param {Number} [speed=0.1] - Speed ratio of the animation
- * @param {Boolean} [counterClockWise=false] - Circle counter clockwise
+ * @param {Boolean} [counterClockWise=false] - Swirl counter clockwise
  * @return {Animation}
  * @static
  */
-Animation.Circle = function(radius, speed, counterClockWise) {
+Animation.Swirl = function(radius, speed, counterClockWise) {
     Utils.assertLength(arguments, 1);
     speed = speed || .1;
     return new Animation(function(i) {

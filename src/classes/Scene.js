@@ -86,6 +86,10 @@ Scene.prototype = {
     center: function() {
         return new Position(Utils.floor(this.width() / 2), Utils.floor(this.height() / 2));
     },
+    /**
+     * Return a random position within the scnee
+     * @returns {Position}
+     */
     randomPosition: function() {
         return new Position(Utils.random(this.width()), Utils.random(this.height()));
     },

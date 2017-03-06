@@ -64,6 +64,7 @@ Utils.extends(Rectangle, Polygon, {
     /**
      * Get this rectangle's width
      * @returns {Number}
+     * @memberOf Rectangle#
      */
     width: function() {
         return Line.prototype.width.call(this);
@@ -71,6 +72,7 @@ Utils.extends(Rectangle, Polygon, {
     /**
      * Get this rectangle's height
      * @returns {Number}
+     * @memberOf Rectangle#
      */
     height: function() {
         return Line.prototype.height.call(this);

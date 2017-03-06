@@ -37,23 +37,6 @@
 <dd></dd>
 </dl>
 
-## Functions
-
-<dl>
-<dt><a href="#width">width()</a> ⇒ <code>Number</code></dt>
-<dd><p>Get this circle&#39;s width</p>
-</dd>
-<dt><a href="#height">height()</a> ⇒ <code>Number</code></dt>
-<dd><p>Get this circle&#39;s height</p>
-</dd>
-<dt><a href="#width">width()</a> ⇒ <code>Number</code></dt>
-<dd><p>Get this rectangle&#39;s width</p>
-</dd>
-<dt><a href="#height">height()</a> ⇒ <code>Number</code></dt>
-<dd><p>Get this rectangle&#39;s height</p>
-</dd>
-</dl>
-
 ## Typedefs
 
 <dl>
@@ -76,7 +59,7 @@
         * [.run(position, ctx)](#Animation+run)
         * [.restart(position)](#Animation+restart)
     * _static_
-        * [.Circle(radius, [speed], [counterClockWise])](#Animation.Circle) ⇒ <code>[Animation](#Animation)</code>
+        * [.Swirl(radius, [speed], [counterClockWise])](#Animation.Swirl) ⇒ <code>[Animation](#Animation)</code>
         * [.Rotate([speed], [counterClockWise])](#Animation.Rotate) ⇒ <code>[Animation](#Animation)</code>
         * [.Gravity([ground], [bounce])](#Animation.Gravity) ⇒ <code>[Animation](#Animation)</code>
 
@@ -113,18 +96,18 @@ Restart this animation
 | --- | --- | --- |
 | position | <code>[Position](#Position)</code> | A position to set |
 
-<a name="Animation.Circle"></a>
+<a name="Animation.Swirl"></a>
 
-### Animation.Circle(radius, [speed], [counterClockWise]) ⇒ <code>[Animation](#Animation)</code>
-Give an animation for circling
+### Animation.Swirl(radius, [speed], [counterClockWise]) ⇒ <code>[Animation](#Animation)</code>
+Give an animation for swirling
 
 **Kind**: static method of <code>[Animation](#Animation)</code>  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| radius | <code>Number</code> |  | Radius of the circling |
+| radius | <code>Number</code> |  | Radius of the swirling |
 | [speed] | <code>Number</code> | <code>0.1</code> | Speed ratio of the animation |
-| [counterClockWise] | <code>Boolean</code> | <code>false</code> | Circle counter clockwise |
+| [counterClockWise] | <code>Boolean</code> | <code>false</code> | Swirl counter clockwise |
 
 <a name="Animation.Rotate"></a>
 
@@ -543,6 +526,7 @@ Return a new position from a shape or a position
     * [.background(color)](#Scene+background)
     * [.clear()](#Scene+clear)
     * [.center()](#Scene+center) ⇒ <code>[Position](#Position)</code>
+    * [.randomPosition()](#Scene+randomPosition) ⇒ <code>[Position](#Position)</code>
     * [.width()](#Scene+width) ⇒ <code>Number</code>
     * [.height()](#Scene+height) ⇒ <code>Number</code>
 
@@ -610,6 +594,12 @@ Remove all shape from scene
 Return the center of the scene
 
 **Kind**: instance method of <code>[Scene](#Scene)</code>  
+<a name="Scene+randomPosition"></a>
+
+### scene.randomPosition() ⇒ <code>[Position](#Position)</code>
+Return a random position within the scnee
+
+**Kind**: instance method of <code>[Scene](#Scene)</code>  
 <a name="Scene+width"></a>
 
 ### scene.width() ⇒ <code>Number</code>
@@ -631,7 +621,7 @@ Get the height of the scene
     * [new Shape(position, options)](#new_Shape_new)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
-    * [.trace()](#Shape+trace)
+    * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
@@ -669,13 +659,17 @@ Draw the shape into the context
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
-<a name="Shape+trace"></a>
+<a name="Shape+background"></a>
 
-### shape.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### shape.background(background)
+Add a background for the shape
 
 **Kind**: instance method of <code>[Shape](#Shape)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
+
 <a name="Shape+fill"></a>
 
 ### shape.fill(ctx)
@@ -717,9 +711,10 @@ Animate this shape position with an animation
 
 * [Arc](#Arc) ⇐ <code>[Shape](#Shape)</code>
     * [new Arc(position, radius, [startAngle], [endAngle], [clockwise], [options])](#new_Arc_new)
+    * [.trace(ctx)](#Arc+trace)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
-    * [.trace()](#Shape+trace)
+    * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
@@ -738,6 +733,17 @@ An arc shape between two points
 | [endAngle] | <code>Number</code> | <code>PI</code> | The angle where to end the arc (in radian, 0 is north) |
 | [clockwise] | <code>Boolean</code> | <code>false</code> | The direction of rotation is clockwise (false for anti-clockwise) |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> |  | Specific options for this shape |
+
+<a name="Arc+trace"></a>
+
+### arc.trace(ctx)
+Trace the arc
+
+**Kind**: instance method of <code>[Arc](#Arc)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
 <a name="Shape+render"></a>
 
@@ -761,14 +767,17 @@ Draw the shape into the context
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
-<a name="Shape+trace"></a>
+<a name="Shape+background"></a>
 
-### arc.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### arc.background(background)
+Add a background for the shape
 
 **Kind**: instance method of <code>[Arc](#Arc)</code>  
-**Overrides:** <code>[trace](#Shape+trace)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
+
 <a name="Shape+fill"></a>
 
 ### arc.fill(ctx)
@@ -810,9 +819,12 @@ Animate this shape position with an animation
 
 * [Circle](#Circle) ⇐ <code>[Arc](#Arc)</code>
     * [new Circle(position, radius, [options])](#new_Circle_new)
-    * [.trace()](#Shape+trace)
+    * [.width()](#Circle+width) ⇒ <code>Number</code>
+    * [.height()](#Circle+height) ⇒ <code>Number</code>
+    * [.trace(ctx)](#Arc+trace)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
+    * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
@@ -829,13 +841,29 @@ A circle shape
 | radius | <code>Number</code> | The radius of the circle (in pixel) |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
-<a name="Shape+trace"></a>
+<a name="Circle+width"></a>
 
-### circle.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### circle.width() ⇒ <code>Number</code>
+Get this circle's width
 
 **Kind**: instance method of <code>[Circle](#Circle)</code>  
+<a name="Circle+height"></a>
+
+### circle.height() ⇒ <code>Number</code>
+Get this circle's height
+
+**Kind**: instance method of <code>[Circle](#Circle)</code>  
+<a name="Arc+trace"></a>
+
+### circle.trace(ctx)
+Trace the arc
+
+**Kind**: instance method of <code>[Circle](#Circle)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
 <a name="Shape+render"></a>
 
 ### circle.render(ctx)
@@ -857,6 +885,17 @@ Draw the shape into the context
 | Param | Type | Description |
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+background"></a>
+
+### circle.background(background)
+Add a background for the shape
+
+**Kind**: instance method of <code>[Circle](#Circle)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
 
 <a name="Shape+fill"></a>
 
@@ -899,11 +938,12 @@ Animate this shape position with an animation
 
 * [Polygon](#Polygon) ⇐ <code>[Shape](#Shape)</code>
     * [new Polygon(points, options)](#new_Polygon_new)
+    * [.trace(ctx)](#Polygon+trace)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
     * [.height()](#Polygon+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
-    * [.trace()](#Shape+trace)
+    * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
@@ -918,6 +958,17 @@ A shape from multiple point
 | --- | --- | --- |
 | points | <code>Array.&lt;(Position\|Shape)&gt;</code> | A list of points |
 | options | <code>Object</code> | Specific options for this shape |
+
+<a name="Polygon+trace"></a>
+
+### polygon.trace(ctx)
+Trace the polygon
+
+**Kind**: instance method of <code>[Polygon](#Polygon)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
 <a name="Polygon+width"></a>
 
@@ -953,14 +1004,17 @@ Draw the shape into the context
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
-<a name="Shape+trace"></a>
+<a name="Shape+background"></a>
 
-### polygon.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### polygon.background(background)
+Add a background for the shape
 
 **Kind**: instance method of <code>[Polygon](#Polygon)</code>  
-**Overrides:** <code>[trace](#Shape+trace)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
+
 <a name="Shape+fill"></a>
 
 ### polygon.fill(ctx)
@@ -1003,12 +1057,13 @@ Animate this shape position with an animation
 
 * [Blob](#Blob) ⇐ <code>[Polygon](#Polygon)</code>
     * [new Blob(points, tension, options)](#new_Blob_new)
-    * [.trace()](#Shape+trace)
+    * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
     * [.height()](#Polygon+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
+    * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
 
@@ -1024,14 +1079,18 @@ A shape from multiple point with rounded angle
 | tension | <code>Number</code> | Define the roundness of the blob |
 | options | <code>Object</code> | Specific options for this shape |
 
-<a name="Shape+trace"></a>
+<a name="Polygon+trace"></a>
 
-### blob.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### blob.trace(ctx)
+Trace the polygon
 
 **Kind**: instance method of <code>[Blob](#Blob)</code>  
-**Overrides:** <code>[trace](#Shape+trace)</code>  
+**Overrides:** <code>[trace](#Polygon+trace)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
 <a name="Shape+animateWith"></a>
 
 ### blob.animateWith(animation)
@@ -1077,6 +1136,17 @@ Draw the shape into the context
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Shape+background"></a>
+
+### blob.background(background)
+Add a background for the shape
+
+**Kind**: instance method of <code>[Blob](#Blob)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
+
 <a name="Shape+fill"></a>
 
 ### blob.fill(ctx)
@@ -1109,10 +1179,11 @@ Stroke the contour of the shape
     * [new Line(startPoint, endPoint, options)](#new_Line_new)
     * [.width()](#Line+width) ⇒ <code>Number</code>
     * [.height()](#Line+height) ⇒ <code>Number</code>
-    * [.trace()](#Shape+trace)
+    * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
+    * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
 
@@ -1142,13 +1213,17 @@ Get the line y length
 
 **Kind**: instance method of <code>[Line](#Line)</code>  
 **Overrides:** <code>[height](#Polygon+height)</code>  
-<a name="Shape+trace"></a>
+<a name="Polygon+trace"></a>
 
-### line.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### line.trace(ctx)
+Trace the polygon
 
 **Kind**: instance method of <code>[Line](#Line)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
 <a name="Shape+animateWith"></a>
 
 ### line.animateWith(animation)
@@ -1181,6 +1256,17 @@ Draw the shape into the context
 | Param | Type | Description |
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+background"></a>
+
+### line.background(background)
+Add a background for the shape
+
+**Kind**: instance method of <code>[Line](#Line)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
 
 <a name="Shape+fill"></a>
 
@@ -1216,12 +1302,13 @@ Stroke the contour of the shape
     * _instance_
         * [.setWidth(value)](#Rectangle+setWidth) ⇒ <code>[Rectangle](#Rectangle)</code>
         * [.setHeight(value)](#Rectangle+setHeight) ⇒ <code>[Rectangle](#Rectangle)</code>
-        * [.trace()](#Shape+trace)
+        * [.width()](#Rectangle+width) ⇒ <code>Number</code>
+        * [.height()](#Rectangle+height) ⇒ <code>Number</code>
+        * [.trace(ctx)](#Polygon+trace)
         * [.animateWith(animation)](#Shape+animateWith)
-        * [.width()](#Polygon+width) ⇒ <code>Number</code>
-        * [.height()](#Polygon+height) ⇒ <code>Number</code>
         * [.render(ctx)](#Shape+render)
         * [.draw(ctx)](#Shape+draw)
+        * [.background(background)](#Shape+background)
         * [.fill(ctx)](#Shape+fill)
         * [.stroke(ctx)](#Shape+stroke)
     * _static_
@@ -1260,14 +1347,32 @@ A rectangular shape
 | --- | --- | --- |
 | value | <code>Number</code> | - |
 
-<a name="Shape+trace"></a>
+<a name="Rectangle+width"></a>
 
-### rectangle.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### rectangle.width() ⇒ <code>Number</code>
+Get this rectangle's width
 
 **Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
-**Overrides:** <code>[trace](#Shape+trace)</code>  
+**Overrides:** <code>[width](#Polygon+width)</code>  
+<a name="Rectangle+height"></a>
+
+### rectangle.height() ⇒ <code>Number</code>
+Get this rectangle's height
+
+**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
+**Overrides:** <code>[height](#Polygon+height)</code>  
+<a name="Polygon+trace"></a>
+
+### rectangle.trace(ctx)
+Trace the polygon
+
+**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
+**Overrides:** <code>[trace](#Polygon+trace)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
 <a name="Shape+animateWith"></a>
 
 ### rectangle.animateWith(animation)
@@ -1279,18 +1384,6 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
-<a name="Polygon+width"></a>
-
-### rectangle.width() ⇒ <code>Number</code>
-Get this shape's width
-
-**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
-<a name="Polygon+height"></a>
-
-### rectangle.height() ⇒ <code>Number</code>
-Get this shape's height
-
-**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
 <a name="Shape+render"></a>
 
 ### rectangle.render(ctx)
@@ -1312,6 +1405,17 @@ Draw the shape into the context
 | Param | Type | Description |
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+background"></a>
+
+### rectangle.background(background)
+Add a background for the shape
+
+**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
 
 <a name="Shape+fill"></a>
 
@@ -1356,14 +1460,15 @@ Create a rectangle between two point
 
 * [Square](#Square) ⇐ <code>[Rectangle](#Rectangle)</code>
     * [new Square(startPoint, size, [options])](#new_Square_new)
-    * [.trace()](#Shape+trace)
+    * [.trace(ctx)](#Polygon+trace)
     * [.setWidth(value)](#Rectangle+setWidth) ⇒ <code>[Rectangle](#Rectangle)</code>
     * [.setHeight(value)](#Rectangle+setHeight) ⇒ <code>[Rectangle](#Rectangle)</code>
+    * [.width()](#Rectangle+width) ⇒ <code>Number</code>
+    * [.height()](#Rectangle+height) ⇒ <code>Number</code>
     * [.animateWith(animation)](#Shape+animateWith)
-    * [.width()](#Polygon+width) ⇒ <code>Number</code>
-    * [.height()](#Polygon+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
+    * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
 
@@ -1379,13 +1484,17 @@ A regular (all side the same length) Rectangle
 | size | <code>Number</code> | Length of the sides (in pixels) |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
-<a name="Shape+trace"></a>
+<a name="Polygon+trace"></a>
 
-### square.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### square.trace(ctx)
+Trace the polygon
 
 **Kind**: instance method of <code>[Square](#Square)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
 <a name="Rectangle+setWidth"></a>
 
 ### square.setWidth(value) ⇒ <code>[Rectangle](#Rectangle)</code>
@@ -1406,6 +1515,18 @@ This function should be implemented by each shape instance
 | --- | --- | --- |
 | value | <code>Number</code> | - |
 
+<a name="Rectangle+width"></a>
+
+### square.width() ⇒ <code>Number</code>
+Get this rectangle's width
+
+**Kind**: instance method of <code>[Square](#Square)</code>  
+<a name="Rectangle+height"></a>
+
+### square.height() ⇒ <code>Number</code>
+Get this rectangle's height
+
+**Kind**: instance method of <code>[Square](#Square)</code>  
 <a name="Shape+animateWith"></a>
 
 ### square.animateWith(animation)
@@ -1417,18 +1538,6 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
-<a name="Polygon+width"></a>
-
-### square.width() ⇒ <code>Number</code>
-Get this shape's width
-
-**Kind**: instance method of <code>[Square](#Square)</code>  
-<a name="Polygon+height"></a>
-
-### square.height() ⇒ <code>Number</code>
-Get this shape's height
-
-**Kind**: instance method of <code>[Square](#Square)</code>  
 <a name="Shape+render"></a>
 
 ### square.render(ctx)
@@ -1450,6 +1559,17 @@ Draw the shape into the context
 | Param | Type | Description |
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+background"></a>
+
+### square.background(background)
+Add a background for the shape
+
+**Kind**: instance method of <code>[Square](#Square)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
 
 <a name="Shape+fill"></a>
 
@@ -1481,12 +1601,13 @@ Stroke the contour of the shape
 
 * [Triangle](#Triangle) ⇐ <code>[Polygon](#Polygon)</code>
     * [new Triangle(firstPoint, secondPoint, thirdPoint, options)](#new_Triangle_new)
-    * [.trace()](#Shape+trace)
+    * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
     * [.height()](#Polygon+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
+    * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
 
@@ -1503,13 +1624,17 @@ A three point shape
 | thirdPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | - |
 | options | <code>Object</code> | Specific options for this shape |
 
-<a name="Shape+trace"></a>
+<a name="Polygon+trace"></a>
 
-### triangle.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### triangle.trace(ctx)
+Trace the polygon
 
 **Kind**: instance method of <code>[Triangle](#Triangle)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
 <a name="Shape+animateWith"></a>
 
 ### triangle.animateWith(animation)
@@ -1555,6 +1680,17 @@ Draw the shape into the context
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Shape+background"></a>
+
+### triangle.background(background)
+Add a background for the shape
+
+**Kind**: instance method of <code>[Triangle](#Triangle)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
+
 <a name="Shape+fill"></a>
 
 ### triangle.fill(ctx)
@@ -1585,11 +1721,12 @@ Stroke the contour of the shape
 
 * [Text](#Text) ⇐ <code>[Shape](#Shape)</code>
     * [new Text(text, position, options)](#new_Text_new)
+    * [.trace(ctx)](#Text+trace)
     * [.fill(ctx)](#Text+fill)
     * [.stroke(ctx)](#Text+stroke)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
-    * [.trace()](#Shape+trace)
+    * [.background(background)](#Shape+background)
     * [.animateWith(animation)](#Shape+animateWith)
 
 <a name="new_Text_new"></a>
@@ -1603,6 +1740,17 @@ Draw a text
 | text | <code>String</code> | Content of the text |
 | position | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Position of the text |
 | options | <code>[TextOptions](#TextOptions)</code> | Specific options for this shape |
+
+<a name="Text+trace"></a>
+
+### text.trace(ctx)
+Trace the text
+
+**Kind**: instance method of <code>[Text](#Text)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
 <a name="Text+fill"></a>
 
@@ -1650,14 +1798,17 @@ Draw the shape into the context
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
-<a name="Shape+trace"></a>
+<a name="Shape+background"></a>
 
-### text.trace()
-Make the drawing pen movements
-This function should be implemented by each shape instance
+### text.background(background)
+Add a background for the shape
 
 **Kind**: instance method of <code>[Text](#Text)</code>  
-**Overrides:** <code>[trace](#Shape+trace)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
+
 <a name="Shape+animateWith"></a>
 
 ### text.animateWith(animation)
@@ -1669,30 +1820,6 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
-<a name="width"></a>
-
-## width() ⇒ <code>Number</code>
-Get this circle's width
-
-**Kind**: global function  
-<a name="height"></a>
-
-## height() ⇒ <code>Number</code>
-Get this circle's height
-
-**Kind**: global function  
-<a name="width"></a>
-
-## width() ⇒ <code>Number</code>
-Get this rectangle's width
-
-**Kind**: global function  
-<a name="height"></a>
-
-## height() ⇒ <code>Number</code>
-Get this rectangle's height
-
-**Kind**: global function  
 <a name="GradientParams"></a>
 
 ## GradientParams : <code>Object</code>

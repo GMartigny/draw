@@ -73,14 +73,14 @@ function Animation(func) {
 }
 
 /**
- * Give an animation for circling
- * @param {Number} radius - Radius of the circling
+ * Give an animation for swirling
+ * @param {Number} radius - Radius of the swirling
  * @param {Number} [speed=0.1] - Speed ratio of the animation
- * @param {Boolean} [counterClockWise=false] - Circle counter clockwise
+ * @param {Boolean} [counterClockWise=false] - Swirl counter clockwise
  * @return {Animation}
  * @static
  */
-Animation.Circle = function(radius, speed, counterClockWise) {
+Animation.Swirl = function(radius, speed, counterClockWise) {
     Utils.assertLength(arguments, 1);
     speed = speed || .1;
     return new Animation(function(i) {
@@ -570,6 +570,10 @@ Scene.prototype = {
     center: function() {
         return new Position(Utils.floor(this.width() / 2), Utils.floor(this.height() / 2));
     },
+    /**
+     * Return a random position within the scnee
+     * @returns {Position}
+     */
     randomPosition: function() {
         return new Position(Utils.random(this.width()), Utils.random(this.height()));
     },
@@ -634,12 +638,9 @@ Shape.prototype = {
         }
     },
     /**
-     * Make the drawing pen movements
-     * This function should be implemented by each shape instance
+     * Add a background for the shape
+     * @param {String|Background} background
      */
-    trace: function() {
-        throw new EvalError("Unimplemented function trace called");
-    },
     background: function(background) {
         if (background instanceof Background || typeof background === "string") {
             this.options.fillColor = background;
@@ -690,6 +691,9 @@ Shape.prototype = {
                 this.options[key] = moreOptions[key];
             }
         }
+    },
+    trace: function() {
+        throw new ReferenceError("Unimplemented function.");
     },
     width: function() {
         throw new ReferenceError("Unimplemented function.");
@@ -748,6 +752,7 @@ Utils.extends(Circle, Arc, {
     /**
      * Get this circle's width
      * @returns {Number}
+     * @memberOf Circle#
      */
     width: function() {
         return this.radius * 2;
@@ -755,9 +760,25 @@ Utils.extends(Circle, Arc, {
     /**
      * Get this circle's height
      * @returns {Number}
+     * @memberOf Circle#
      */
     height: function() {
         return this.radius * 2;
+    }
+});
+
+function Point(position, options) {
+    Utils.assertLength(arguments, 1);
+    Shape.call(this, position, options);
+}
+
+Utils.extends(Point, Shape, {
+    trace: function() {},
+    width: function() {
+        return 0;
+    },
+    height: function() {
+        return 0;
     }
 });
 
@@ -795,7 +816,7 @@ function Polygon(points, options) {
         if (p) {
             sumX += p.getX();
             sumY += p.getY();
-            this._checkForExtreme(p);
+            this._saveExtremes(p);
             this.position.addLink(p);
             this.points.push(p);
         } else {
@@ -808,13 +829,14 @@ function Polygon(points, options) {
 Utils.extends(Polygon, Shape, {
     /**
      *
-     * @param {Position} position -
+     * @param {Position} position - Any position part of this polygon
      * @private
      * @memberOf Polygon#
      */
-    _checkForExtreme: function(position) {
+    _saveExtremes: function(position) {
         var x = position.getX();
         var y = position.getY();
+        this.extremes.minX = Utils.min(this.extremes.minX, x);
         if (this.extremes.minX === null || x < this.extremes.minX) {
             this.extremes.minX = x;
         } else if (this.extremes.maxX === null || x > this.extremes.maxX) {
@@ -837,7 +859,7 @@ Utils.extends(Polygon, Shape, {
         ctx.moveTo(first.getX(), first.getY());
         for (var i = 1, l = this.points.length; i < l; ++i) {
             var p = this.points[i];
-            this._checkForExtreme(p);
+            this._saveExtremes(p);
             ctx.lineTo(p.getX(), p.getY());
         }
         ctx.lineTo(first.getX(), first.getY());
@@ -1035,6 +1057,7 @@ Utils.extends(Rectangle, Polygon, {
     /**
      * Get this rectangle's width
      * @returns {Number}
+     * @memberOf Rectangle#
      */
     width: function() {
         return Line.prototype.width.call(this);
@@ -1042,6 +1065,7 @@ Utils.extends(Rectangle, Polygon, {
     /**
      * Get this rectangle's height
      * @returns {Number}
+     * @memberOf Rectangle#
      */
     height: function() {
         return Line.prototype.height.call(this);

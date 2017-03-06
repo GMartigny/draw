@@ -45,12 +45,9 @@ Shape.prototype = {
         }
     },
     /**
-     * Make the drawing pen movements
-     * This function should be implemented by each shape instance
+     * Add a background for the shape
+     * @param {String|Background} background
      */
-    trace: function() {
-        throw new EvalError("Unimplemented function trace called");
-    },
     background: function(background) {
         if (background instanceof Background || typeof background === "string") {
             this.options.fillColor = background;
@@ -103,6 +100,9 @@ Shape.prototype = {
                 this.options[key] = moreOptions[key];
             }
         }
+    },
+    trace: function() {
+        throw new ReferenceError("Unimplemented function.");
     },
     width: function() {
         throw new ReferenceError("Unimplemented function.");

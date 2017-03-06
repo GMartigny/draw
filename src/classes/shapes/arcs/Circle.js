@@ -15,6 +15,7 @@ Utils.extends(Circle, Arc, {
     /**
      * Get this circle's width
      * @returns {Number}
+     * @memberOf Circle#
      */
     width: function() {
         return this.radius * 2;
@@ -22,6 +23,7 @@ Utils.extends(Circle, Arc, {
     /**
      * Get this circle's height
      * @returns {Number}
+     * @memberOf Circle#
      */
     height: function() {
         return this.radius * 2;
