@@ -21,6 +21,8 @@
 <dd></dd>
 <dt><a href="#Circle">Circle</a> ⇐ <code><a href="#Arc">Arc</a></code></dt>
 <dd></dd>
+<dt><a href="#Point">Point</a> ⇐ <code><a href="#Shape">Shape</a></code></dt>
+<dd></dd>
 <dt><a href="#Polygon">Polygon</a> ⇐ <code><a href="#Shape">Shape</a></code></dt>
 <dd></dd>
 <dt><a href="#Blob">Blob</a> ⇐ <code><a href="#Polygon">Polygon</a></code></dt>
@@ -30,6 +32,8 @@
 <dt><a href="#Rectangle">Rectangle</a> ⇐ <code><a href="#Polygon">Polygon</a></code></dt>
 <dd></dd>
 <dt><a href="#Square">Square</a> ⇐ <code><a href="#Rectangle">Rectangle</a></code></dt>
+<dd></dd>
+<dt><a href="#Star">Star</a> ⇐ <code><a href="#Polygon">Polygon</a></code></dt>
 <dd></dd>
 <dt><a href="#Triangle">Triangle</a> ⇐ <code><a href="#Polygon">Polygon</a></code></dt>
 <dd></dd>
@@ -930,6 +934,98 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
+<a name="Point"></a>
+
+## Point ⇐ <code>[Shape](#Shape)</code>
+**Kind**: global class  
+**Extends:** <code>[Shape](#Shape)</code>  
+
+* [Point](#Point) ⇐ <code>[Shape](#Shape)</code>
+    * [new Point(position, options)](#new_Point_new)
+    * [.render(ctx)](#Shape+render)
+    * [.draw(ctx)](#Shape+draw)
+    * [.background(background)](#Shape+background)
+    * [.fill(ctx)](#Shape+fill)
+    * [.stroke(ctx)](#Shape+stroke)
+    * [.animateWith(animation)](#Shape+animateWith)
+
+<a name="new_Point_new"></a>
+
+### new Point(position, options)
+A single point in space
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| position | <code>[Position](#Position)</code> | The position of the point |
+| options | <code>[ShapeOptions](#ShapeOptions)</code> | - |
+
+<a name="Shape+render"></a>
+
+### point.render(ctx)
+Move and draw the shape
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+draw"></a>
+
+### point.draw(ctx)
+Draw the shape into the context
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+background"></a>
+
+### point.background(background)
+Add a background for the shape
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
+
+<a name="Shape+fill"></a>
+
+### point.fill(ctx)
+Fill the shape with its color
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+stroke"></a>
+
+### point.stroke(ctx)
+Stroke the contour of the shape
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+animateWith"></a>
+
+### point.animateWith(animation)
+Animate this shape position with an animation
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| animation | <code>[Animation](#Animation)</code> | Any animation |
+
 <a name="Polygon"></a>
 
 ## Polygon ⇐ <code>[Shape](#Shape)</code>
@@ -957,7 +1053,7 @@ A shape from multiple point
 | Param | Type | Description |
 | --- | --- | --- |
 | points | <code>Array.&lt;(Position\|Shape)&gt;</code> | A list of points |
-| options | <code>Object</code> | Specific options for this shape |
+| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Polygon+trace"></a>
 
@@ -1077,7 +1173,7 @@ A shape from multiple point with rounded angle
 | --- | --- | --- |
 | points | <code>Array.&lt;(Position\|Shape)&gt;</code> | A list of points |
 | tension | <code>Number</code> | Define the roundness of the blob |
-| options | <code>Object</code> | Specific options for this shape |
+| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Polygon+trace"></a>
 
@@ -1197,7 +1293,7 @@ A line between two point
 | --- | --- | --- |
 | startPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Its origin point or shape |
 | endPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Its arrival point or shape |
-| options | <code>Object</code> | Specific options for this line |
+| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this line |
 
 <a name="Line+width"></a>
 
@@ -1325,7 +1421,7 @@ A rectangular shape
 | startPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Position of the upper-left corner |
 | width | <code>Number</code> | Width of the rectangle |
 | height | <code>Number</code> | Height of the rectangle |
-| options | <code>Object</code> | Specific options for this shape |
+| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Rectangle+setWidth"></a>
 
@@ -1450,7 +1546,7 @@ Create a rectangle between two point
 | --- | --- | --- |
 | from | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Top-left point |
 | to | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Bottom-right point |
-| options | <code>Object</code> | Specific options for this shape |
+| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Square"></a>
 
@@ -1593,6 +1689,127 @@ Stroke the contour of the shape
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Star"></a>
+
+## Star ⇐ <code>[Polygon](#Polygon)</code>
+**Kind**: global class  
+**Extends:** <code>[Polygon](#Polygon)</code>  
+
+* [Star](#Star) ⇐ <code>[Polygon](#Polygon)</code>
+    * [new Star(center, nbBranch, radius, [dropRatio], [options])](#new_Star_new)
+    * [.trace(ctx)](#Polygon+trace)
+    * [.animateWith(animation)](#Shape+animateWith)
+    * [.width()](#Polygon+width) ⇒ <code>Number</code>
+    * [.height()](#Polygon+height) ⇒ <code>Number</code>
+    * [.render(ctx)](#Shape+render)
+    * [.draw(ctx)](#Shape+draw)
+    * [.background(background)](#Shape+background)
+    * [.fill(ctx)](#Shape+fill)
+    * [.stroke(ctx)](#Shape+stroke)
+
+<a name="new_Star_new"></a>
+
+### new Star(center, nbBranch, radius, [dropRatio], [options])
+A shape with some branches around a point
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| center | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> |  | The center of the shape |
+| nbBranch | <code>Number</code> |  | The number of branches of the shape, can't be less than 3 |
+| radius | <code>Number</code> |  | The distance between the center and any branch tip |
+| [dropRatio] | <code>Number</code> | <code>0.5</code> | The ratio between branches length and drops between them |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> |  | Specific options for this shape |
+
+<a name="Polygon+trace"></a>
+
+### star.trace(ctx)
+Trace the polygon
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+animateWith"></a>
+
+### star.animateWith(animation)
+Animate this shape position with an animation
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| animation | <code>[Animation](#Animation)</code> | Any animation |
+
+<a name="Polygon+width"></a>
+
+### star.width() ⇒ <code>Number</code>
+Get this shape's width
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+<a name="Polygon+height"></a>
+
+### star.height() ⇒ <code>Number</code>
+Get this shape's height
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+<a name="Shape+render"></a>
+
+### star.render(ctx)
+Move and draw the shape
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+draw"></a>
+
+### star.draw(ctx)
+Draw the shape into the context
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+background"></a>
+
+### star.background(background)
+Add a background for the shape
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+
+| Param | Type |
+| --- | --- |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
+
+<a name="Shape+fill"></a>
+
+### star.fill(ctx)
+Fill the shape with its color
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+stroke"></a>
+
+### star.stroke(ctx)
+Stroke the contour of the shape
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
 <a name="Triangle"></a>
 
 ## Triangle ⇐ <code>[Polygon](#Polygon)</code>
@@ -1622,7 +1839,7 @@ A three point shape
 | firstPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | - |
 | secondPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | - |
 | thirdPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | - |
-| options | <code>Object</code> | Specific options for this shape |
+| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Polygon+trace"></a>
 

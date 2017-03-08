@@ -4,7 +4,7 @@
  * @param {Position|Shape} firstPoint -
  * @param {Position|Shape} secondPoint -
  * @param {Position|Shape} thirdPoint -
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Triangle (firstPoint, secondPoint, thirdPoint, options) {

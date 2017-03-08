@@ -4,7 +4,7 @@
  * @param {Position|Shape} startPoint - Position of the upper-left corner
  * @param {Number} width - Width of the rectangle
  * @param {Number} height - Height of the rectangle
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Rectangle (startPoint, width, height, options) {
@@ -19,7 +19,7 @@ function Rectangle (startPoint, width, height, options) {
  * Create a rectangle between two point
  * @param {Position|Shape} from - Top-left point
  * @param {Position|Shape} to - Bottom-right point
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @return {Rectangle}
  */
 Rectangle.fromPointToPoint = function(from, to, options) {

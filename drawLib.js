@@ -767,6 +767,13 @@ Utils.extends(Circle, Arc, {
     }
 });
 
+/**
+ * A single point in space
+ * @extends Shape
+ * @param {Position} position - The position of the point
+ * @param {ShapeOptions} options - 
+ * @constructor
+ */
 function Point(position, options) {
     Utils.assertLength(arguments, 1);
     Shape.call(this, position, options);
@@ -786,7 +793,7 @@ Utils.extends(Point, Shape, {
  * A shape from multiple point
  * @extends Shape
  * @param {Array<Position|Shape>} points - A list of points
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Polygon(points, options) {
@@ -828,7 +835,7 @@ function Polygon(points, options) {
 
 Utils.extends(Polygon, Shape, {
     /**
-     *
+     * Check a position against stored extremes
      * @param {Position} position - Any position part of this polygon
      * @private
      * @memberOf Polygon#
@@ -836,17 +843,10 @@ Utils.extends(Polygon, Shape, {
     _saveExtremes: function(position) {
         var x = position.getX();
         var y = position.getY();
-        this.extremes.minX = Utils.min(this.extremes.minX, x);
-        if (this.extremes.minX === null || x < this.extremes.minX) {
-            this.extremes.minX = x;
-        } else if (this.extremes.maxX === null || x > this.extremes.maxX) {
-            this.extremes.maxX = x;
-        }
-        if (this.extremes.minY === null || y < this.extremes.minY) {
-            this.extremes.minY = y;
-        } else if (this.extremes.maxY === null || y > this.extremes.maxY) {
-            this.extremes.maxY = y;
-        }
+        this.extremes.minX = this.extremes.minX === null ? x : Utils.min(this.extremes.minX, x);
+        this.extremes.maxX = this.extremes.maxX === null ? x : Utils.max(this.extremes.maxX, x);
+        this.extremes.minY = this.extremes.minY === null ? y : Utils.min(this.extremes.minY, y);
+        this.extremes.maxY = this.extremes.maxY === null ? y : Utils.max(this.extremes.maxY, y);
     },
     /**
      * Trace the polygon
@@ -900,7 +900,7 @@ Utils.extends(Polygon, Shape, {
  * @extends Polygon
  * @param {Array<Position|Shape>} points - A list of points
  * @param {Number} tension - Define the roundness of the blob
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Blob(points, tension, options) {
@@ -961,7 +961,7 @@ Utils.extends(Blob, Polygon, {
  * @extends Polygon
  * @param {Position|Shape} startPoint - Its origin point or shape
  * @param {Position|Shape} endPoint - Its arrival point or shape
- * @param {Object} options - Specific options for this line
+ * @param {ShapeOptions} options - Specific options for this line
  * @constructor
  */
 function Line(startPoint, endPoint, options) {
@@ -1000,7 +1000,7 @@ Utils.extends(Line, Polygon, {
  * @param {Position|Shape} startPoint - Position of the upper-left corner
  * @param {Number} width - Width of the rectangle
  * @param {Number} height - Height of the rectangle
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Rectangle(startPoint, width, height, options) {
@@ -1014,7 +1014,7 @@ function Rectangle(startPoint, width, height, options) {
  * Create a rectangle between two point
  * @param {Position|Shape} from - Top-left point
  * @param {Position|Shape} to - Bottom-right point
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @return {Rectangle}
  */
 Rectangle.fromPointToPoint = function(from, to, options) {
@@ -1088,12 +1088,42 @@ function Square(startPoint, size, options) {
 Utils.extends(Square, Rectangle);
 
 /**
+ * A shape with some branches around a point
+ * @extends Polygon
+ * @param {Position|Shape} center - The center of the shape
+ * @param {Number} nbBranch - The number of branches of the shape, can't be less than 3
+ * @param {Number} radius - The distance between the center and any branch tip
+ * @param {Number} [dropRatio=0.5] - The ratio between branches length and drops between them
+ * @param {ShapeOptions} [options] - Specific options for this shape
+ * @constructor
+ */
+function Star(center, nbBranch, radius, dropRatio, options) {
+    Utils.assertLength(arguments, 3);
+    if (nbBranch < 3) {
+        throw new RangeError("Can't create a star with less than 3 branches, but only " + nbBranch + " given.");
+    }
+    dropRatio = dropRatio || .5;
+    var points = [];
+    var iteration = nbBranch * 2;
+    for (var i = 0; i < iteration; ++i) {
+        var rotation = (i / iteration - .25) * Utils.PI * 2;
+        var dist = i % 2 ? radius * dropRatio : radius;
+        var p = Position.createFrom(center);
+        p.addX(Utils.cos(rotation) * dist).addY(Utils.sin(rotation) * dist);
+        points.push(p);
+    }
+    Polygon.call(this, points, options);
+}
+
+Utils.extends(Star, Polygon, {});
+
+/**
  * A three point shape
  * @extends Polygon
  * @param {Position|Shape} firstPoint -
  * @param {Position|Shape} secondPoint -
  * @param {Position|Shape} thirdPoint -
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Triangle(firstPoint, secondPoint, thirdPoint, options) {

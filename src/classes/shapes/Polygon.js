@@ -2,7 +2,7 @@
  * A shape from multiple point
  * @extends Shape
  * @param {Array<Position|Shape>} points - A list of points
- * @param {Object} options - Specific options for this shape
+ * @param {ShapeOptions} options - Specific options for this shape
  * @constructor
  */
 function Polygon (points, options) {
@@ -48,7 +48,7 @@ function Polygon (points, options) {
 }
 Utils.extends(Polygon, Shape, {
     /**
-     *
+     * Check a position against stored extremes
      * @param {Position} position - Any position part of this polygon
      * @private
      * @memberOf Polygon#
@@ -56,20 +56,11 @@ Utils.extends(Polygon, Shape, {
     _saveExtremes: function(position) {
         var x = position.getX();
         var y = position.getY();
-        this.extremes.minX = Utils.min(this.extremes.minX, x);
-        if (this.extremes.minX === null || x < this.extremes.minX) {
-            this.extremes.minX = x;
-        }
-        else if (this.extremes.maxX === null || x > this.extremes.maxX) {
-            this.extremes.maxX = x;
-        }
+        this.extremes.minX = this.extremes.minX === null ? x : Utils.min(this.extremes.minX, x);
+        this.extremes.maxX = this.extremes.maxX === null ? x : Utils.max(this.extremes.maxX, x);
 
-        if (this.extremes.minY === null || y < this.extremes.minY) {
-            this.extremes.minY = y;
-        }
-        else if (this.extremes.maxY === null || y > this.extremes.maxY) {
-            this.extremes.maxY = y;
-        }
+        this.extremes.minY = this.extremes.minY === null ? y : Utils.min(this.extremes.minY, y);
+        this.extremes.maxY = this.extremes.maxY === null ? y : Utils.max(this.extremes.maxY, y);
     },
     /**
      * Trace the polygon

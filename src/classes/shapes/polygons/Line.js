@@ -3,7 +3,7 @@
  * @extends Polygon
  * @param {Position|Shape} startPoint - Its origin point or shape
  * @param {Position|Shape} endPoint - Its arrival point or shape
- * @param {Object} options - Specific options for this line
+ * @param {ShapeOptions} options - Specific options for this line
  * @constructor
  */
 function Line (startPoint, endPoint, options) {
