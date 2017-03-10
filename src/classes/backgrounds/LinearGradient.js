@@ -55,5 +55,24 @@ Utils.extends(LinearGradient, Background, {
         this.style = gradient;
 
         return this._getStyle();
+    },
+    /**
+     *
+     * @param {Shape|Scene} shape
+     * @returns {string}
+     * @memberOf LinearGradient#
+     */
+    getCSS: function(shape) {
+        var css = "linear-gradient(" + (this.angle+90) + "deg, ";
+
+        var stops = [];
+        for (var stop in this.params) {
+            if (this.params.hasOwnProperty(stop)) {
+                stops.push(this.params[stop] + " " + stop + "%");
+            }
+        }
+        css += stops.join(", ") + ")";
+        
+        return css;
     }
 });

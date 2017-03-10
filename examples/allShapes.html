@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All shapes</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<script src="../drawLib.js"></script>
+<script>
+    var scene = new Scene(document.getElementById("scene"), {
+        fillColor: "#333",
+        fontSize: 20,
+        align: "center"
+    });
+
+    function addText (shape) {
+        scene.add(shape);
+        var text = new Text(shape.constructor.name, shape);
+        text.position.addY(-60);
+        scene.add(text);
+    }
+
+    var arc = new Arc(new Position(100, 100), 50, -0.3, Math.PI+0.3);
+    addText(arc);
+
+    var circle = new Circle(new Position(100, 200), 50);
+    addText(circle);
+
+    var pos = new Position(200, 100);
+    var polyPos = "230,120;200,110;180,120;190,60;230,80".split(";");
+    var polygon = new Polygon(polyPos.map(function(couple) {
+        var p = couple.split(",");
+        return new Position(p[0], p[1]);
+    }));
+    addText(polygon);
+
+    var blob = new Blob(polyPos.map(function(couple) {
+        var p = couple.split(",");
+        return new Position(p[0], 100 + (+p[1]));
+    }), 0.7);
+    addText(blob);
+
+    var line = new Line(new Position(270, 180), new Position(330, 220), {
+        strokeColor: "#333",
+        lineWidth: 2
+    });
+    addText(line);
+
+    var rectangle = new Rectangle(new Position(370, 180), 90, 50);
+    addText(rectangle);
+
+    var square = new Square(new Position(380, 280), 70);
+    addText(square);
+
+    var triangle = new Triangle(new Position(530, 180), new Position(560, 230), new Position(490, 220));
+    addText(triangle);
+
+    var star = new Star(new Position(630, 210), 40, 6, 0.7);
+    addText(star);
+
+    var text = new Text("I ♥ shapes", new Position(750, 100), {
+        font: "sans",
+        fontSize: 30,
+        bold: true
+    });
+    addText(text);
+
+    scene.background("#FFF");
+    scene.render();
+</script>
+</body>
+</html>

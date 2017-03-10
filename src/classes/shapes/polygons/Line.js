@@ -3,7 +3,7 @@
  * @extends Polygon
  * @param {Position|Shape} startPoint - Its origin point or shape
  * @param {Position|Shape} endPoint - Its arrival point or shape
- * @param {ShapeOptions} options - Specific options for this line
+ * @param {ShapeOptions} [options] - Specific options for this line
  * @constructor
  */
 function Line (startPoint, endPoint, options) {
@@ -17,9 +17,10 @@ Utils.extends(Line, Polygon, {
      * @override
      * @memberOf Line#
      */
-    fill: function() {},
+    fill: Utils.noop,
     /**
      * Get the line x length
+     * @override
      * @return {Number}
      * @memberOf Line#
      */
@@ -28,6 +29,7 @@ Utils.extends(Line, Polygon, {
     },
     /**
      * Get the line y length
+     * @override
      * @return {Number}
      * @memberOf Line#
      */

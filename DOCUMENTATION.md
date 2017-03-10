@@ -41,10 +41,70 @@
 <dd></dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#run">run(position, ctx)</a></dt>
+<dd><p>Apply this animation function to a position</p>
+</dd>
+<dt><a href="#restart">restart(position)</a></dt>
+<dd><p>Restart this animation</p>
+</dd>
+<dt><a href="#animateWith">animateWith(animation)</a></dt>
+<dd><p>Add an animation to this background</p>
+</dd>
+<dt><a href="#getCSS">getCSS()</a> ⇒ <code>String</code></dt>
+<dd><p>Get CSS string for this background</p>
+</dd>
+<dt><a href="#getRadius">getRadius(shape)</a> ⇒ <code>number</code></dt>
+<dd></dd>
+<dt><a href="#getX">getX()</a> ⇒ <code>Number</code></dt>
+<dd><p>Get the x value</p>
+</dd>
+<dt><a href="#getY">getY()</a> ⇒ <code>Number</code></dt>
+<dd><p>Get the y value</p>
+</dd>
+<dt><a href="#setX">setX([x])</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Set a new value for x and move linked positions</p>
+</dd>
+<dt><a href="#setY">setY([y])</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Set a new value for y and move linked positions</p>
+</dd>
+<dt><a href="#setTo">setTo([x], [y])</a> ⇒ <code>*</code> | <code><a href="#Position">Position</a></code></dt>
+<dd><p>Move this to a new position</p>
+</dd>
+<dt><a href="#addX">addX([diff], [override])</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Add to the x value</p>
+</dd>
+<dt><a href="#addY">addY([diff], [override])</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Add to the y value</p>
+</dd>
+<dt><a href="#move">move([diffX], [diffY], [override])</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Move the position by some x and y</p>
+</dd>
+<dt><a href="#setOrigin">setOrigin(x, y)</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Define the origin of the position</p>
+</dd>
+<dt><a href="#reset">reset()</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Return a position to its origin</p>
+</dd>
+<dt><a href="#animateWith">animateWith(animation)</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Define an animation to apply to this position</p>
+</dd>
+<dt><a href="#animate">animate(ctx)</a> ⇒ <code><a href="#Position">Position</a></code></dt>
+<dd><p>Run the animation of this position</p>
+</dd>
+<dt><a href="#addLink">addLink(position)</a></dt>
+<dd><p>Link a position to this one</p>
+</dd>
+</dl>
+
 ## Typedefs
 
 <dl>
 <dt><a href="#GradientParams">GradientParams</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#SceneOptions">SceneOptions</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#ShapeOptions">ShapeOptions</a> : <code>Object</code></dt>
 <dd></dd>
@@ -59,13 +119,9 @@
 
 * [Animation](#Animation)
     * [new Animation(func)](#new_Animation_new)
-    * _instance_
-        * [.run(position, ctx)](#Animation+run)
-        * [.restart(position)](#Animation+restart)
-    * _static_
-        * [.Swirl(radius, [speed], [counterClockWise])](#Animation.Swirl) ⇒ <code>[Animation](#Animation)</code>
-        * [.Rotate([speed], [counterClockWise])](#Animation.Rotate) ⇒ <code>[Animation](#Animation)</code>
-        * [.Gravity([ground], [bounce])](#Animation.Gravity) ⇒ <code>[Animation](#Animation)</code>
+    * [.Swirl(radius, [speed], [counterClockWise])](#Animation.Swirl) ⇒ <code>[Animation](#Animation)</code>
+    * [.Rotate([speed], [counterClockWise])](#Animation.Rotate) ⇒ <code>[Animation](#Animation)</code>
+    * [.Gravity([ground], [bounce])](#Animation.Gravity) ⇒ <code>[Animation](#Animation)</code>
 
 <a name="new_Animation_new"></a>
 
@@ -76,29 +132,6 @@ Modify a position with a constant function
 | Param | Type | Description |
 | --- | --- | --- |
 | func | <code>function</code> | A function to call for each iteration |
-
-<a name="Animation+run"></a>
-
-### animation.run(position, ctx)
-Apply this animation function to a position
-
-**Kind**: instance method of <code>[Animation](#Animation)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| position | <code>[Position](#Position)</code> | A position to move |
-| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
-
-<a name="Animation+restart"></a>
-
-### animation.restart(position)
-Restart this animation
-
-**Kind**: instance method of <code>[Animation](#Animation)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| position | <code>[Position](#Position)</code> | A position to set |
 
 <a name="Animation.Swirl"></a>
 
@@ -145,7 +178,6 @@ Give an animation of gravity simulation
 * [Background](#Background)
     * [new Background(color)](#new_Background_new)
     * [.getStyle()](#Background+getStyle) ⇒ <code>String</code>
-    * [.animateWith(animation)](#Background+animateWith)
 
 <a name="new_Background_new"></a>
 
@@ -163,17 +195,6 @@ A generic background class
 Return the current style of this background
 
 **Kind**: instance method of <code>[Background](#Background)</code>  
-<a name="Background+animateWith"></a>
-
-### background.animateWith(animation)
-Add an animation to this background
-
-**Kind**: instance method of <code>[Background](#Background)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| animation | <code>[Animation](#Animation)</code> | Any animation |
-
 <a name="BackgroundImage"></a>
 
 ## BackgroundImage ⇐ <code>[Background](#Background)</code>
@@ -184,7 +205,6 @@ Add an animation to this background
     * [new BackgroundImage(url, fill)](#new_BackgroundImage_new)
     * _instance_
         * [.getStyle(ctx, shape)](#BackgroundImage+getStyle) ⇒ <code>CanvasPattern</code>
-        * [.animateWith(animation)](#Background+animateWith)
     * _static_
         * [.fillType](#BackgroundImage.fillType) : <code>enum</code>
 
@@ -211,17 +231,6 @@ Build the pattern
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 | shape | <code>[Shape](#Shape)</code> | The holding shape |
 
-<a name="Background+animateWith"></a>
-
-### backgroundImage.animateWith(animation)
-Add an animation to this background
-
-**Kind**: instance method of <code>[BackgroundImage](#BackgroundImage)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| animation | <code>[Animation](#Animation)</code> | Any animation |
-
 <a name="BackgroundImage.fillType"></a>
 
 ### BackgroundImage.fillType : <code>enum</code>
@@ -247,7 +256,7 @@ Add an animation to this background
     * [new LinearGradient([angle], params)](#new_LinearGradient_new)
     * _instance_
         * [.getStyle(ctx, shape)](#LinearGradient+getStyle) ⇒ <code>CanvasGradient</code>
-        * [.animateWith(animation)](#Background+animateWith)
+        * [.getCSS(shape)](#LinearGradient+getCSS) ⇒ <code>string</code>
     * _static_
         * [.orientation](#LinearGradient.orientation) : <code>enum</code>
 
@@ -275,16 +284,14 @@ Build the gradient
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 | shape | <code>[Shape](#Shape)</code> | The holding shape |
 
-<a name="Background+animateWith"></a>
+<a name="LinearGradient+getCSS"></a>
 
-### linearGradient.animateWith(animation)
-Add an animation to this background
-
+### linearGradient.getCSS(shape) ⇒ <code>string</code>
 **Kind**: instance method of <code>[LinearGradient](#LinearGradient)</code>  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| animation | <code>[Animation](#Animation)</code> | Any animation |
+| Param | Type |
+| --- | --- |
+| shape | <code>[Shape](#Shape)</code> &#124; <code>[Scene](#Scene)</code> | 
 
 <a name="LinearGradient.orientation"></a>
 
@@ -315,7 +322,7 @@ Enum for linear gradient orientation
 * [RadialGradient](#RadialGradient) ⇐ <code>[Background](#Background)</code>
     * [new RadialGradient(center, params)](#new_RadialGradient_new)
     * [.getStyle(ctx, shape)](#RadialGradient+getStyle) ⇒ <code>CanvasGradient</code>
-    * [.animateWith(animation)](#Background+animateWith)
+    * [.getCSS()](#RadialGradient+getCSS) ⇒ <code>string</code>
 
 <a name="new_RadialGradient_new"></a>
 
@@ -325,7 +332,7 @@ A radial gradient background
 
 | Param | Type | Description |
 | --- | --- | --- |
-| center | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | - |
+| center | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | The gradient center |
 | params | <code>[GradientParams](#GradientParams)</code> | The gradient definition |
 
 <a name="RadialGradient+getStyle"></a>
@@ -341,17 +348,10 @@ Build the gradient
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 | shape | <code>[Shape](#Shape)</code> | The holding shape |
 
-<a name="Background+animateWith"></a>
+<a name="RadialGradient+getCSS"></a>
 
-### radialGradient.animateWith(animation)
-Add an animation to this background
-
+### radialGradient.getCSS() ⇒ <code>string</code>
 **Kind**: instance method of <code>[RadialGradient](#RadialGradient)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| animation | <code>[Animation](#Animation)</code> | Any animation |
-
 <a name="Position"></a>
 
 ## Position
@@ -359,20 +359,7 @@ Add an animation to this background
 
 * [Position](#Position)
     * [new Position(x, y, [animation])](#new_Position_new)
-    * _instance_
-        * [.getX()](#Position+getX) ⇒ <code>Number</code>
-        * [.getY()](#Position+getY) ⇒ <code>Number</code>
-        * [.setX(x)](#Position+setX) ⇒ <code>[Position](#Position)</code>
-        * [.setY(y)](#Position+setY) ⇒ <code>[Position](#Position)</code>
-        * [.addX(diff, [override])](#Position+addX) ⇒ <code>[Position](#Position)</code>
-        * [.addY(diff, [override])](#Position+addY) ⇒ <code>[Position](#Position)</code>
-        * [.setOrigin(x, y)](#Position+setOrigin) ⇒ <code>[Position](#Position)</code>
-        * [.reset()](#Position+reset) ⇒ <code>[Position](#Position)</code>
-        * [.animateWith(animation)](#Position+animateWith) ⇒ <code>[Position](#Position)</code>
-        * [.animate(ctx)](#Position+animate) ⇒ <code>[Position](#Position)</code>
-        * [.addLink(position)](#Position+addLink)
-    * _static_
-        * [.createFrom(other)](#Position.createFrom) ⇒ <code>[Position](#Position)</code>
+    * [.createFrom(other)](#Position.createFrom) ⇒ <code>[Position](#Position)</code>
 
 <a name="new_Position_new"></a>
 
@@ -385,125 +372,6 @@ A couple of number for positioning
 | x | <code>Number</code> | The x value |
 | y | <code>Number</code> | The y value |
 | [animation] | <code>[Animation](#Animation)</code> | The position animation |
-
-<a name="Position+getX"></a>
-
-### position.getX() ⇒ <code>Number</code>
-Get the x value
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-<a name="Position+getY"></a>
-
-### position.getY() ⇒ <code>Number</code>
-Get the y value
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-<a name="Position+setX"></a>
-
-### position.setX(x) ⇒ <code>[Position](#Position)</code>
-Set a new value for x and move linked positions
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-**Returns**: <code>[Position](#Position)</code> - Itself  
-**Call**: addX  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| x | <code>Number</code> | The new x value |
-
-<a name="Position+setY"></a>
-
-### position.setY(y) ⇒ <code>[Position](#Position)</code>
-Set a new value for y and move linked positions
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-**Returns**: <code>[Position](#Position)</code> - Itself  
-**Call**: addY  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| y | <code>Number</code> | The new y value |
-
-<a name="Position+addX"></a>
-
-### position.addX(diff, [override]) ⇒ <code>[Position](#Position)</code>
-Add to the x value
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-**Returns**: <code>[Position](#Position)</code> - Itself  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| diff | <code>Number</code> |  | How much to add |
-| [override] | <code>Boolean</code> | <code>false</code> | If true, will change the origin value |
-
-<a name="Position+addY"></a>
-
-### position.addY(diff, [override]) ⇒ <code>[Position](#Position)</code>
-Add to the y value
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-**Returns**: <code>[Position](#Position)</code> - Itself  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| diff | <code>Number</code> |  | How much to add |
-| [override] | <code>Boolean</code> | <code>false</code> | If true, will change the origin value |
-
-<a name="Position+setOrigin"></a>
-
-### position.setOrigin(x, y) ⇒ <code>[Position](#Position)</code>
-Define the origin of the position
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-**Returns**: <code>[Position](#Position)</code> - Itself  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| x | <code>Number</code> | A x value |
-| y | <code>Number</code> | A y value |
-
-<a name="Position+reset"></a>
-
-### position.reset() ⇒ <code>[Position](#Position)</code>
-Return a position to its origin
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-**Returns**: <code>[Position](#Position)</code> - Itself  
-<a name="Position+animateWith"></a>
-
-### position.animateWith(animation) ⇒ <code>[Position](#Position)</code>
-Define an animation to apply to this position
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-**Returns**: <code>[Position](#Position)</code> - Itself  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| animation | <code>[Animation](#Animation)</code> | - |
-
-<a name="Position+animate"></a>
-
-### position.animate(ctx) ⇒ <code>[Position](#Position)</code>
-Run the animation of this position
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-**Returns**: <code>[Position](#Position)</code> - Itself  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ctx | <code>CanvasRenderingContext2D</code> | The rendering context |
-
-<a name="Position+addLink"></a>
-
-### position.addLink(position)
-Link a position to this one
-
-**Kind**: instance method of <code>[Position](#Position)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| position | <code>[Position](#Position)</code> | Another position to link, will be moved alongside this position |
 
 <a name="Position.createFrom"></a>
 
@@ -527,7 +395,7 @@ Return a new position from a shape or a position
     * [.stopAnimation()](#Scene+stopAnimation)
     * [.render()](#Scene+render)
     * [.add(shape, [zIndex])](#Scene+add)
-    * [.background(color)](#Scene+background)
+    * [.background(background)](#Scene+background)
     * [.clear()](#Scene+clear)
     * [.center()](#Scene+center) ⇒ <code>[Position](#Position)</code>
     * [.randomPosition()](#Scene+randomPosition) ⇒ <code>[Position](#Position)</code>
@@ -577,14 +445,14 @@ Add a shape to the scene
 
 <a name="Scene+background"></a>
 
-### scene.background(color)
+### scene.background(background)
 Add a background color to the scene
 
 **Kind**: instance method of <code>[Scene](#Scene)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| color | <code>String</code> | Any color string |
+| background | <code>String</code> &#124; <code>[Background](#Background)</code> | Any color string or background |
 
 <a name="Scene+clear"></a>
 
@@ -622,24 +490,25 @@ Get the height of the scene
 **Kind**: global class  
 
 * [Shape](#Shape)
-    * [new Shape(position, options)](#new_Shape_new)
+    * [new Shape(position, [options])](#new_Shape_new)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
     * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Shape_new"></a>
 
-### new Shape(position, options)
+### new Shape(position, [options])
 A generic shape
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | position | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Its position on the scene |
-| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Shape+render"></a>
 
@@ -707,6 +576,17 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
+<a name="Shape+completeOptions"></a>
+
+### shape.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Shape](#Shape)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Arc"></a>
 
 ## Arc ⇐ <code>[Shape](#Shape)</code>
@@ -722,6 +602,7 @@ Animate this shape position with an animation
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Arc_new"></a>
 
@@ -815,6 +696,17 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
+<a name="Shape+completeOptions"></a>
+
+### arc.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Arc](#Arc)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Circle"></a>
 
 ## Circle ⇐ <code>[Arc](#Arc)</code>
@@ -832,6 +724,7 @@ Animate this shape position with an animation
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Circle_new"></a>
 
@@ -934,6 +827,17 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
+<a name="Shape+completeOptions"></a>
+
+### circle.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Circle](#Circle)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Point"></a>
 
 ## Point ⇐ <code>[Shape](#Shape)</code>
@@ -941,25 +845,47 @@ Animate this shape position with an animation
 **Extends:** <code>[Shape](#Shape)</code>  
 
 * [Point](#Point) ⇐ <code>[Shape](#Shape)</code>
-    * [new Point(position, options)](#new_Point_new)
+    * [new Point(position, [options])](#new_Point_new)
+    * [.trace](#Point+trace)
+    * [.width()](#Point+width) ⇒ <code>Number</code>
+    * [.height()](#Point+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
     * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Point_new"></a>
 
-### new Point(position, options)
+### new Point(position, [options])
 A single point in space
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | position | <code>[Position](#Position)</code> | The position of the point |
-| options | <code>[ShapeOptions](#ShapeOptions)</code> | - |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
+<a name="Point+trace"></a>
+
+### point.trace
+One can't trace a point
+
+**Kind**: instance property of <code>[Point](#Point)</code>  
+<a name="Point+width"></a>
+
+### point.width() ⇒ <code>Number</code>
+Get point width
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
+<a name="Point+height"></a>
+
+### point.height() ⇒ <code>Number</code>
+Get point height
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
 <a name="Shape+render"></a>
 
 ### point.render(ctx)
@@ -1010,6 +936,7 @@ Fill the shape with its color
 Stroke the contour of the shape
 
 **Kind**: instance method of <code>[Point](#Point)</code>  
+**Overrides:** <code>[stroke](#Shape+stroke)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1026,6 +953,17 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
+<a name="Shape+completeOptions"></a>
+
+### point.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Point](#Point)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Polygon"></a>
 
 ## Polygon ⇐ <code>[Shape](#Shape)</code>
@@ -1033,7 +971,7 @@ Animate this shape position with an animation
 **Extends:** <code>[Shape](#Shape)</code>  
 
 * [Polygon](#Polygon) ⇐ <code>[Shape](#Shape)</code>
-    * [new Polygon(points, options)](#new_Polygon_new)
+    * [new Polygon(points, [options])](#new_Polygon_new)
     * [.trace(ctx)](#Polygon+trace)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
     * [.height()](#Polygon+height) ⇒ <code>Number</code>
@@ -1043,17 +981,18 @@ Animate this shape position with an animation
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Polygon_new"></a>
 
-### new Polygon(points, options)
+### new Polygon(points, [options])
 A shape from multiple point
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | points | <code>Array.&lt;(Position\|Shape)&gt;</code> | A list of points |
-| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Polygon+trace"></a>
 
@@ -1145,6 +1084,17 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
+<a name="Shape+completeOptions"></a>
+
+### polygon.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Polygon](#Polygon)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Blob"></a>
 
 ## Blob ⇐ <code>[Polygon](#Polygon)</code>
@@ -1152,7 +1102,7 @@ Animate this shape position with an animation
 **Extends:** <code>[Polygon](#Polygon)</code>  
 
 * [Blob](#Blob) ⇐ <code>[Polygon](#Polygon)</code>
-    * [new Blob(points, tension, options)](#new_Blob_new)
+    * [new Blob(points, [tension], [options])](#new_Blob_new)
     * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
@@ -1162,18 +1112,19 @@ Animate this shape position with an animation
     * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Blob_new"></a>
 
-### new Blob(points, tension, options)
+### new Blob(points, [tension], [options])
 A shape from multiple point with rounded angle
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| points | <code>Array.&lt;(Position\|Shape)&gt;</code> | A list of points |
-| tension | <code>Number</code> | Define the roundness of the blob |
-| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| points | <code>Array.&lt;(Position\|Shape)&gt;</code> |  | A list of points |
+| [tension] | <code>Number</code> | <code>0.5</code> | Define the roundness of the blob |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> |  | Specific options for this shape |
 
 <a name="Polygon+trace"></a>
 
@@ -1265,6 +1216,17 @@ Stroke the contour of the shape
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Shape+completeOptions"></a>
+
+### blob.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Blob](#Blob)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Line"></a>
 
 ## Line ⇐ <code>[Polygon](#Polygon)</code>
@@ -1272,20 +1234,21 @@ Stroke the contour of the shape
 **Extends:** <code>[Polygon](#Polygon)</code>  
 
 * [Line](#Line) ⇐ <code>[Polygon](#Polygon)</code>
-    * [new Line(startPoint, endPoint, options)](#new_Line_new)
-    * [.width()](#Line+width) ⇒ <code>Number</code>
-    * [.height()](#Line+height) ⇒ <code>Number</code>
+    * [new Line(startPoint, endPoint, [options])](#new_Line_new)
     * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
+    * [.width()](#Polygon+width) ⇒ <code>Number</code>
+    * [.height()](#Polygon+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
     * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Line_new"></a>
 
-### new Line(startPoint, endPoint, options)
+### new Line(startPoint, endPoint, [options])
 A line between two point
 
 
@@ -1293,22 +1256,8 @@ A line between two point
 | --- | --- | --- |
 | startPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Its origin point or shape |
 | endPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Its arrival point or shape |
-| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this line |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this line |
 
-<a name="Line+width"></a>
-
-### line.width() ⇒ <code>Number</code>
-Get the line x length
-
-**Kind**: instance method of <code>[Line](#Line)</code>  
-**Overrides:** <code>[width](#Polygon+width)</code>  
-<a name="Line+height"></a>
-
-### line.height() ⇒ <code>Number</code>
-Get the line y length
-
-**Kind**: instance method of <code>[Line](#Line)</code>  
-**Overrides:** <code>[height](#Polygon+height)</code>  
 <a name="Polygon+trace"></a>
 
 ### line.trace(ctx)
@@ -1331,6 +1280,20 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
+<a name="Polygon+width"></a>
+
+### line.width() ⇒ <code>Number</code>
+Get this shape's width
+
+**Kind**: instance method of <code>[Line](#Line)</code>  
+**Overrides:** <code>[width](#Polygon+width)</code>  
+<a name="Polygon+height"></a>
+
+### line.height() ⇒ <code>Number</code>
+Get this shape's height
+
+**Kind**: instance method of <code>[Line](#Line)</code>  
+**Overrides:** <code>[height](#Polygon+height)</code>  
 <a name="Shape+render"></a>
 
 ### line.render(ctx)
@@ -1387,6 +1350,17 @@ Stroke the contour of the shape
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Shape+completeOptions"></a>
+
+### line.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Line](#Line)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Rectangle"></a>
 
 ## Rectangle ⇐ <code>[Polygon](#Polygon)</code>
@@ -1394,25 +1368,26 @@ Stroke the contour of the shape
 **Extends:** <code>[Polygon](#Polygon)</code>  
 
 * [Rectangle](#Rectangle) ⇐ <code>[Polygon](#Polygon)</code>
-    * [new Rectangle(startPoint, width, height, options)](#new_Rectangle_new)
+    * [new Rectangle(startPoint, width, height, [options])](#new_Rectangle_new)
     * _instance_
         * [.setWidth(value)](#Rectangle+setWidth) ⇒ <code>[Rectangle](#Rectangle)</code>
         * [.setHeight(value)](#Rectangle+setHeight) ⇒ <code>[Rectangle](#Rectangle)</code>
-        * [.width()](#Rectangle+width) ⇒ <code>Number</code>
-        * [.height()](#Rectangle+height) ⇒ <code>Number</code>
         * [.trace(ctx)](#Polygon+trace)
         * [.animateWith(animation)](#Shape+animateWith)
+        * [.width()](#Polygon+width) ⇒ <code>Number</code>
+        * [.height()](#Polygon+height) ⇒ <code>Number</code>
         * [.render(ctx)](#Shape+render)
         * [.draw(ctx)](#Shape+draw)
         * [.background(background)](#Shape+background)
         * [.fill(ctx)](#Shape+fill)
         * [.stroke(ctx)](#Shape+stroke)
+        * [.completeOptions(moreOptions)](#Shape+completeOptions)
     * _static_
-        * [.fromPointToPoint(from, to, options)](#Rectangle.fromPointToPoint) ⇒ <code>[Rectangle](#Rectangle)</code>
+        * [.fromPointToPoint(from, to, [options])](#Rectangle.fromPointToPoint) ⇒ <code>[Rectangle](#Rectangle)</code>
 
 <a name="new_Rectangle_new"></a>
 
-### new Rectangle(startPoint, width, height, options)
+### new Rectangle(startPoint, width, height, [options])
 A rectangular shape
 
 
@@ -1421,42 +1396,32 @@ A rectangular shape
 | startPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Position of the upper-left corner |
 | width | <code>Number</code> | Width of the rectangle |
 | height | <code>Number</code> | Height of the rectangle |
-| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Rectangle+setWidth"></a>
 
 ### rectangle.setWidth(value) ⇒ <code>[Rectangle](#Rectangle)</code>
+Set the rectangle's width
+
 **Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
 **Returns**: <code>[Rectangle](#Rectangle)</code> - Itself  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| value | <code>Number</code> | - |
+| value | <code>Number</code> | Any value |
 
 <a name="Rectangle+setHeight"></a>
 
 ### rectangle.setHeight(value) ⇒ <code>[Rectangle](#Rectangle)</code>
+Set the rectangle's height
+
 **Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
 **Returns**: <code>[Rectangle](#Rectangle)</code> - Itself  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| value | <code>Number</code> | - |
+| value | <code>Number</code> | Any value |
 
-<a name="Rectangle+width"></a>
-
-### rectangle.width() ⇒ <code>Number</code>
-Get this rectangle's width
-
-**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
-**Overrides:** <code>[width](#Polygon+width)</code>  
-<a name="Rectangle+height"></a>
-
-### rectangle.height() ⇒ <code>Number</code>
-Get this rectangle's height
-
-**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
-**Overrides:** <code>[height](#Polygon+height)</code>  
 <a name="Polygon+trace"></a>
 
 ### rectangle.trace(ctx)
@@ -1480,6 +1445,20 @@ Animate this shape position with an animation
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
+<a name="Polygon+width"></a>
+
+### rectangle.width() ⇒ <code>Number</code>
+Get this shape's width
+
+**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
+**Overrides:** <code>[width](#Polygon+width)</code>  
+<a name="Polygon+height"></a>
+
+### rectangle.height() ⇒ <code>Number</code>
+Get this shape's height
+
+**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
+**Overrides:** <code>[height](#Polygon+height)</code>  
 <a name="Shape+render"></a>
 
 ### rectangle.render(ctx)
@@ -1535,9 +1514,20 @@ Stroke the contour of the shape
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Shape+completeOptions"></a>
+
+### rectangle.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Rectangle](#Rectangle)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Rectangle.fromPointToPoint"></a>
 
-### Rectangle.fromPointToPoint(from, to, options) ⇒ <code>[Rectangle](#Rectangle)</code>
+### Rectangle.fromPointToPoint(from, to, [options]) ⇒ <code>[Rectangle](#Rectangle)</code>
 Create a rectangle between two point
 
 **Kind**: static method of <code>[Rectangle](#Rectangle)</code>  
@@ -1546,7 +1536,7 @@ Create a rectangle between two point
 | --- | --- | --- |
 | from | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Top-left point |
 | to | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Bottom-right point |
-| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Square"></a>
 
@@ -1559,14 +1549,15 @@ Create a rectangle between two point
     * [.trace(ctx)](#Polygon+trace)
     * [.setWidth(value)](#Rectangle+setWidth) ⇒ <code>[Rectangle](#Rectangle)</code>
     * [.setHeight(value)](#Rectangle+setHeight) ⇒ <code>[Rectangle](#Rectangle)</code>
-    * [.width()](#Rectangle+width) ⇒ <code>Number</code>
-    * [.height()](#Rectangle+height) ⇒ <code>Number</code>
+    * [.width()](#Polygon+width) ⇒ <code>Number</code>
+    * [.height()](#Polygon+height) ⇒ <code>Number</code>
     * [.animateWith(animation)](#Shape+animateWith)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
     * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Square_new"></a>
 
@@ -1594,33 +1585,37 @@ Trace the polygon
 <a name="Rectangle+setWidth"></a>
 
 ### square.setWidth(value) ⇒ <code>[Rectangle](#Rectangle)</code>
+Set the rectangle's width
+
 **Kind**: instance method of <code>[Square](#Square)</code>  
 **Returns**: <code>[Rectangle](#Rectangle)</code> - Itself  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| value | <code>Number</code> | - |
+| value | <code>Number</code> | Any value |
 
 <a name="Rectangle+setHeight"></a>
 
 ### square.setHeight(value) ⇒ <code>[Rectangle](#Rectangle)</code>
+Set the rectangle's height
+
 **Kind**: instance method of <code>[Square](#Square)</code>  
 **Returns**: <code>[Rectangle](#Rectangle)</code> - Itself  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| value | <code>Number</code> | - |
+| value | <code>Number</code> | Any value |
 
-<a name="Rectangle+width"></a>
+<a name="Polygon+width"></a>
 
 ### square.width() ⇒ <code>Number</code>
-Get this rectangle's width
+Get this shape's width
 
 **Kind**: instance method of <code>[Square](#Square)</code>  
-<a name="Rectangle+height"></a>
+<a name="Polygon+height"></a>
 
 ### square.height() ⇒ <code>Number</code>
-Get this rectangle's height
+Get this shape's height
 
 **Kind**: instance method of <code>[Square](#Square)</code>  
 <a name="Shape+animateWith"></a>
@@ -1689,6 +1684,17 @@ Stroke the contour of the shape
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Shape+completeOptions"></a>
+
+### square.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Square](#Square)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Star"></a>
 
 ## Star ⇐ <code>[Polygon](#Polygon)</code>
@@ -1696,7 +1702,7 @@ Stroke the contour of the shape
 **Extends:** <code>[Polygon](#Polygon)</code>  
 
 * [Star](#Star) ⇐ <code>[Polygon](#Polygon)</code>
-    * [new Star(center, nbBranch, radius, [dropRatio], [options])](#new_Star_new)
+    * [new Star(center, radius, nbBranch, [dropRatio], [options])](#new_Star_new)
     * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
@@ -1706,18 +1712,19 @@ Stroke the contour of the shape
     * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Star_new"></a>
 
-### new Star(center, nbBranch, radius, [dropRatio], [options])
+### new Star(center, radius, nbBranch, [dropRatio], [options])
 A shape with some branches around a point
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | center | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> |  | The center of the shape |
-| nbBranch | <code>Number</code> |  | The number of branches of the shape, can't be less than 3 |
 | radius | <code>Number</code> |  | The distance between the center and any branch tip |
+| nbBranch | <code>Number</code> |  | The number of branches of the shape, can't be less than 3 |
 | [dropRatio] | <code>Number</code> | <code>0.5</code> | The ratio between branches length and drops between them |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> |  | Specific options for this shape |
 
@@ -1810,6 +1817,17 @@ Stroke the contour of the shape
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Shape+completeOptions"></a>
+
+### star.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Star](#Star)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Triangle"></a>
 
 ## Triangle ⇐ <code>[Polygon](#Polygon)</code>
@@ -1817,7 +1835,7 @@ Stroke the contour of the shape
 **Extends:** <code>[Polygon](#Polygon)</code>  
 
 * [Triangle](#Triangle) ⇐ <code>[Polygon](#Polygon)</code>
-    * [new Triangle(firstPoint, secondPoint, thirdPoint, options)](#new_Triangle_new)
+    * [new Triangle(firstPoint, secondPoint, thirdPoint, [options])](#new_Triangle_new)
     * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
@@ -1827,19 +1845,20 @@ Stroke the contour of the shape
     * [.background(background)](#Shape+background)
     * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Triangle_new"></a>
 
-### new Triangle(firstPoint, secondPoint, thirdPoint, options)
+### new Triangle(firstPoint, secondPoint, thirdPoint, [options])
 A three point shape
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| firstPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | - |
-| secondPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | - |
-| thirdPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | - |
-| options | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
+| firstPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | The first summit of the triangle |
+| secondPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | The second summit of the triangle |
+| thirdPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | The third summit of the triangle |
+| [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
 <a name="Polygon+trace"></a>
 
@@ -1930,6 +1949,17 @@ Stroke the contour of the shape
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Shape+completeOptions"></a>
+
+### triangle.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Triangle](#Triangle)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
 <a name="Text"></a>
 
 ## Text ⇐ <code>[Shape](#Shape)</code>
@@ -1937,18 +1967,19 @@ Stroke the contour of the shape
 **Extends:** <code>[Shape](#Shape)</code>  
 
 * [Text](#Text) ⇐ <code>[Shape](#Shape)</code>
-    * [new Text(text, position, options)](#new_Text_new)
+    * [new Text(text, position, [options])](#new_Text_new)
     * [.trace(ctx)](#Text+trace)
-    * [.fill(ctx)](#Text+fill)
-    * [.stroke(ctx)](#Text+stroke)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
     * [.background(background)](#Shape+background)
+    * [.fill(ctx)](#Shape+fill)
+    * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
+    * [.completeOptions(moreOptions)](#Shape+completeOptions)
 
 <a name="new_Text_new"></a>
 
-### new Text(text, position, options)
+### new Text(text, position, [options])
 Draw a text
 
 
@@ -1956,7 +1987,7 @@ Draw a text
 | --- | --- | --- |
 | text | <code>String</code> | Content of the text |
 | position | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Position of the text |
-| options | <code>[TextOptions](#TextOptions)</code> | Specific options for this shape |
+| [options] | <code>[TextOptions](#TextOptions)</code> | Specific options for this shape |
 
 <a name="Text+trace"></a>
 
@@ -1964,30 +1995,6 @@ Draw a text
 Trace the text
 
 **Kind**: instance method of <code>[Text](#Text)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
-
-<a name="Text+fill"></a>
-
-### text.fill(ctx)
-Fill the text
-
-**Kind**: instance method of <code>[Text](#Text)</code>  
-**Overrides:** <code>[fill](#Shape+fill)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
-
-<a name="Text+stroke"></a>
-
-### text.stroke(ctx)
-Stroke the text outline
-
-**Kind**: instance method of <code>[Text](#Text)</code>  
-**Overrides:** <code>[stroke](#Shape+stroke)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2026,6 +2033,30 @@ Add a background for the shape
 | --- | --- |
 | background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
 
+<a name="Shape+fill"></a>
+
+### text.fill(ctx)
+Fill the shape with its color
+
+**Kind**: instance method of <code>[Text](#Text)</code>  
+**Overrides:** <code>[fill](#Shape+fill)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Shape+stroke"></a>
+
+### text.stroke(ctx)
+Stroke the contour of the shape
+
+**Kind**: instance method of <code>[Text](#Text)</code>  
+**Overrides:** <code>[stroke](#Shape+stroke)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
 <a name="Shape+animateWith"></a>
 
 ### text.animateWith(animation)
@@ -2036,6 +2067,209 @@ Animate this shape position with an animation
 | Param | Type | Description |
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
+
+<a name="Shape+completeOptions"></a>
+
+### text.completeOptions(moreOptions)
+Add options to the shape without override
+
+**Kind**: instance method of <code>[Text](#Text)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moreOptions | <code>[ShapeOptions](#ShapeOptions)</code> | A map like object |
+
+<a name="run"></a>
+
+## run(position, ctx)
+Apply this animation function to a position
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| position | <code>[Position](#Position)</code> | A position to move |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="restart"></a>
+
+## restart(position)
+Restart this animation
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| position | <code>[Position](#Position)</code> | A position to set |
+
+<a name="animateWith"></a>
+
+## animateWith(animation)
+Add an animation to this background
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| animation | <code>[Animation](#Animation)</code> | Any animation |
+
+<a name="getCSS"></a>
+
+## getCSS() ⇒ <code>String</code>
+Get CSS string for this background
+
+**Kind**: global function  
+<a name="getRadius"></a>
+
+## getRadius(shape) ⇒ <code>number</code>
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| shape | <code>[Shape](#Shape)</code> &#124; <code>[Scene](#Scene)</code> | - |
+
+<a name="getX"></a>
+
+## getX() ⇒ <code>Number</code>
+Get the x value
+
+**Kind**: global function  
+<a name="getY"></a>
+
+## getY() ⇒ <code>Number</code>
+Get the y value
+
+**Kind**: global function  
+<a name="setX"></a>
+
+## setX([x]) ⇒ <code>[Position](#Position)</code>
+Set a new value for x and move linked positions
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [x] | <code>Number</code> | <code>0</code> | The new x value |
+
+<a name="setY"></a>
+
+## setY([y]) ⇒ <code>[Position](#Position)</code>
+Set a new value for y and move linked positions
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [y] | <code>Number</code> | <code>0</code> | The new y value |
+
+<a name="setTo"></a>
+
+## setTo([x], [y]) ⇒ <code>\*</code> &#124; <code>[Position](#Position)</code>
+Move this to a new position
+
+**Kind**: global function  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| [x] | <code>Number</code> | <code>0</code> | 
+| [y] | <code>Number</code> | <code>0</code> | 
+
+<a name="addX"></a>
+
+## addX([diff], [override]) ⇒ <code>[Position](#Position)</code>
+Add to the x value
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [diff] | <code>Number</code> | <code>0</code> | How much to add |
+| [override] | <code>Boolean</code> | <code>false</code> | If true, will change the origin value |
+
+<a name="addY"></a>
+
+## addY([diff], [override]) ⇒ <code>[Position](#Position)</code>
+Add to the y value
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [diff] | <code>Number</code> | <code>0</code> | How much to add |
+| [override] | <code>Boolean</code> | <code>false</code> | If true, will change the origin value |
+
+<a name="move"></a>
+
+## move([diffX], [diffY], [override]) ⇒ <code>[Position](#Position)</code>
+Move the position by some x and y
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [diffX] | <code>Number</code> | <code>0</code> | How much to move by x |
+| [diffY] | <code>Number</code> | <code>0</code> | How much to move by y |
+| [override] | <code>Boolean</code> | <code>false</code> | If true, will change the origin value |
+
+<a name="setOrigin"></a>
+
+## setOrigin(x, y) ⇒ <code>[Position](#Position)</code>
+Define the origin of the position
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>Number</code> | A x value |
+| y | <code>Number</code> | A y value |
+
+<a name="reset"></a>
+
+## reset() ⇒ <code>[Position](#Position)</code>
+Return a position to its origin
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+<a name="animateWith"></a>
+
+## animateWith(animation) ⇒ <code>[Position](#Position)</code>
+Define an animation to apply to this position
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| animation | <code>[Animation](#Animation)</code> | - |
+
+<a name="animate"></a>
+
+## animate(ctx) ⇒ <code>[Position](#Position)</code>
+Run the animation of this position
+
+**Kind**: global function  
+**Returns**: <code>[Position](#Position)</code> - Itself  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | The rendering context |
+
+<a name="addLink"></a>
+
+## addLink(position)
+Link a position to this one
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| position | <code>[Position](#Position)</code> | Another position to link, will be moved alongside this position |
 
 <a name="GradientParams"></a>
 
@@ -2050,6 +2284,17 @@ Animate this shape position with an animation
 ```js
 { 0: "red", 50: "green", 100: "blue" }
 ```
+<a name="SceneOptions"></a>
+
+## SceneOptions : <code>Object</code>
+**Kind**: global typedef  
+**Extends:** <code>[ShapeOptions](#ShapeOptions)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| width | <code>Number</code> | The scene's width |
+| height | <code>Number</code> | The scene's height |
+
 <a name="ShapeOptions"></a>
 
 ## ShapeOptions : <code>Object</code>
@@ -2071,6 +2316,8 @@ Animate this shape position with an animation
 | --- | --- | --- | --- |
 | font | <code>String</code> | <code>&quot;sans-serif&quot;}</code> | The font's name |
 | [fontSize] | <code>String</code> | <code>10</code> | The font's size |
+| [bold] | <code>Boolean</code> | <code>false</code> | Is the text bold |
+| [italic] | <code>Boolean</code> | <code>false</code> | Is the text italic |
 | [align] | <code>String</code> | <code>&quot;left&quot;</code> | The text's vertical alignment |
 | [baseline] | <code>String</code> | <code>&quot;alphabetic&quot;</code> | The text's baseline position |
 

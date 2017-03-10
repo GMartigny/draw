@@ -8,7 +8,7 @@
 /**
  * A generic shape
  * @param {Position|Shape} position - Its position on the scene
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Shape (position, options) {
@@ -18,10 +18,11 @@ function Shape (position, options) {
 
     this.options = options || {};
 }
-Shape.prototype = {
+Utils.extends(Shape, null, {
     /**
      * Move and draw the shape
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Shape#
      */
     render: function(ctx) {
         ctx.save();
@@ -32,6 +33,7 @@ Shape.prototype = {
     /**
      * Draw the shape into the context
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Shape#
      */
     draw: function(ctx) {
         ctx.beginPath();
@@ -47,18 +49,15 @@ Shape.prototype = {
     /**
      * Add a background for the shape
      * @param {String|Background} background
+     * @memberOf Shape#
      */
     background: function(background) {
-        if (background instanceof Background || typeof background === "string") {
-            this.options.fillColor = background;
-        }
-        else {
-            throw new TypeError("Unexpected background type.");
-        }
+        Scene.prototype.background.call(this, background);
     },
     /**
      * Fill the shape with its color
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Shape#
      */
     fill: function(ctx) {
         if (this.options.fillColor) {
@@ -74,6 +73,7 @@ Shape.prototype = {
     /**
      * Stroke the contour of the shape
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Shape#
      */
     stroke: function(ctx) {
         if (this.options.strokeColor) {
@@ -85,6 +85,7 @@ Shape.prototype = {
     /**
      * Animate this shape position with an animation
      * @param {Animation} animation - Any animation
+     * @memberOf Shape#
      */
     animateWith: function(animation) {
         this.position.animateWith(animation);
@@ -92,9 +93,9 @@ Shape.prototype = {
     /**
      * Add options to the shape without override
      * @param {ShapeOptions} moreOptions - A map like object
-     * @private
+     * @memberOf Shape#
      */
-    _completeOptions: function(moreOptions) {
+    completeOptions: function(moreOptions) {
         for (var key in moreOptions) {
             if (moreOptions.hasOwnProperty(key) && this.options[key] === undefined) {
                 this.options[key] = moreOptions[key];
@@ -110,4 +111,4 @@ Shape.prototype = {
     height: function() {
         throw new ReferenceError("Unimplemented function.");
     }
-};
+});

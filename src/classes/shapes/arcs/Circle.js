@@ -14,6 +14,7 @@ function Circle (position, radius, options) {
 Utils.extends(Circle, Arc, {
     /**
      * Get this circle's width
+     * @override
      * @returns {Number}
      * @memberOf Circle#
      */
@@ -22,6 +23,7 @@ Utils.extends(Circle, Arc, {
     },
     /**
      * Get this circle's height
+     * @override
      * @returns {Number}
      * @memberOf Circle#
      */

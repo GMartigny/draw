@@ -15,10 +15,11 @@ function Background (color) {
     this.style = color;
     this.animation = null;
 }
-Background.prototype = {
+Utils.extends(Background, null, {
     /**
      * Return the current style of this background
      * @returns {String}
+     * @memberOf Background#
      */
     getStyle: function() {
         if (this.animation) {
@@ -32,5 +33,12 @@ Background.prototype = {
      */
     animateWith: function (animation) {
         this.animation = animation;
+    },
+    /**
+     * Get CSS string for this background
+     * @returns {String}
+     */
+    getCSS: function() {
+        return this.getStyle();
     }
-};
+});

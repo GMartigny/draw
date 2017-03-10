@@ -2,7 +2,7 @@
  * A single point in space
  * @extends Shape
  * @param {Position} position - The position of the point
- * @param {ShapeOptions} options - 
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Point (position, options) {
@@ -10,10 +10,33 @@ function Point (position, options) {
     Shape.call(this, position, options);
 }
 Utils.extends(Point, Shape, {
-    trace: function() {},
+    /**
+     * One can't trace a point
+     * @override
+     * @memberOf Point#
+     */
+    trace: Utils.noop,
+    /**
+     * One can't stroke a point
+     * @override
+     * @memberOf Point#
+     */
+    stroke: Utils.noop,
+    /**
+     * Get point width
+     * @override
+     * @returns {Number}
+     * @memberOf Point#
+     */
     width: function() {
         return 0;
     },
+    /**
+     * Get point height
+     * @override
+     * @returns {Number}
+     * @memberOf Point#
+     */
     height: function() {
         return 0;
     }

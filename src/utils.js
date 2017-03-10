@@ -26,6 +26,7 @@ var Utils = {
     random: function(max) {
         return this.round(this.rand() * max);
     },
+    noop: function() {},
     /**
      * Create a class prototype from a parent
      * @param {Function} self - An class needing a prototype
@@ -35,6 +36,7 @@ var Utils = {
     extends: function(self, parent, override) {
         if (parent) {
             self.prototype = Object.create(parent.prototype);
+            self.prototype.constructor = self;
         }
         if (override) {
             for (var func in override) {

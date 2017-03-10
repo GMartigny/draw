@@ -2,8 +2,8 @@
  * A shape from multiple point with rounded angle
  * @extends Polygon
  * @param {Array<Position|Shape>} points - A list of points
- * @param {Number} tension - Define the roundness of the blob
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {Number} [tension=0.5] - Define the roundness of the blob
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Blob (points, tension, options) {

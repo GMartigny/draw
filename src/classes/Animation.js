@@ -7,6 +7,25 @@ function Animation (func) {
     this.iteration = 0;
     this.func = func;
 }
+Utils.extends(Animation, null, {
+    /**
+     * Apply this animation function to a position
+     * @param {Position} position - A position to move
+     * @param {CanvasRenderingContext2D} ctx - A drawing context
+     */
+    run: function(position, ctx) {
+        this.func.call(position, this.iteration++, ctx);
+    },
+    /**
+     * Restart this animation
+     * @param {Position} position - A position to set
+     */
+    restart: function(position) {
+        this.iteration = 0;
+        position.reset();
+    }
+});
+
 /**
  * Give an animation for swirling
  * @param {Number} radius - Radius of the swirling
@@ -59,22 +78,4 @@ Animation.Gravity = function(ground, bounce) {
             this.addY(0.09 * i);
         }
     });
-};
-Animation.prototype = {
-    /**
-     * Apply this animation function to a position
-     * @param {Position} position - A position to move
-     * @param {CanvasRenderingContext2D} ctx - A drawing context
-     */
-    run: function(position, ctx) {
-        this.func.call(position, this.iteration++, ctx);
-    },
-    /**
-     * Restart this animation
-     * @param {Position} position - A position to set
-     */
-    restart: function(position) {
-        this.iteration = 0;
-        position.reset();
-    }
 };

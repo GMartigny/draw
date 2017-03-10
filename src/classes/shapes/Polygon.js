@@ -2,7 +2,7 @@
  * A shape from multiple point
  * @extends Shape
  * @param {Array<Position|Shape>} points - A list of points
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Polygon (points, options) {
@@ -96,6 +96,7 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Get this shape's width
+     * @override
      * @return {Number}
      * @memberOf Polygon#
      */
@@ -104,6 +105,7 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Get this shape's height
+     * @override
      * @return {Number}
      * @memberOf Polygon#
      */

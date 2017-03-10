@@ -4,7 +4,7 @@
  * @param {Position|Shape} startPoint - Position of the upper-left corner
  * @param {Number} width - Width of the rectangle
  * @param {Number} height - Height of the rectangle
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Rectangle (startPoint, width, height, options) {
@@ -19,7 +19,7 @@ function Rectangle (startPoint, width, height, options) {
  * Create a rectangle between two point
  * @param {Position|Shape} from - Top-left point
  * @param {Position|Shape} to - Bottom-right point
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @return {Rectangle}
  */
 Rectangle.fromPointToPoint = function(from, to, options) {
@@ -42,8 +42,8 @@ Utils.extends(Rectangle, Polygon, {
         );
     },
     /**
-     *
-     * @param {Number} value -
+     * Set the rectangle's width
+     * @param {Number} value - Any value
      * @return {Rectangle} Itself
      * @memberOf Rectangle#
      */
@@ -52,8 +52,8 @@ Utils.extends(Rectangle, Polygon, {
         return this;
     },
     /**
-     *
-     * @param {Number} value -
+     * Set the rectangle's height
+     * @param {Number} value - Any value
      * @return {Rectangle} Itself
      * @memberOf Rectangle#
      */
@@ -63,6 +63,7 @@ Utils.extends(Rectangle, Polygon, {
     },
     /**
      * Get this rectangle's width
+     * @override
      * @returns {Number}
      * @memberOf Rectangle#
      */
@@ -71,6 +72,7 @@ Utils.extends(Rectangle, Polygon, {
     },
     /**
      * Get this rectangle's height
+     * @override
      * @returns {Number}
      * @memberOf Rectangle#
      */

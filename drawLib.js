@@ -28,6 +28,7 @@ var Utils = {
     random: function(max) {
         return this.round(this.rand() * max);
     },
+    noop: function() {},
     /**
      * Create a class prototype from a parent
      * @param {Function} self - An class needing a prototype
@@ -37,6 +38,7 @@ var Utils = {
     extends: function(self, parent, override) {
         if (parent) {
             self.prototype = Object.create(parent.prototype);
+            self.prototype.constructor = self;
         }
         if (override) {
             for (var func in override) {
@@ -71,6 +73,25 @@ function Animation(func) {
     this.iteration = 0;
     this.func = func;
 }
+
+Utils.extends(Animation, null, {
+    /**
+     * Apply this animation function to a position
+     * @param {Position} position - A position to move
+     * @param {CanvasRenderingContext2D} ctx - A drawing context
+     */
+    run: function(position, ctx) {
+        this.func.call(position, this.iteration++, ctx);
+    },
+    /**
+     * Restart this animation
+     * @param {Position} position - A position to set
+     */
+    restart: function(position) {
+        this.iteration = 0;
+        position.reset();
+    }
+});
 
 /**
  * Give an animation for swirling
@@ -127,25 +148,6 @@ Animation.Gravity = function(ground, bounce) {
     });
 };
 
-Animation.prototype = {
-    /**
-     * Apply this animation function to a position
-     * @param {Position} position - A position to move
-     * @param {CanvasRenderingContext2D} ctx - A drawing context
-     */
-    run: function(position, ctx) {
-        this.func.call(position, this.iteration++, ctx);
-    },
-    /**
-     * Restart this animation
-     * @param {Position} position - A position to set
-     */
-    restart: function(position) {
-        this.iteration = 0;
-        position.reset();
-    }
-};
-
 /**
  * @typedef {Object} GradientParams
  * @param {...Number} [0-100] - A color stop, key for the position and value for the color
@@ -162,10 +164,11 @@ function Background(color) {
     this.animation = null;
 }
 
-Background.prototype = {
+Utils.extends(Background, null, {
     /**
      * Return the current style of this background
      * @returns {String}
+     * @memberOf Background#
      */
     getStyle: function() {
         if (this.animation) {
@@ -179,8 +182,15 @@ Background.prototype = {
      */
     animateWith: function(animation) {
         this.animation = animation;
+    },
+    /**
+     * Get CSS string for this background
+     * @returns {String}
+     */
+    getCSS: function() {
+        return this.getStyle();
     }
-};
+});
 
 /**
  *
@@ -280,13 +290,30 @@ Utils.extends(LinearGradient, Background, {
         }
         this.style = gradient;
         return this._getStyle();
+    },
+    /**
+     *
+     * @param {Shape|Scene} shape
+     * @returns {string}
+     * @memberOf LinearGradient#
+     */
+    getCSS: function(shape) {
+        var css = "linear-gradient(" + (this.angle + 90) + "deg, ";
+        var stops = [];
+        for (var stop in this.params) {
+            if (this.params.hasOwnProperty(stop)) {
+                stops.push(this.params[stop] + " " + stop + "%");
+            }
+        }
+        css += stops.join(", ") + ")";
+        return css;
     }
 });
 
 /**
  * A radial gradient background
  * @extends Background
- * @param {Position|Shape} center -
+ * @param {Position|Shape} center - The gradient center
  * @param {GradientParams} params - The gradient definition
  * @constructor
  */
@@ -302,6 +329,14 @@ function RadialGradient(center, params) {
 
 Utils.extends(RadialGradient, Background, {
     /**
+     *
+     * @param {Shape|Scene} shape -
+     * @returns {number}
+     */
+    getRadius: function(shape) {
+        return Utils.max(shape.width(), shape.height()) / 2;
+    },
+    /**
      * Build the gradient
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @param {Shape} shape - The holding shape
@@ -309,10 +344,9 @@ Utils.extends(RadialGradient, Background, {
      * @memberOf RadialGradient#
      */
     getStyle: function(ctx, shape) {
-        var origin = this.center || shape.position;
-        var x = origin.getX();
-        var y = origin.getY();
-        var gradient = ctx.createRadialGradient(x, y, 0, x, y, Utils.max(shape.width(), shape.height()) / 2);
+        var x = this.center.getX();
+        var y = this.center.getY();
+        var gradient = ctx.createRadialGradient(x, y, 0, x, y, this.getRadius(shape));
         for (var stop in this.params) {
             if (this.params.hasOwnProperty(stop)) {
                 gradient.addColorStop(stop / 100, this.params[stop]);
@@ -320,6 +354,24 @@ Utils.extends(RadialGradient, Background, {
         }
         this.style = gradient;
         return this._getStyle();
+    },
+    /**
+     *
+     * @returns {string}
+     * @memberOf RadialGradient#
+     */
+    getCSS: function() {
+        var x = this.center.getX() + "px ";
+        var y = this.center.getY() + "px";
+        var css = "radial-gradient(circle closest-side at " + x + y + ", ";
+        var stops = [];
+        for (var stop in this.params) {
+            if (this.params.hasOwnProperty(stop)) {
+                stops.push(this.params[stop] + " " + stop + "%");
+            }
+        }
+        css += stops.join(", ") + ")";
+        return css;
     }
 });
 
@@ -331,8 +383,8 @@ Utils.extends(RadialGradient, Background, {
  * @constructor
  */
 function Position(x, y, animation) {
-    this.x = x || 0;
-    this.y = y || 0;
+    this.x = +x || 0;
+    this.y = +y || 0;
     this.origin = {
         x: this.x,
         y: this.y
@@ -360,7 +412,7 @@ Position.createFrom = function(other) {
     return pos;
 };
 
-Position.prototype = {
+Utils.extends(Position, null, {
     /**
      * Get the x value
      * @return {Number}
@@ -377,60 +429,68 @@ Position.prototype = {
     },
     /**
      * Set a new value for x and move linked positions
-     * @param {Number} x - The new x value
-     * @call addX
+     * @param {Number} [x=0] - The new x value
      * @return {Position} Itself
      */
     setX: function(x) {
-        Utils.assertLength(arguments, 1);
-        var diff = x - this.x;
-        return this.addX(diff);
+        return this.setTo(x, this.y);
     },
     /**
      * Set a new value for y and move linked positions
-     * @param {Number} y - The new y value
-     * @call addY
+     * @param {Number} [y=0] - The new y value
      * @return {Position} Itself
      */
     setY: function(y) {
-        Utils.assertLength(arguments, 1);
-        var diff = y - this.y;
-        return this.addY(diff);
+        return this.setTo(this.x, y);
+    },
+    /**
+     * Move this to a new position
+     * @param {Number} [x=0]
+     * @param {Number} [y=0]
+     * @returns {*|Position}
+     */
+    setTo: function(x, y) {
+        var diffX = (+x || 0) - this.x;
+        var diffY = (+y || 0) - this.y;
+        return this.addX(diffX).addY(diffY);
     },
     /**
      * Add to the x value
-     * @param {Number} diff - How much to add
+     * @param {Number} [diff=0] - How much to add
      * @param {Boolean} [override=false] - If true, will change the origin value
      * @return {Position} Itself
      */
     addX: function(diff, override) {
-        diff = diff || 0;
-        if (diff !== 0) {
-            this.x += diff;
-            if (override) {
-                this.origin.x += diff;
-            }
-            this.linked.forEach(function(link) {
-                link.addX(diff, true);
-            });
-        }
-        return this;
+        return this.move(diff, 0, override);
     },
     /**
      * Add to the y value
-     * @param {Number} diff - How much to add
+     * @param {Number} [diff=0] - How much to add
      * @param {Boolean} [override=false] - If true, will change the origin value
      * @return {Position} Itself
      */
     addY: function(diff, override) {
-        diff = diff || 0;
-        if (diff !== 0) {
-            this.y += diff;
+        return this.move(0, diff, override);
+    },
+    /**
+     * Move the position by some x and y
+     * @param {Number} [diffX=0] - How much to move by x
+     * @param {Number} [diffY=0] - How much to move by y
+     * @param {Boolean} [override=false] - If true, will change the origin value
+     * @returns {Position} Itself
+     */
+    move: function(diffX, diffY, override) {
+        diffX = +diffX || 0;
+        diffY = +diffY || 0;
+        if (diffX !== 0 || diffY !== 0) {
+            this.x += diffX;
+            this.y += diffY;
             if (override) {
-                this.origin.y += diff;
+                this.origin.x += diffX;
+                this.origin.y += diffY;
             }
             this.linked.forEach(function(link) {
-                link.addY(diff, true);
+                link.move(diffX, diffY, true);
             });
         }
         return this;
@@ -484,8 +544,14 @@ Position.prototype = {
         position.isLinked = true;
         this.linked.push(position);
     }
-};
+});
 
+/**
+ * @typedef {Object} SceneOptions
+ * @extends ShapeOptions
+ * @param {Number} width - The scene's width
+ * @param {Number} height - The scene's height
+ */
 /**
  * Represent a display, can be fill with different shape and image
  * @param {HTMLCanvasElement} canvas - The canvas element for drawing
@@ -494,20 +560,21 @@ Position.prototype = {
  */
 function Scene(canvas, options) {
     Utils.assertLength(arguments, 1);
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    this.options = options || {};
+    canvas.width = this.options.width || window.innerWidth;
+    canvas.height = this.options.height || window.innerHeight;
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     canvas.style.display = "block";
     this.context = canvas.getContext("2d");
-    this.options = options || {};
     this.shapes = [];
     this.loop = false;
 }
 
-Scene.prototype = {
+Utils.extends(Scene, null, {
     /**
      * Start all animations
+     * @memberOf Scene#
      */
     startAnimation: function() {
         if (!this.loop) {
@@ -517,16 +584,23 @@ Scene.prototype = {
     },
     /**
      * Stop all animations
+     * @memberOf Scene#
      */
     stopAnimation: function() {
         this.loop = false;
     },
     /**
      * Draw the scene once
+     * @memberOf Scene#
      */
     render: function() {
         if (this.loop) {
             requestAnimationFrame(this.render.bind(this));
+        }
+        if (this.options.fillColor instanceof Background) {
+            this.context.canvas.style.backgroundImage = this.options.fillColor.getCSS(this);
+        } else if (typeof this.options.fillColor === "string") {
+            this.context.canvas.style.backgroundColor = this.options.fillColor;
         }
         var ctx = this.context;
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -540,6 +614,7 @@ Scene.prototype = {
      * Add a shape to the scene
      * @param {Shape} shape - Any shape
      * @param {Number} [zIndex=0] - Used to define a drawing order, should be a positive integer
+     * @memberOf Scene#
      */
     add: function(shape, zIndex) {
         Utils.assertLength(arguments, 1);
@@ -548,17 +623,23 @@ Scene.prototype = {
             this.shapes[zIndex] = [];
         }
         this.shapes[zIndex].push(shape);
-        shape._completeOptions(this.options);
+        shape.completeOptions(this.options);
     },
     /**
      * Add a background color to the scene
-     * @param {String} color - Any color string
+     * @param {String|Background} background - Any color string or background
+     * @memberOf Scene#
      */
-    background: function(color) {
-        this.context.canvas.style.backgroundColor = color;
+    background: function(background) {
+        if (background instanceof Background || typeof background === "string") {
+            this.options.fillColor = background;
+        } else {
+            throw new TypeError("Unexpected background type.");
+        }
     },
     /**
      * Remove all shape from scene
+     * @memberOf Scene#
      */
     clear: function() {
         this.shapes = [];
@@ -566,6 +647,7 @@ Scene.prototype = {
     /**
      * Return the center of the scene
      * @return {Position}
+     * @memberOf Scene#
      */
     center: function() {
         return new Position(Utils.floor(this.width() / 2), Utils.floor(this.height() / 2));
@@ -573,6 +655,7 @@ Scene.prototype = {
     /**
      * Return a random position within the scnee
      * @returns {Position}
+     * @memberOf Scene#
      */
     randomPosition: function() {
         return new Position(Utils.random(this.width()), Utils.random(this.height()));
@@ -580,6 +663,7 @@ Scene.prototype = {
     /**
      * Get the width of the scene
      * @return {Number}
+     * @memberOf Scene#
      */
     width: function() {
         return this.context.canvas.width;
@@ -587,11 +671,12 @@ Scene.prototype = {
     /**
      * Get the height of the scene
      * @return {Number}
+     * @memberOf Scene#
      */
     height: function() {
         return this.context.canvas.height;
     }
-};
+});
 
 /**
  * @typedef {Object} ShapeOptions
@@ -602,7 +687,7 @@ Scene.prototype = {
 /**
  * A generic shape
  * @param {Position|Shape} position - Its position on the scene
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Shape(position, options) {
@@ -611,10 +696,11 @@ function Shape(position, options) {
     this.options = options || {};
 }
 
-Shape.prototype = {
+Utils.extends(Shape, null, {
     /**
      * Move and draw the shape
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Shape#
      */
     render: function(ctx) {
         ctx.save();
@@ -625,6 +711,7 @@ Shape.prototype = {
     /**
      * Draw the shape into the context
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Shape#
      */
     draw: function(ctx) {
         ctx.beginPath();
@@ -640,17 +727,15 @@ Shape.prototype = {
     /**
      * Add a background for the shape
      * @param {String|Background} background
+     * @memberOf Shape#
      */
     background: function(background) {
-        if (background instanceof Background || typeof background === "string") {
-            this.options.fillColor = background;
-        } else {
-            throw new TypeError("Unexpected background type.");
-        }
+        Scene.prototype.background.call(this, background);
     },
     /**
      * Fill the shape with its color
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Shape#
      */
     fill: function(ctx) {
         if (this.options.fillColor) {
@@ -665,6 +750,7 @@ Shape.prototype = {
     /**
      * Stroke the contour of the shape
      * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @memberOf Shape#
      */
     stroke: function(ctx) {
         if (this.options.strokeColor) {
@@ -676,6 +762,7 @@ Shape.prototype = {
     /**
      * Animate this shape position with an animation
      * @param {Animation} animation - Any animation
+     * @memberOf Shape#
      */
     animateWith: function(animation) {
         this.position.animateWith(animation);
@@ -683,9 +770,9 @@ Shape.prototype = {
     /**
      * Add options to the shape without override
      * @param {ShapeOptions} moreOptions - A map like object
-     * @private
+     * @memberOf Shape#
      */
-    _completeOptions: function(moreOptions) {
+    completeOptions: function(moreOptions) {
         for (var key in moreOptions) {
             if (moreOptions.hasOwnProperty(key) && this.options[key] === undefined) {
                 this.options[key] = moreOptions[key];
@@ -701,7 +788,7 @@ Shape.prototype = {
     height: function() {
         throw new ReferenceError("Unimplemented function.");
     }
-};
+});
 
 /**
  * An arc shape between two points
@@ -751,6 +838,7 @@ function Circle(position, radius, options) {
 Utils.extends(Circle, Arc, {
     /**
      * Get this circle's width
+     * @override
      * @returns {Number}
      * @memberOf Circle#
      */
@@ -759,6 +847,7 @@ Utils.extends(Circle, Arc, {
     },
     /**
      * Get this circle's height
+     * @override
      * @returns {Number}
      * @memberOf Circle#
      */
@@ -771,7 +860,7 @@ Utils.extends(Circle, Arc, {
  * A single point in space
  * @extends Shape
  * @param {Position} position - The position of the point
- * @param {ShapeOptions} options - 
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Point(position, options) {
@@ -780,10 +869,33 @@ function Point(position, options) {
 }
 
 Utils.extends(Point, Shape, {
-    trace: function() {},
+    /**
+     * One can't trace a point
+     * @override
+     * @memberOf Point#
+     */
+    trace: Utils.noop,
+    /**
+     * One can't stroke a point
+     * @override
+     * @memberOf Point#
+     */
+    stroke: Utils.noop,
+    /**
+     * Get point width
+     * @override
+     * @returns {Number}
+     * @memberOf Point#
+     */
     width: function() {
         return 0;
     },
+    /**
+     * Get point height
+     * @override
+     * @returns {Number}
+     * @memberOf Point#
+     */
     height: function() {
         return 0;
     }
@@ -793,7 +905,7 @@ Utils.extends(Point, Shape, {
  * A shape from multiple point
  * @extends Shape
  * @param {Array<Position|Shape>} points - A list of points
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Polygon(points, options) {
@@ -879,6 +991,7 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Get this shape's width
+     * @override
      * @return {Number}
      * @memberOf Polygon#
      */
@@ -887,6 +1000,7 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Get this shape's height
+     * @override
      * @return {Number}
      * @memberOf Polygon#
      */
@@ -899,8 +1013,8 @@ Utils.extends(Polygon, Shape, {
  * A shape from multiple point with rounded angle
  * @extends Polygon
  * @param {Array<Position|Shape>} points - A list of points
- * @param {Number} tension - Define the roundness of the blob
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {Number} [tension=0.5] - Define the roundness of the blob
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Blob(points, tension, options) {
@@ -961,7 +1075,7 @@ Utils.extends(Blob, Polygon, {
  * @extends Polygon
  * @param {Position|Shape} startPoint - Its origin point or shape
  * @param {Position|Shape} endPoint - Its arrival point or shape
- * @param {ShapeOptions} options - Specific options for this line
+ * @param {ShapeOptions} [options] - Specific options for this line
  * @constructor
  */
 function Line(startPoint, endPoint, options) {
@@ -975,9 +1089,10 @@ Utils.extends(Line, Polygon, {
      * @override
      * @memberOf Line#
      */
-    fill: function() {},
+    fill: Utils.noop,
     /**
      * Get the line x length
+     * @override
      * @return {Number}
      * @memberOf Line#
      */
@@ -986,6 +1101,7 @@ Utils.extends(Line, Polygon, {
     },
     /**
      * Get the line y length
+     * @override
      * @return {Number}
      * @memberOf Line#
      */
@@ -1000,7 +1116,7 @@ Utils.extends(Line, Polygon, {
  * @param {Position|Shape} startPoint - Position of the upper-left corner
  * @param {Number} width - Width of the rectangle
  * @param {Number} height - Height of the rectangle
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Rectangle(startPoint, width, height, options) {
@@ -1014,7 +1130,7 @@ function Rectangle(startPoint, width, height, options) {
  * Create a rectangle between two point
  * @param {Position|Shape} from - Top-left point
  * @param {Position|Shape} to - Bottom-right point
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @return {Rectangle}
  */
 Rectangle.fromPointToPoint = function(from, to, options) {
@@ -1035,8 +1151,8 @@ Utils.extends(Rectangle, Polygon, {
         ctx.rect(this.startPoint.getX(), this.startPoint.getY(), this.endPoint.getX() - this.startPoint.getX(), this.endPoint.getY() - this.startPoint.getY());
     },
     /**
-     *
-     * @param {Number} value -
+     * Set the rectangle's width
+     * @param {Number} value - Any value
      * @return {Rectangle} Itself
      * @memberOf Rectangle#
      */
@@ -1045,8 +1161,8 @@ Utils.extends(Rectangle, Polygon, {
         return this;
     },
     /**
-     *
-     * @param {Number} value -
+     * Set the rectangle's height
+     * @param {Number} value - Any value
      * @return {Rectangle} Itself
      * @memberOf Rectangle#
      */
@@ -1056,6 +1172,7 @@ Utils.extends(Rectangle, Polygon, {
     },
     /**
      * Get this rectangle's width
+     * @override
      * @returns {Number}
      * @memberOf Rectangle#
      */
@@ -1064,6 +1181,7 @@ Utils.extends(Rectangle, Polygon, {
     },
     /**
      * Get this rectangle's height
+     * @override
      * @returns {Number}
      * @memberOf Rectangle#
      */
@@ -1091,13 +1209,13 @@ Utils.extends(Square, Rectangle);
  * A shape with some branches around a point
  * @extends Polygon
  * @param {Position|Shape} center - The center of the shape
- * @param {Number} nbBranch - The number of branches of the shape, can't be less than 3
  * @param {Number} radius - The distance between the center and any branch tip
+ * @param {Number} nbBranch - The number of branches of the shape, can't be less than 3
  * @param {Number} [dropRatio=0.5] - The ratio between branches length and drops between them
  * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
-function Star(center, nbBranch, radius, dropRatio, options) {
+function Star(center, radius, nbBranch, dropRatio, options) {
     Utils.assertLength(arguments, 3);
     if (nbBranch < 3) {
         throw new RangeError("Can't create a star with less than 3 branches, but only " + nbBranch + " given.");
@@ -1120,10 +1238,10 @@ Utils.extends(Star, Polygon, {});
 /**
  * A three point shape
  * @extends Polygon
- * @param {Position|Shape} firstPoint -
- * @param {Position|Shape} secondPoint -
- * @param {Position|Shape} thirdPoint -
- * @param {ShapeOptions} options - Specific options for this shape
+ * @param {Position|Shape} firstPoint - The first summit of the triangle
+ * @param {Position|Shape} secondPoint - The second summit of the triangle
+ * @param {Position|Shape} thirdPoint - The third summit of the triangle
+ * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Triangle(firstPoint, secondPoint, thirdPoint, options) {
@@ -1131,13 +1249,15 @@ function Triangle(firstPoint, secondPoint, thirdPoint, options) {
     Polygon.call(this, [ firstPoint, secondPoint, thirdPoint ], options);
 }
 
-Utils.extends(Triangle, Polygon);
+Utils.extends(Triangle, Polygon, {});
 
 /**
  * @typedef {Object} TextOptions
  * @extends ShapeOptions
  * @param {String} [font="sans-serif"} - The font's name
  * @param {String} [fontSize=10] - The font's size
+ * @param {Boolean} [bold=false] - Is the text bold
+ * @param {Boolean} [italic=false] - Is the text italic
  * @param {String} [align="left"] - The text's vertical alignment
  * @param {String} [baseline="alphabetic"] - The text's baseline position
  */
@@ -1146,7 +1266,7 @@ Utils.extends(Triangle, Polygon);
  * @extends Shape
  * @param {String} text - Content of the text
  * @param {Position|Shape} position - Position of the text
- * @param {TextOptions} options - Specific options for this shape
+ * @param {TextOptions} [options] - Specific options for this shape
  * @constructor
  */
 function Text(text, position, options) {
@@ -1163,33 +1283,41 @@ Utils.extends(Text, Shape, {
      * @memberOf Text#
      */
     trace: function(ctx) {
-        ctx.font = this.options.font || "10px sans-serif";
+        var font = (this.options.bold ? "bold " : "") + (this.options.italic ? "italic " : "");
+        font += (this.options.fontSize || 10) + "px " + (this.options.font || "sans-serif");
+        ctx.font = font;
         ctx.textAlign = this.options.align || "left";
         ctx.textBaseline = this.options.baseline || "alphabetic";
     },
     /**
      * Fill the text
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Text#
      */
     fill: function(ctx) {
         if (this.options.fillColor) {
+            ctx.save();
             ctx.fillStyle = this.options.fillColor;
             ctx.translate(this.position.getX(), this.position.getY());
             ctx.fillText(this.text, 0, 0);
+            ctx.restore();
         }
     },
     /**
      * Stroke the text outline
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Text#
      */
     stroke: function(ctx) {
         if (this.options.strokeColor) {
+            ctx.save();
             ctx.strokeStyle = this.options.strokeColor;
             ctx.lineWidth = this.options.strokeWidth;
             ctx.translate(this.position.getX(), this.position.getY());
             ctx.strokeText(this.text, 0, 0);
+            ctx.restore();
         }
     }
 });

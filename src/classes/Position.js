@@ -6,8 +6,8 @@
  * @constructor
  */
 function Position (x, y, animation) {
-    this.x = x || 0;
-    this.y = y || 0;
+    this.x = +x || 0;
+    this.y = +y || 0;
     this.origin = {
         x: this.x,
         y: this.y
@@ -35,7 +35,7 @@ Position.createFrom = function(other) {
     }
     return pos;
 };
-Position.prototype = {
+Utils.extends(Position, null, {
     /**
      * Get the x value
      * @return {Number}
@@ -52,60 +52,68 @@ Position.prototype = {
     },
     /**
      * Set a new value for x and move linked positions
-     * @param {Number} x - The new x value
-     * @call addX
+     * @param {Number} [x=0] - The new x value
      * @return {Position} Itself
      */
     setX: function(x) {
-        Utils.assertLength(arguments, 1);
-        var diff = x - this.x;
-        return this.addX(diff);
+        return this.setTo(x, this.y);
     },
     /**
      * Set a new value for y and move linked positions
-     * @param {Number} y - The new y value
-     * @call addY
+     * @param {Number} [y=0] - The new y value
      * @return {Position} Itself
      */
     setY: function(y) {
-        Utils.assertLength(arguments, 1);
-        var diff = y - this.y;
-        return this.addY(diff);
+        return this.setTo(this.x, y);
+    },
+    /**
+     * Move this to a new position
+     * @param {Number} [x=0]
+     * @param {Number} [y=0]
+     * @returns {*|Position}
+     */
+    setTo: function(x, y) {
+        var diffX = (+x || 0) - this.x;
+        var diffY = (+y || 0) - this.y;
+        return this.addX(diffX).addY(diffY);
     },
     /**
      * Add to the x value
-     * @param {Number} diff - How much to add
+     * @param {Number} [diff=0] - How much to add
      * @param {Boolean} [override=false] - If true, will change the origin value
      * @return {Position} Itself
      */
     addX: function(diff, override) {
-        diff = diff || 0;
-        if (diff !== 0) {
-            this.x += diff;
-            if (override) {
-                this.origin.x += diff;
-            }
-            this.linked.forEach(function (link) {
-                link.addX(diff, true);
-            });
-        }
-        return this;
+        return this.move(diff, 0, override);
     },
     /**
      * Add to the y value
-     * @param {Number} diff - How much to add
+     * @param {Number} [diff=0] - How much to add
      * @param {Boolean} [override=false] - If true, will change the origin value
      * @return {Position} Itself
      */
     addY: function(diff, override) {
-        diff = diff || 0;
-        if (diff !== 0) {
-            this.y += diff;
+        return this.move(0, diff, override);
+    },
+    /**
+     * Move the position by some x and y
+     * @param {Number} [diffX=0] - How much to move by x
+     * @param {Number} [diffY=0] - How much to move by y
+     * @param {Boolean} [override=false] - If true, will change the origin value
+     * @returns {Position} Itself
+     */
+    move: function(diffX, diffY, override) {
+        diffX = +diffX || 0;
+        diffY = +diffY || 0;
+        if (diffX !== 0 || diffY !== 0) {
+            this.x += diffX;
+            this.y += diffY;
             if (override) {
-                this.origin.y += diff;
+                this.origin.x += diffX;
+                this.origin.y += diffY;
             }
             this.linked.forEach(function (link) {
-                link.addY(diff, true);
+                link.move(diffX, diffY, true);
             });
         }
         return this;
@@ -160,4 +168,4 @@ Position.prototype = {
         position.isLinked = true;
         this.linked.push(position);
     }
-};
+});

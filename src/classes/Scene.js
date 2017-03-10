@@ -1,4 +1,11 @@
 /**
+ * @typedef {Object} SceneOptions
+ * @extends ShapeOptions
+ * @param {Number} width - The scene's width
+ * @param {Number} height - The scene's height
+ */
+
+/**
  * Represent a display, can be fill with different shape and image
  * @param {HTMLCanvasElement} canvas - The canvas element for drawing
  * @param {ShapeOptions} [options] - Global options for the scene, will serves as default for all shapes
@@ -6,21 +13,23 @@
  */
 function Scene (canvas, options) {
     Utils.assertLength(arguments, 1);
+
+    this.options = options || {};
     
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = this.options.width || window.innerWidth;
+    canvas.height = this.options.height || window.innerHeight;
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     canvas.style.display = "block";
 
     this.context = canvas.getContext("2d");
-    this.options = options || {};
     this.shapes = [];
     this.loop = false;
 }
-Scene.prototype = {
+Utils.extends(Scene, null, {
     /**
      * Start all animations
+     * @memberOf Scene#
      */
     startAnimation: function() {
         if (!this.loop) {
@@ -30,16 +39,25 @@ Scene.prototype = {
     },
     /**
      * Stop all animations
+     * @memberOf Scene#
      */
     stopAnimation: function() {
         this.loop = false;
     },
     /**
      * Draw the scene once
+     * @memberOf Scene#
      */
     render: function() {
         if (this.loop) {
             requestAnimationFrame(this.render.bind(this));
+        }
+        
+        if (this.options.fillColor instanceof Background) {
+            this.context.canvas.style.backgroundImage = this.options.fillColor.getCSS(this);
+        }
+        else if (typeof this.options.fillColor === "string") {
+            this.context.canvas.style.backgroundColor = this.options.fillColor;
         }
 
         var ctx = this.context;
@@ -54,6 +72,7 @@ Scene.prototype = {
      * Add a shape to the scene
      * @param {Shape} shape - Any shape
      * @param {Number} [zIndex=0] - Used to define a drawing order, should be a positive integer
+     * @memberOf Scene#
      */
     add: function(shape, zIndex) {
         Utils.assertLength(arguments, 1);
@@ -64,17 +83,24 @@ Scene.prototype = {
         }
 
         this.shapes[zIndex].push(shape);
-        shape._completeOptions(this.options);
+        shape.completeOptions(this.options);
     },
     /**
      * Add a background color to the scene
-     * @param {String} color - Any color string
+     * @param {String|Background} background - Any color string or background
+     * @memberOf Scene#
      */
-    background: function(color) {
-        this.context.canvas.style.backgroundColor = color;
+    background: function(background) {
+        if (background instanceof Background || typeof background === "string") {
+            this.options.fillColor = background;
+        }
+        else {
+            throw new TypeError("Unexpected background type.");
+        }
     },
     /**
      * Remove all shape from scene
+     * @memberOf Scene#
      */
     clear: function() {
         this.shapes = [];
@@ -82,6 +108,7 @@ Scene.prototype = {
     /**
      * Return the center of the scene
      * @return {Position}
+     * @memberOf Scene#
      */
     center: function() {
         return new Position(Utils.floor(this.width() / 2), Utils.floor(this.height() / 2));
@@ -89,6 +116,7 @@ Scene.prototype = {
     /**
      * Return a random position within the scnee
      * @returns {Position}
+     * @memberOf Scene#
      */
     randomPosition: function() {
         return new Position(Utils.random(this.width()), Utils.random(this.height()));
@@ -96,6 +124,7 @@ Scene.prototype = {
     /**
      * Get the width of the scene
      * @return {Number}
+     * @memberOf Scene#
      */
     width: function() {
         return this.context.canvas.width;
@@ -103,8 +132,9 @@ Scene.prototype = {
     /**
      * Get the height of the scene
      * @return {Number}
+     * @memberOf Scene#
      */
     height: function() {
         return this.context.canvas.height;
     }
-};
+});
