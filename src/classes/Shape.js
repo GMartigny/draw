@@ -9,6 +9,7 @@
  * A generic shape
  * @param {Position|Shape} position - Its position on the scene
  * @param {ShapeOptions} [options] - Specific options for this shape
+ * @property {Position} This shape's position, it point at the center of the shape (with some exceptions)
  * @constructor
  */
 function Shape (position, options) {
@@ -19,12 +20,6 @@ function Shape (position, options) {
     this.options = options || {};
 }
 Utils.extends(Shape, null, {
-    /**
-     * This shape's position, it point at the center of the shape (with some exceptions)
-     * @type Position
-     * @memberOf Shape#
-     */
-    position: null,
     /**
      * Move and draw the shape
      * @param {CanvasRenderingContext2D} ctx - A drawing context
