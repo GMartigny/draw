@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} TextOptions
  * @extends ShapeOptions
- * @param {String} [font="sans-serif"} - The font's name
+ * @param {String} [font="sans-serif"] - The font's name
  * @param {String} [fontSize=10] - The font's size
  * @param {Boolean} [bold=false] - Is the text bold
  * @param {Boolean} [italic=false] - Is the text italic
@@ -39,7 +39,6 @@ Utils.extends(Text, Shape, {
     },
     /**
      * Fill the text
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Text#
      */

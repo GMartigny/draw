@@ -1975,12 +1975,12 @@ Add options to the shape without override
 * [Text](#Text) ⇐ <code>[Shape](#Shape)</code>
     * [new Text(text, position, [options])](#new_Text_new)
     * [.trace(ctx)](#Text+trace)
+    * [.fill(ctx)](#Text+fill)
     * [.width(ctx)](#Text+width) ⇒ <code>Number</code>
     * [.height()](#Text+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
     * [.background(background)](#Shape+background)
-    * [.fill(ctx)](#Shape+fill)
     * [.stroke(ctx)](#Shape+stroke)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.completeOptions(moreOptions)](#Shape+completeOptions)
@@ -2003,6 +2003,18 @@ Draw a text
 Trace the text
 
 **Kind**: instance method of <code>[Text](#Text)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Text+fill"></a>
+
+### text.fill(ctx)
+Fill the text
+
+**Kind**: instance method of <code>[Text](#Text)</code>  
+**Overrides:** <code>[fill](#Shape+fill)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -2057,18 +2069,6 @@ Add a background for the shape
 | Param | Type |
 | --- | --- |
 | background | <code>String</code> &#124; <code>[Background](#Background)</code> | 
-
-<a name="Shape+fill"></a>
-
-### text.fill(ctx)
-Fill the shape with its color
-
-**Kind**: instance method of <code>[Text](#Text)</code>  
-**Overrides:** <code>[fill](#Shape+fill)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
 <a name="Shape+stroke"></a>
 
@@ -2324,7 +2324,7 @@ Link a position to this one
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| font | <code>String</code> | <code>&quot;sans-serif&quot;}</code> | The font's name |
+| [font] | <code>String</code> | <code>&quot;sans-serif&quot;</code> | The font's name |
 | [fontSize] | <code>String</code> | <code>10</code> | The font's size |
 | [bold] | <code>Boolean</code> | <code>false</code> | Is the text bold |
 | [italic] | <code>Boolean</code> | <code>false</code> | Is the text italic |

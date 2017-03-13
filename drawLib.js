@@ -1014,7 +1014,7 @@ Utils.extends(Polygon, Shape, {
      */
     animateWith: function(animation) {
         if (this.isLinkedToOthers) {
-            throw new ReferenceError("Can't animate polygon with link to other.");
+            throw new ReferenceError("Can't animate polygon linked to other shape(s).");
         } else {
             this._animateWith(animation);
         }
@@ -1304,7 +1304,7 @@ Utils.extends(Triangle, Polygon, {});
 /**
  * @typedef {Object} TextOptions
  * @extends ShapeOptions
- * @param {String} [font="sans-serif"} - The font's name
+ * @param {String} [font="sans-serif"] - The font's name
  * @param {String} [fontSize=10] - The font's size
  * @param {Boolean} [bold=false] - Is the text bold
  * @param {Boolean} [italic=false] - Is the text italic
@@ -1341,7 +1341,6 @@ Utils.extends(Text, Shape, {
     },
     /**
      * Fill the text
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Text#
      */

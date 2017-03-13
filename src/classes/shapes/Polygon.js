@@ -88,7 +88,7 @@ Utils.extends(Polygon, Shape, {
      */
     animateWith: function(animation) {
         if (this.isLinkedToOthers) {
-            throw new ReferenceError("Can't animate polygon with link to other.");
+            throw new ReferenceError("Can't animate polygon linked to other shape(s).");
         }
         else {
             this._animateWith(animation);
