@@ -26,7 +26,27 @@ function Star (center, radius, nbBranch, dropRatio, options) {
         points.push(p);
     }
 
+    this.radius = radius;
+
     Polygon.call(this, points, options);
 }
 Utils.extends(Star, Polygon, {
+    /**
+     * Get the star's width
+     * @override
+     * @returns {Number}
+     * @memberOf Star#
+     */
+    width: function() {
+        return this.radius;
+    },
+    /**
+     * Get the star's height
+     * @override
+     * @returns {Number}
+     * @memberOf Star#
+     */
+    height: function() {
+        return this.width();
+    }
 });

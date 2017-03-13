@@ -11,17 +11,15 @@ var Utils = {
     cos: Math.cos,
     max: function() {
         this.assertLength(arguments, 1);
-        var values = Array.prototype.filter.call(arguments, function(x) {
+        return Math.max.apply(Math, Array.prototype.filter.call(arguments, function(x) {
             return x !== null && !isNaN(x);
-        });
-        return Math.max.apply(Math, values);
+        }));
     },
     min: function() {
         this.assertLength(arguments, 1);
-        var values = Array.prototype.filter.call(arguments, function(x) {
+        return Math.min.apply(Math, Array.prototype.filter.call(arguments, function(x) {
             return x !== null && !isNaN(x);
-        });
-        return Math.min.apply(Math, values);
+        }));
     },
     sq: function(x) {
         return Math.pow(x, 2);
@@ -308,8 +306,8 @@ Utils.extends(LinearGradient, Background, {
      * @memberOf LinearGradient#
      */
     getStyle: function(ctx, shape) {
-        var width = shape.width() / 2;
-        var height = shape.height() / 2;
+        var width = shape.width(ctx) / 2;
+        var height = shape.height(ctx) / 2;
         var posX = shape.position.getX();
         var posY = shape.position.getY();
         var xComp = Utils.cos(this.angle * Utils.PI / 180);
@@ -361,14 +359,6 @@ function RadialGradient(center, params) {
 
 Utils.extends(RadialGradient, Background, {
     /**
-     *
-     * @param {Shape|Scene} shape -
-     * @returns {number}
-     */
-    getRadius: function(shape) {
-        return Utils.max(shape.width(), shape.height()) / 2;
-    },
-    /**
      * Build the gradient
      * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
@@ -379,7 +369,8 @@ Utils.extends(RadialGradient, Background, {
     getStyle: function(ctx, shape) {
         var x = this.center.getX();
         var y = this.center.getY();
-        var gradient = ctx.createRadialGradient(x, y, 0, x, y, this.getRadius(shape));
+        var radius = Utils.max(shape.width(ctx), shape.height(ctx)) / 2;
+        var gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
         for (var stop in this.params) {
             if (this.params.hasOwnProperty(stop)) {
                 gradient.addColorStop(stop / 100, this.params[stop]);
@@ -733,6 +724,12 @@ function Shape(position, options) {
 
 Utils.extends(Shape, null, {
     /**
+     * This shape's position, it point at the center of the shape (with some exceptions)
+     * @type Position
+     * @memberOf Shape#
+     */
+    position: null,
+    /**
      * Move and draw the shape
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Shape#
@@ -853,7 +850,10 @@ Utils.extends(Arc, Shape, {
      * @memberOf Arc#
      */
     trace: function(ctx) {
-        ctx.arc(this.position.getX(), this.position.getY(), this.radius, this.startAngle, this.endAngle, !this.clockwise);
+        var x = this.position.getX();
+        var y = this.position.getY();
+        var strokeOffset = this.options.fillColor ? (this.options.strokeWidth || 1) / 2 : 0;
+        ctx.arc(x, y, this.radius + strokeOffset, this.startAngle, this.endAngle, !this.clockwise);
     }
 });
 
@@ -1132,7 +1132,7 @@ Utils.extends(Line, Polygon, {
      * @memberOf Line#
      */
     width: function() {
-        return Utils.abs(this.points[0].getX(), this.points[1].getX());
+        return Utils.abs(this.points[0].getX() - this.points[1].getX());
     },
     /**
      * Get the line y length
@@ -1141,7 +1141,7 @@ Utils.extends(Line, Polygon, {
      * @memberOf Line#
      */
     height: function() {
-        return Utils.abs(this.points[0].getY(), this.points[1].getY());
+        return Utils.abs(this.points[0].getY() - this.points[1].getY());
     }
 });
 
@@ -1229,7 +1229,7 @@ Utils.extends(Rectangle, Polygon, {
  * A regular (all side the same length) Rectangle
  * @extends Rectangle
  * @param {Position|Shape} startPoint - Position of the upper-left corner
- * @param {Number} size - Length of the sides (in pixels)
+ * @param {Number} size - Length of the sides
  * @param {ShapeOptions} [options] - Specific options for this shape
  * @constructor
  */
@@ -1238,7 +1238,7 @@ function Square(startPoint, size, options) {
     Rectangle.call(this, startPoint, size, size, options);
 }
 
-Utils.extends(Square, Rectangle);
+Utils.extends(Square, Rectangle, {});
 
 /**
  * A shape with some branches around a point
@@ -1265,10 +1265,30 @@ function Star(center, radius, nbBranch, dropRatio, options) {
         p.addX(Utils.cos(rotation) * dist).addY(Utils.sin(rotation) * dist);
         points.push(p);
     }
+    this.radius = radius;
     Polygon.call(this, points, options);
 }
 
-Utils.extends(Star, Polygon, {});
+Utils.extends(Star, Polygon, {
+    /**
+     * Get the star's width
+     * @override
+     * @returns {Number}
+     * @memberOf Star#
+     */
+    width: function() {
+        return this.radius;
+    },
+    /**
+     * Get the star's height
+     * @override
+     * @returns {Number}
+     * @memberOf Star#
+     */
+    height: function() {
+        return this.width();
+    }
+});
 
 /**
  * A three point shape
@@ -1320,9 +1340,9 @@ Utils.extends(Text, Shape, {
     trace: function(ctx) {
         var font = (this.options.bold ? "bold " : "") + (this.options.italic ? "italic " : "");
         font += (this.options.fontSize || 10) + "px " + (this.options.font || "sans-serif");
-        ctx.font = font;
-        ctx.textAlign = this.options.align || "left";
-        ctx.textBaseline = this.options.baseline || "alphabetic";
+        Utils.setProperty(ctx, "font", font);
+        Utils.setProperty(ctx, "textAlign", this.options.align || "left");
+        Utils.setProperty(ctx, "textBaseline", this.options.baseline || "alphabetic");
     },
     /**
      * Fill the text
@@ -1354,5 +1374,25 @@ Utils.extends(Text, Shape, {
             ctx.strokeText(this.text, 0, 0);
             ctx.restore();
         }
+    },
+    /**
+     * Get the text's width
+     * @override
+     * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @returns {Number}
+     * @memberOf Text#
+     */
+    width: function(ctx) {
+        this.trace(ctx);
+        return ctx.measureText(this.text).width;
+    },
+    /**
+     * Get the text's height
+     * @override
+     * @returns {Number}
+     * @memberOf Text#
+     */
+    height: function() {
+        return this.options.fontSize || 10;
     }
 });

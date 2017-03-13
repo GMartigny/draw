@@ -20,6 +20,12 @@ function Shape (position, options) {
 }
 Utils.extends(Shape, null, {
     /**
+     * This shape's position, it point at the center of the shape (with some exceptions)
+     * @type Position
+     * @memberOf Shape#
+     */
+    position: null,
+    /**
      * Move and draw the shape
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Shape#

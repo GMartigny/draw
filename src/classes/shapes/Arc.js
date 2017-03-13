@@ -26,6 +26,9 @@ Utils.extends(Arc, Shape, {
      * @memberOf Arc#
      */
     trace: function(ctx) {
-        ctx.arc(this.position.getX(), this.position.getY(), this.radius, this.startAngle, this.endAngle, !this.clockwise);
+        var x = this.position.getX();
+        var y = this.position.getY();
+        var strokeOffset = this.options.fillColor ? (this.options.strokeWidth || 1) / 2 : 0;
+        ctx.arc(x, y, this.radius + strokeOffset, this.startAngle, this.endAngle, !this.clockwise);
     }
 });

@@ -25,7 +25,7 @@ Utils.extends(Line, Polygon, {
      * @memberOf Line#
      */
     width: function() {
-        return Utils.abs(this.points[0].getX(), this.points[1].getX());
+        return Utils.abs(this.points[0].getX() - this.points[1].getX());
     },
     /**
      * Get the line y length
@@ -34,6 +34,6 @@ Utils.extends(Line, Polygon, {
      * @memberOf Line#
      */
     height: function() {
-        return Utils.abs(this.points[0].getY(), this.points[1].getY());
+        return Utils.abs(this.points[0].getY() - this.points[1].getY());
     }
 });

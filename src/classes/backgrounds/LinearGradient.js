@@ -37,8 +37,8 @@ Utils.extends(LinearGradient, Background, {
      * @memberOf LinearGradient#
      */
     getStyle: function(ctx, shape) {
-        var width = shape.width() / 2;
-        var height = shape.height() / 2;
+        var width = shape.width(ctx) / 2;
+        var height = shape.height(ctx) / 2;
         var posX = shape.position.getX();
         var posY = shape.position.getY();
 

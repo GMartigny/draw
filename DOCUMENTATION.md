@@ -53,8 +53,6 @@
 <dt><a href="#animateWith">animateWith(animation)</a></dt>
 <dd><p>Add an animation to this background</p>
 </dd>
-<dt><a href="#getRadius">getRadius(shape)</a> ⇒ <code>number</code></dt>
-<dd></dd>
 <dt><a href="#getX">getX()</a> ⇒ <code>Number</code></dt>
 <dd><p>Get the x value</p>
 </dd>
@@ -491,6 +489,7 @@ Get the height of the scene
 
 * [Shape](#Shape)
     * [new Shape(position, [options])](#new_Shape_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
     * [.background(background)](#Shape+background)
@@ -510,6 +509,12 @@ A generic shape
 | position | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Its position on the scene |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### shape.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Shape](#Shape)</code>  
 <a name="Shape+render"></a>
 
 ### shape.render(ctx)
@@ -595,6 +600,7 @@ Add options to the shape without override
 
 * [Arc](#Arc) ⇐ <code>[Shape](#Shape)</code>
     * [new Arc(position, radius, [startAngle], [endAngle], [clockwise], [options])](#new_Arc_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.trace(ctx)](#Arc+trace)
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
@@ -619,6 +625,12 @@ An arc shape between two points
 | [clockwise] | <code>Boolean</code> | <code>false</code> | The direction of rotation is clockwise (false for anti-clockwise) |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> |  | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### arc.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Arc](#Arc)</code>  
 <a name="Arc+trace"></a>
 
 ### arc.trace(ctx)
@@ -715,6 +727,7 @@ Add options to the shape without override
 
 * [Circle](#Circle) ⇐ <code>[Arc](#Arc)</code>
     * [new Circle(position, radius, [options])](#new_Circle_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.width()](#Circle+width) ⇒ <code>Number</code>
     * [.height()](#Circle+height) ⇒ <code>Number</code>
     * [.trace(ctx)](#Arc+trace)
@@ -738,6 +751,12 @@ A circle shape
 | radius | <code>Number</code> | The radius of the circle (in pixel) |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### circle.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Circle](#Circle)</code>  
 <a name="Circle+width"></a>
 
 ### circle.width() ⇒ <code>Number</code>
@@ -847,6 +866,7 @@ Add options to the shape without override
 * [Point](#Point) ⇐ <code>[Shape](#Shape)</code>
     * [new Point(position, [options])](#new_Point_new)
     * [.trace](#Point+trace)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.width()](#Point+width) ⇒ <code>Number</code>
     * [.height()](#Point+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
@@ -872,6 +892,12 @@ A single point in space
 
 ### point.trace
 One can't trace a point
+
+**Kind**: instance property of <code>[Point](#Point)</code>  
+<a name="Shape+position"></a>
+
+### point.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
 
 **Kind**: instance property of <code>[Point](#Point)</code>  
 <a name="Point+width"></a>
@@ -972,6 +998,7 @@ Add options to the shape without override
 
 * [Polygon](#Polygon) ⇐ <code>[Shape](#Shape)</code>
     * [new Polygon(points, [options])](#new_Polygon_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.trace(ctx)](#Polygon+trace)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
     * [.height()](#Polygon+height) ⇒ <code>Number</code>
@@ -994,6 +1021,13 @@ A shape from multiple point
 | points | <code>Array.&lt;(Position\|Shape)&gt;</code> | A list of points |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### polygon.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Polygon](#Polygon)</code>  
+**Overrides:** <code>[position](#Shape+position)</code>  
 <a name="Polygon+trace"></a>
 
 ### polygon.trace(ctx)
@@ -1103,6 +1137,7 @@ Add options to the shape without override
 
 * [Blob](#Blob) ⇐ <code>[Polygon](#Polygon)</code>
     * [new Blob(points, [tension], [options])](#new_Blob_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
@@ -1126,6 +1161,12 @@ A shape from multiple point with rounded angle
 | [tension] | <code>Number</code> | <code>0.5</code> | Define the roundness of the blob |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> |  | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### blob.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Blob](#Blob)</code>  
 <a name="Polygon+trace"></a>
 
 ### blob.trace(ctx)
@@ -1235,6 +1276,7 @@ Add options to the shape without override
 
 * [Line](#Line) ⇐ <code>[Polygon](#Polygon)</code>
     * [new Line(startPoint, endPoint, [options])](#new_Line_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
@@ -1258,6 +1300,12 @@ A line between two point
 | endPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Its arrival point or shape |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this line |
 
+<a name="Shape+position"></a>
+
+### line.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Line](#Line)</code>  
 <a name="Polygon+trace"></a>
 
 ### line.trace(ctx)
@@ -1370,6 +1418,7 @@ Add options to the shape without override
 * [Rectangle](#Rectangle) ⇐ <code>[Polygon](#Polygon)</code>
     * [new Rectangle(startPoint, width, height, [options])](#new_Rectangle_new)
     * _instance_
+        * [.position](#Shape+position) : <code>[Position](#Position)</code>
         * [.setWidth(value)](#Rectangle+setWidth) ⇒ <code>[Rectangle](#Rectangle)</code>
         * [.setHeight(value)](#Rectangle+setHeight) ⇒ <code>[Rectangle](#Rectangle)</code>
         * [.trace(ctx)](#Polygon+trace)
@@ -1398,6 +1447,12 @@ A rectangular shape
 | height | <code>Number</code> | Height of the rectangle |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### rectangle.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Rectangle](#Rectangle)</code>  
 <a name="Rectangle+setWidth"></a>
 
 ### rectangle.setWidth(value) ⇒ <code>[Rectangle](#Rectangle)</code>
@@ -1546,6 +1601,7 @@ Create a rectangle between two point
 
 * [Square](#Square) ⇐ <code>[Rectangle](#Rectangle)</code>
     * [new Square(startPoint, size, [options])](#new_Square_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.trace(ctx)](#Polygon+trace)
     * [.setWidth(value)](#Rectangle+setWidth) ⇒ <code>[Rectangle](#Rectangle)</code>
     * [.setHeight(value)](#Rectangle+setHeight) ⇒ <code>[Rectangle](#Rectangle)</code>
@@ -1568,9 +1624,15 @@ A regular (all side the same length) Rectangle
 | Param | Type | Description |
 | --- | --- | --- |
 | startPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Position of the upper-left corner |
-| size | <code>Number</code> | Length of the sides (in pixels) |
+| size | <code>Number</code> | Length of the sides |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### square.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Square](#Square)</code>  
 <a name="Polygon+trace"></a>
 
 ### square.trace(ctx)
@@ -1703,6 +1765,7 @@ Add options to the shape without override
 
 * [Star](#Star) ⇐ <code>[Polygon](#Polygon)</code>
     * [new Star(center, radius, nbBranch, [dropRatio], [options])](#new_Star_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
@@ -1728,6 +1791,12 @@ A shape with some branches around a point
 | [dropRatio] | <code>Number</code> | <code>0.5</code> | The ratio between branches length and drops between them |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> |  | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### star.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Star](#Star)</code>  
 <a name="Polygon+trace"></a>
 
 ### star.trace(ctx)
@@ -1756,12 +1825,14 @@ Animate this shape position with an animation
 Get this shape's width
 
 **Kind**: instance method of <code>[Star](#Star)</code>  
+**Overrides:** <code>[width](#Polygon+width)</code>  
 <a name="Polygon+height"></a>
 
 ### star.height() ⇒ <code>Number</code>
 Get this shape's height
 
 **Kind**: instance method of <code>[Star](#Star)</code>  
+**Overrides:** <code>[height](#Polygon+height)</code>  
 <a name="Shape+render"></a>
 
 ### star.render(ctx)
@@ -1836,6 +1907,7 @@ Add options to the shape without override
 
 * [Triangle](#Triangle) ⇐ <code>[Polygon](#Polygon)</code>
     * [new Triangle(firstPoint, secondPoint, thirdPoint, [options])](#new_Triangle_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.trace(ctx)](#Polygon+trace)
     * [.animateWith(animation)](#Shape+animateWith)
     * [.width()](#Polygon+width) ⇒ <code>Number</code>
@@ -1860,6 +1932,12 @@ A three point shape
 | thirdPoint | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | The third summit of the triangle |
 | [options] | <code>[ShapeOptions](#ShapeOptions)</code> | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### triangle.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Triangle](#Triangle)</code>  
 <a name="Polygon+trace"></a>
 
 ### triangle.trace(ctx)
@@ -1968,7 +2046,10 @@ Add options to the shape without override
 
 * [Text](#Text) ⇐ <code>[Shape](#Shape)</code>
     * [new Text(text, position, [options])](#new_Text_new)
+    * [.position](#Shape+position) : <code>[Position](#Position)</code>
     * [.trace(ctx)](#Text+trace)
+    * [.width(ctx)](#Text+width) ⇒ <code>Number</code>
+    * [.height()](#Text+height) ⇒ <code>Number</code>
     * [.render(ctx)](#Shape+render)
     * [.draw(ctx)](#Shape+draw)
     * [.background(background)](#Shape+background)
@@ -1989,6 +2070,12 @@ Draw a text
 | position | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | Position of the text |
 | [options] | <code>[TextOptions](#TextOptions)</code> | Specific options for this shape |
 
+<a name="Shape+position"></a>
+
+### text.position : <code>[Position](#Position)</code>
+This shape's position, it point at the center of the shape (with some exceptions)
+
+**Kind**: instance property of <code>[Text](#Text)</code>  
 <a name="Text+trace"></a>
 
 ### text.trace(ctx)
@@ -2000,6 +2087,23 @@ Trace the text
 | --- | --- | --- |
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 
+<a name="Text+width"></a>
+
+### text.width(ctx) ⇒ <code>Number</code>
+Get the text's width
+
+**Kind**: instance method of <code>[Text](#Text)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
+
+<a name="Text+height"></a>
+
+### text.height() ⇒ <code>Number</code>
+Get the text's height
+
+**Kind**: instance method of <code>[Text](#Text)</code>  
 <a name="Shape+render"></a>
 
 ### text.render(ctx)
@@ -2112,15 +2216,6 @@ Add an animation to this background
 | Param | Type | Description |
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
-
-<a name="getRadius"></a>
-
-## getRadius(shape) ⇒ <code>number</code>
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| shape | <code>[Shape](#Shape)</code> &#124; <code>[Scene](#Scene)</code> | - |
 
 <a name="getX"></a>
 

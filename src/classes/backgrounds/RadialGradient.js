@@ -18,14 +18,6 @@ function RadialGradient (center, params) {
 }
 Utils.extends(RadialGradient, Background, {
     /**
-     *
-     * @param {Shape|Scene} shape -
-     * @returns {number}
-     */
-    getRadius: function(shape) {
-        return Utils.max(shape.width(), shape.height()) / 2;
-    },
-    /**
      * Build the gradient
      * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
@@ -36,7 +28,8 @@ Utils.extends(RadialGradient, Background, {
     getStyle: function(ctx, shape) {
         var x = this.center.getX();
         var y = this.center.getY();
-        var gradient = ctx.createRadialGradient(x, y, 0, x, y, this.getRadius(shape));
+        var radius = Utils.max(shape.width(ctx), shape.height(ctx)) / 2;
+        var gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
 
         for (var stop in this.params) {
             if (this.params.hasOwnProperty(stop)) {

@@ -33,9 +33,9 @@ Utils.extends(Text, Shape, {
     trace: function(ctx) {
         var font = (this.options.bold ? "bold " : "") + (this.options.italic ? "italic " : "");
         font += (this.options.fontSize || 10) + "px " + (this.options.font || "sans-serif");
-        ctx.font = font;
-        ctx.textAlign = this.options.align || "left";
-        ctx.textBaseline = this.options.baseline || "alphabetic";
+        Utils.setProperty(ctx, "font", font);
+        Utils.setProperty(ctx, "textAlign", this.options.align || "left");
+        Utils.setProperty(ctx, "textBaseline", this.options.baseline || "alphabetic");
     },
     /**
      * Fill the text
@@ -67,5 +67,25 @@ Utils.extends(Text, Shape, {
             ctx.strokeText(this.text, 0, 0);
             ctx.restore();
         }
+    },
+    /**
+     * Get the text's width
+     * @override
+     * @param {CanvasRenderingContext2D} ctx - A drawing context
+     * @returns {Number}
+     * @memberOf Text#
+     */
+    width: function(ctx) {
+        this.trace(ctx);
+        return ctx.measureText(this.text).width;
+    },
+    /**
+     * Get the text's height
+     * @override
+     * @returns {Number}
+     * @memberOf Text#
+     */
+    height: function() {
+        return this.options.fontSize || 10;
     }
 });

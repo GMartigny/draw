@@ -13,10 +13,8 @@
     <canvas id="drawing"></canvas>
     <script src="../drawLib.js"></script>
     <script>
-        // Create a new scene from this canvas with a default fill color to white
-        var scene = new Scene(document.getElementById("drawing"), {
-            fillColor: "#FFF"
-        });
+        // Create a new scene from this canvas
+        var scene = new Scene(document.getElementById("drawing"));
         // Add a simple color background
         scene.background("#111");
 
@@ -161,7 +159,7 @@
                         speed: 164.8 * y,
                         chidlren: {
                             triton: {
-                                color: "",
+                                color: "#CCC",
                                 size: 2.7,
                                 ellipse: 0.3,
                                 speed: -5.9
@@ -195,11 +193,16 @@
                     planet.animateWith(Animation.Swirl(parent.radius + (data.ellipse * ellipseRatio), speedRatio / data.speed));
                 }
                 if (data.children) {
+                    // browse children
                     for (var childName in data.children) {
                         var child = createPlanet(data.children[childName], planet);
                         if (child) {
                             var name = childName[0].toUpperCase() + childName.substr(1);
-                            var text = new Text(name, child);
+                            // Add the name in white
+                            var text = new Text(name, child, {
+                                fillColor: "#FFF"
+                            });
+                            // Offset it to be outside the planet
                             text.position.addX(child.radius + 5);
                             scene.add(child);
                             scene.add(text, 1);
@@ -212,15 +215,15 @@
                 return null;
             }
         }
+        // A function to add ring around a planet
         function createRing (data, planet) {
             var thickness = data.thickness * radiusRatio;
             if (thickness > 0.05) {
-                var ring = new Circle(planet, planet.radius + (thickness / 2) + (data.gap * radiusRatio), {
-                    fillColor: null,
+                // Use a circle stroke to make a ring
+                return new Circle(planet, planet.radius + (data.gap * radiusRatio), {
                     strokeColor: data.color,
                     strokeWidth: thickness
                 });
-                return ring;
             }
         }
 

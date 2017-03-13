@@ -9,17 +9,15 @@ var Utils = {
     cos: Math.cos,
     max: function() {
         this.assertLength(arguments, 1);
-        var values = Array.prototype.filter.call(arguments, function(x) {
+        return Math.max.apply(Math, Array.prototype.filter.call(arguments, function(x) {
             return x !== null && !isNaN(x);
-        });
-        return Math.max.apply(Math, values);
+        }));
     },
     min: function() {
         this.assertLength(arguments, 1);
-        var values = Array.prototype.filter.call(arguments, function(x) {
+        return Math.min.apply(Math, Array.prototype.filter.call(arguments, function(x) {
             return x !== null && !isNaN(x);
-        });
-        return Math.min.apply(Math, values);
+        }));
     },
     sq: function(x) {
         return Math.pow(x, 2);
