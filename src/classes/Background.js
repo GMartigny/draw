@@ -13,6 +13,7 @@ function Background (color) {
     Utils.assertLength(arguments, 1);
     
     this.style = color;
+    this.css = color;
     this.animation = null;
 }
 Utils.extends(Background, null, {
@@ -37,8 +38,12 @@ Utils.extends(Background, null, {
     /**
      * Get CSS string for this background
      * @returns {String}
+     * @memberOf Background#
      */
     getCSS: function() {
-        return this.getStyle();
+        if (this.animation) {
+            this.animation.run();
+        }
+        return this.css;
     }
 });

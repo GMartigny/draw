@@ -30,6 +30,7 @@ LinearGradient.orientation = {
 Utils.extends(LinearGradient, Background, {
     /**
      * Build the gradient
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @param {Shape} shape - The holding shape
      * @return {CanvasGradient}
@@ -57,12 +58,12 @@ Utils.extends(LinearGradient, Background, {
         return this._getStyle();
     },
     /**
-     *
-     * @param {Shape|Scene} shape
+     * Get CSS string for this background
+     * @override
      * @returns {string}
      * @memberOf LinearGradient#
      */
-    getCSS: function(shape) {
+    getCSS: function() {
         var css = "linear-gradient(" + (this.angle+90) + "deg, ";
 
         var stops = [];

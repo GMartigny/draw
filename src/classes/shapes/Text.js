@@ -46,7 +46,7 @@ Utils.extends(Text, Shape, {
     fill: function(ctx) {
         if (this.options.fillColor) {
             ctx.save();
-            ctx.fillStyle = this.options.fillColor;
+            Utils.setProperty(ctx, "fillStyle", this.options.fillColor);
             ctx.translate(this.position.getX(), this.position.getY());
             ctx.fillText(this.text, 0, 0);
             ctx.restore();
@@ -61,8 +61,8 @@ Utils.extends(Text, Shape, {
     stroke: function(ctx) {
         if (this.options.strokeColor) {
             ctx.save();
-            ctx.strokeStyle = this.options.strokeColor;
-            ctx.lineWidth = this.options.strokeWidth;
+            Utils.setProperty(ctx, "strokeStyle", this.options.strokeColor);
+            Utils.setProperty(ctx, "lineWidth", this.options.strokeWidth || 1);
             ctx.translate(this.position.getX(), this.position.getY());
             ctx.strokeText(this.text, 0, 0);
             ctx.restore();

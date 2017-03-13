@@ -7,8 +7,20 @@ var Utils = {
     abs: Math.abs,
     sin: Math.sin,
     cos: Math.cos,
-    max: Math.max,
-    min: Math.min,
+    max: function() {
+        this.assertLength(arguments, 1);
+        var values = Array.prototype.filter.call(arguments, function(x) {
+            return x !== null && !isNaN(x);
+        });
+        return Math.max.apply(Math, values);
+    },
+    min: function() {
+        this.assertLength(arguments, 1);
+        var values = Array.prototype.filter.call(arguments, function(x) {
+            return x !== null && !isNaN(x);
+        });
+        return Math.min.apply(Math, values);
+    },
     sq: function(x) {
         return Math.pow(x, 2);
     },
@@ -58,6 +70,21 @@ var Utils = {
     assertLength: function(array, asserted) {
         if (array.length < asserted) {
             throw new TypeError("Awaiting at least " + asserted + " arguments, only found " + array.length);
+        }
+    },
+    /**
+     * Change an object's property only if value is different
+     * @param {Object} obj - Any object
+     * @param {String} prop - Name of a property of obj
+     * @param {*} value - Any value
+     */
+    setProperty: function(obj, prop, value) {
+        if (obj[prop] !== value) {
+            obj[prop] = value;
+            return true;
+        }
+        else {
+            return false;
         }
     }
 };

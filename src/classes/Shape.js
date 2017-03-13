@@ -42,7 +42,7 @@ Utils.extends(Shape, null, {
         this.stroke(ctx);
         ctx.closePath();
         if (this.options.debug) {
-            ctx.fillStyle = "#F33";
+            Utils.setProperty(ctx, "fillStyle", "#F33");
             ctx.fillRect(this.position.getX() - 1, this.position.getY() - 1, 2, 2);
         }
     },
@@ -62,10 +62,10 @@ Utils.extends(Shape, null, {
     fill: function(ctx) {
         if (this.options.fillColor) {
             if (this.options.fillColor instanceof Background) {
-                ctx.fillStyle = this.options.fillColor.getStyle(ctx, this);
+                Utils.setProperty(ctx, "fillStyle", this.options.fillColor.getStyle(ctx, this));
             }
             else if (typeof this.options.fillColor === "string") {
-                ctx.fillStyle = this.options.fillColor;
+                Utils.setProperty(ctx, "fillStyle", this.options.fillColor);
             }
             ctx.fill();
         }
@@ -77,8 +77,8 @@ Utils.extends(Shape, null, {
      */
     stroke: function(ctx) {
         if (this.options.strokeColor) {
-            ctx.strokeStyle = this.options.strokeColor;
-            ctx.lineWidth = this.options.strokeWidth || 1;
+            Utils.setProperty(ctx, "strokeStyle", this.options.strokeColor);
+            Utils.setProperty(ctx, "lineWidth", this.options.strokeWidth || 1);
             ctx.stroke();
         }
     },

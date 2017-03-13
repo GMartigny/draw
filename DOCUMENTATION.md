@@ -53,9 +53,6 @@
 <dt><a href="#animateWith">animateWith(animation)</a></dt>
 <dd><p>Add an animation to this background</p>
 </dd>
-<dt><a href="#getCSS">getCSS()</a> ⇒ <code>String</code></dt>
-<dd><p>Get CSS string for this background</p>
-</dd>
 <dt><a href="#getRadius">getRadius(shape)</a> ⇒ <code>number</code></dt>
 <dd></dd>
 <dt><a href="#getX">getX()</a> ⇒ <code>Number</code></dt>
@@ -178,6 +175,7 @@ Give an animation of gravity simulation
 * [Background](#Background)
     * [new Background(color)](#new_Background_new)
     * [.getStyle()](#Background+getStyle) ⇒ <code>String</code>
+    * [.getCSS()](#Background+getCSS) ⇒ <code>String</code>
 
 <a name="new_Background_new"></a>
 
@@ -195,6 +193,12 @@ A generic background class
 Return the current style of this background
 
 **Kind**: instance method of <code>[Background](#Background)</code>  
+<a name="Background+getCSS"></a>
+
+### background.getCSS() ⇒ <code>String</code>
+Get CSS string for this background
+
+**Kind**: instance method of <code>[Background](#Background)</code>  
 <a name="BackgroundImage"></a>
 
 ## BackgroundImage ⇐ <code>[Background](#Background)</code>
@@ -205,6 +209,7 @@ Return the current style of this background
     * [new BackgroundImage(url, fill)](#new_BackgroundImage_new)
     * _instance_
         * [.getStyle(ctx, shape)](#BackgroundImage+getStyle) ⇒ <code>CanvasPattern</code>
+        * [.getCSS()](#Background+getCSS) ⇒ <code>String</code>
     * _static_
         * [.fillType](#BackgroundImage.fillType) : <code>enum</code>
 
@@ -231,6 +236,12 @@ Build the pattern
 | ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
 | shape | <code>[Shape](#Shape)</code> | The holding shape |
 
+<a name="Background+getCSS"></a>
+
+### backgroundImage.getCSS() ⇒ <code>String</code>
+Get CSS string for this background
+
+**Kind**: instance method of <code>[BackgroundImage](#BackgroundImage)</code>  
 <a name="BackgroundImage.fillType"></a>
 
 ### BackgroundImage.fillType : <code>enum</code>
@@ -255,8 +266,8 @@ Build the pattern
 * [LinearGradient](#LinearGradient) ⇐ <code>[Background](#Background)</code>
     * [new LinearGradient([angle], params)](#new_LinearGradient_new)
     * _instance_
-        * [.getStyle(ctx, shape)](#LinearGradient+getStyle) ⇒ <code>CanvasGradient</code>
-        * [.getCSS(shape)](#LinearGradient+getCSS) ⇒ <code>string</code>
+        * [.getStyle()](#Background+getStyle) ⇒ <code>String</code>
+        * [.getCSS()](#Background+getCSS) ⇒ <code>String</code>
     * _static_
         * [.orientation](#LinearGradient.orientation) : <code>enum</code>
 
@@ -271,28 +282,20 @@ A linear gradient background
 | [angle] | <code>Number</code> | <code>0</code> | The gradient orientation |
 | params | <code>[GradientParams](#GradientParams)</code> |  | The gradient definition |
 
-<a name="LinearGradient+getStyle"></a>
+<a name="Background+getStyle"></a>
 
-### linearGradient.getStyle(ctx, shape) ⇒ <code>CanvasGradient</code>
-Build the gradient
+### linearGradient.getStyle() ⇒ <code>String</code>
+Return the current style of this background
 
 **Kind**: instance method of <code>[LinearGradient](#LinearGradient)</code>  
 **Overrides:** <code>[getStyle](#Background+getStyle)</code>  
+<a name="Background+getCSS"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
-| shape | <code>[Shape](#Shape)</code> | The holding shape |
+### linearGradient.getCSS() ⇒ <code>String</code>
+Get CSS string for this background
 
-<a name="LinearGradient+getCSS"></a>
-
-### linearGradient.getCSS(shape) ⇒ <code>string</code>
 **Kind**: instance method of <code>[LinearGradient](#LinearGradient)</code>  
-
-| Param | Type |
-| --- | --- |
-| shape | <code>[Shape](#Shape)</code> &#124; <code>[Scene](#Scene)</code> | 
-
+**Overrides:** <code>[getCSS](#Background+getCSS)</code>  
 <a name="LinearGradient.orientation"></a>
 
 ### LinearGradient.orientation : <code>enum</code>
@@ -321,8 +324,8 @@ Enum for linear gradient orientation
 
 * [RadialGradient](#RadialGradient) ⇐ <code>[Background](#Background)</code>
     * [new RadialGradient(center, params)](#new_RadialGradient_new)
-    * [.getStyle(ctx, shape)](#RadialGradient+getStyle) ⇒ <code>CanvasGradient</code>
-    * [.getCSS()](#RadialGradient+getCSS) ⇒ <code>string</code>
+    * [.getStyle()](#Background+getStyle) ⇒ <code>String</code>
+    * [.getCSS()](#Background+getCSS) ⇒ <code>String</code>
 
 <a name="new_RadialGradient_new"></a>
 
@@ -335,23 +338,20 @@ A radial gradient background
 | center | <code>[Position](#Position)</code> &#124; <code>[Shape](#Shape)</code> | The gradient center |
 | params | <code>[GradientParams](#GradientParams)</code> | The gradient definition |
 
-<a name="RadialGradient+getStyle"></a>
+<a name="Background+getStyle"></a>
 
-### radialGradient.getStyle(ctx, shape) ⇒ <code>CanvasGradient</code>
-Build the gradient
+### radialGradient.getStyle() ⇒ <code>String</code>
+Return the current style of this background
 
 **Kind**: instance method of <code>[RadialGradient](#RadialGradient)</code>  
 **Overrides:** <code>[getStyle](#Background+getStyle)</code>  
+<a name="Background+getCSS"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| ctx | <code>CanvasRenderingContext2D</code> | A drawing context |
-| shape | <code>[Shape](#Shape)</code> | The holding shape |
+### radialGradient.getCSS() ⇒ <code>String</code>
+Get CSS string for this background
 
-<a name="RadialGradient+getCSS"></a>
-
-### radialGradient.getCSS() ⇒ <code>string</code>
 **Kind**: instance method of <code>[RadialGradient](#RadialGradient)</code>  
+**Overrides:** <code>[getCSS](#Background+getCSS)</code>  
 <a name="Position"></a>
 
 ## Position
@@ -2113,12 +2113,6 @@ Add an animation to this background
 | --- | --- | --- |
 | animation | <code>[Animation](#Animation)</code> | Any animation |
 
-<a name="getCSS"></a>
-
-## getCSS() ⇒ <code>String</code>
-Get CSS string for this background
-
-**Kind**: global function  
 <a name="getRadius"></a>
 
 ## getRadius(shape) ⇒ <code>number</code>

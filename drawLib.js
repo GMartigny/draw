@@ -9,8 +9,20 @@ var Utils = {
     abs: Math.abs,
     sin: Math.sin,
     cos: Math.cos,
-    max: Math.max,
-    min: Math.min,
+    max: function() {
+        this.assertLength(arguments, 1);
+        var values = Array.prototype.filter.call(arguments, function(x) {
+            return x !== null && !isNaN(x);
+        });
+        return Math.max.apply(Math, values);
+    },
+    min: function() {
+        this.assertLength(arguments, 1);
+        var values = Array.prototype.filter.call(arguments, function(x) {
+            return x !== null && !isNaN(x);
+        });
+        return Math.min.apply(Math, values);
+    },
     sq: function(x) {
         return Math.pow(x, 2);
     },
@@ -60,6 +72,20 @@ var Utils = {
     assertLength: function(array, asserted) {
         if (array.length < asserted) {
             throw new TypeError("Awaiting at least " + asserted + " arguments, only found " + array.length);
+        }
+    },
+    /**
+     * Change an object's property only if value is different
+     * @param {Object} obj - Any object
+     * @param {String} prop - Name of a property of obj
+     * @param {*} value - Any value
+     */
+    setProperty: function(obj, prop, value) {
+        if (obj[prop] !== value) {
+            obj[prop] = value;
+            return true;
+        } else {
+            return false;
         }
     }
 };
@@ -161,6 +187,7 @@ Animation.Gravity = function(ground, bounce) {
 function Background(color) {
     Utils.assertLength(arguments, 1);
     this.style = color;
+    this.css = color;
     this.animation = null;
 }
 
@@ -186,9 +213,13 @@ Utils.extends(Background, null, {
     /**
      * Get CSS string for this background
      * @returns {String}
+     * @memberOf Background#
      */
     getCSS: function() {
-        return this.getStyle();
+        if (this.animation) {
+            this.animation.run();
+        }
+        return this.css;
     }
 });
 
@@ -270,6 +301,7 @@ LinearGradient.orientation = {
 Utils.extends(LinearGradient, Background, {
     /**
      * Build the gradient
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @param {Shape} shape - The holding shape
      * @return {CanvasGradient}
@@ -292,12 +324,12 @@ Utils.extends(LinearGradient, Background, {
         return this._getStyle();
     },
     /**
-     *
-     * @param {Shape|Scene} shape
+     * Get CSS string for this background
+     * @override
      * @returns {string}
      * @memberOf LinearGradient#
      */
-    getCSS: function(shape) {
+    getCSS: function() {
         var css = "linear-gradient(" + (this.angle + 90) + "deg, ";
         var stops = [];
         for (var stop in this.params) {
@@ -338,6 +370,7 @@ Utils.extends(RadialGradient, Background, {
     },
     /**
      * Build the gradient
+     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @param {Shape} shape - The holding shape
      * @return {CanvasGradient}
@@ -356,7 +389,8 @@ Utils.extends(RadialGradient, Background, {
         return this._getStyle();
     },
     /**
-     *
+     * Get CSS string for this background
+     * @override
      * @returns {string}
      * @memberOf RadialGradient#
      */
@@ -576,9 +610,9 @@ Utils.extends(Scene, null, {
      * Start all animations
      * @memberOf Scene#
      */
-    startAnimation: function() {
+    startAnimation: function(callback) {
         if (!this.loop) {
-            this.loop = true;
+            this.loop = callback;
             this.render();
         }
     },
@@ -596,6 +630,7 @@ Utils.extends(Scene, null, {
     render: function() {
         if (this.loop) {
             requestAnimationFrame(this.render.bind(this));
+            this.loop();
         }
         if (this.options.fillColor instanceof Background) {
             this.context.canvas.style.backgroundImage = this.options.fillColor.getCSS(this);
@@ -720,7 +755,7 @@ Utils.extends(Shape, null, {
         this.stroke(ctx);
         ctx.closePath();
         if (this.options.debug) {
-            ctx.fillStyle = "#F33";
+            Utils.setProperty(ctx, "fillStyle", "#F33");
             ctx.fillRect(this.position.getX() - 1, this.position.getY() - 1, 2, 2);
         }
     },
@@ -740,9 +775,9 @@ Utils.extends(Shape, null, {
     fill: function(ctx) {
         if (this.options.fillColor) {
             if (this.options.fillColor instanceof Background) {
-                ctx.fillStyle = this.options.fillColor.getStyle(ctx, this);
+                Utils.setProperty(ctx, "fillStyle", this.options.fillColor.getStyle(ctx, this));
             } else if (typeof this.options.fillColor === "string") {
-                ctx.fillStyle = this.options.fillColor;
+                Utils.setProperty(ctx, "fillStyle", this.options.fillColor);
             }
             ctx.fill();
         }
@@ -754,8 +789,8 @@ Utils.extends(Shape, null, {
      */
     stroke: function(ctx) {
         if (this.options.strokeColor) {
-            ctx.strokeStyle = this.options.strokeColor;
-            ctx.lineWidth = this.options.strokeWidth || 1;
+            Utils.setProperty(ctx, "strokeStyle", this.options.strokeColor);
+            Utils.setProperty(ctx, "lineWidth", this.options.strokeWidth || 1);
             ctx.stroke();
         }
     },
@@ -955,10 +990,10 @@ Utils.extends(Polygon, Shape, {
     _saveExtremes: function(position) {
         var x = position.getX();
         var y = position.getY();
-        this.extremes.minX = this.extremes.minX === null ? x : Utils.min(this.extremes.minX, x);
-        this.extremes.maxX = this.extremes.maxX === null ? x : Utils.max(this.extremes.maxX, x);
-        this.extremes.minY = this.extremes.minY === null ? y : Utils.min(this.extremes.minY, y);
-        this.extremes.maxY = this.extremes.maxY === null ? y : Utils.max(this.extremes.maxY, y);
+        this.extremes.minX = Utils.min(this.extremes.minX, x);
+        this.extremes.maxX = Utils.max(this.extremes.maxX, x);
+        this.extremes.minY = Utils.min(this.extremes.minY, y);
+        this.extremes.maxY = Utils.max(this.extremes.maxY, y);
     },
     /**
      * Trace the polygon
@@ -1298,7 +1333,7 @@ Utils.extends(Text, Shape, {
     fill: function(ctx) {
         if (this.options.fillColor) {
             ctx.save();
-            ctx.fillStyle = this.options.fillColor;
+            Utils.setProperty(ctx, "fillStyle", this.options.fillColor);
             ctx.translate(this.position.getX(), this.position.getY());
             ctx.fillText(this.text, 0, 0);
             ctx.restore();
@@ -1313,8 +1348,8 @@ Utils.extends(Text, Shape, {
     stroke: function(ctx) {
         if (this.options.strokeColor) {
             ctx.save();
-            ctx.strokeStyle = this.options.strokeColor;
-            ctx.lineWidth = this.options.strokeWidth;
+            Utils.setProperty(ctx, "strokeStyle", this.options.strokeColor);
+            Utils.setProperty(ctx, "lineWidth", this.options.strokeWidth || 1);
             ctx.translate(this.position.getX(), this.position.getY());
             ctx.strokeText(this.text, 0, 0);
             ctx.restore();

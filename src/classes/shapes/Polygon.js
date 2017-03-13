@@ -56,11 +56,11 @@ Utils.extends(Polygon, Shape, {
     _saveExtremes: function(position) {
         var x = position.getX();
         var y = position.getY();
-        this.extremes.minX = this.extremes.minX === null ? x : Utils.min(this.extremes.minX, x);
-        this.extremes.maxX = this.extremes.maxX === null ? x : Utils.max(this.extremes.maxX, x);
+        this.extremes.minX = Utils.min(this.extremes.minX, x);
+        this.extremes.maxX = Utils.max(this.extremes.maxX, x);
 
-        this.extremes.minY = this.extremes.minY === null ? y : Utils.min(this.extremes.minY, y);
-        this.extremes.maxY = this.extremes.maxY === null ? y : Utils.max(this.extremes.maxY, y);
+        this.extremes.minY = Utils.min(this.extremes.minY, y);
+        this.extremes.maxY = Utils.max(this.extremes.maxY, y);
     },
     /**
      * Trace the polygon

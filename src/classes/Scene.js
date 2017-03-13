@@ -31,9 +31,9 @@ Utils.extends(Scene, null, {
      * Start all animations
      * @memberOf Scene#
      */
-    startAnimation: function() {
+    startAnimation: function(callback) {
         if (!this.loop) {
-            this.loop = true;
+            this.loop = callback;
             this.render();
         }
     },
@@ -51,6 +51,7 @@ Utils.extends(Scene, null, {
     render: function() {
         if (this.loop) {
             requestAnimationFrame(this.render.bind(this));
+            this.loop();
         }
         
         if (this.options.fillColor instanceof Background) {
