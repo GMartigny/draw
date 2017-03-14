@@ -11,7 +11,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         uglify: {
-            normal: {
+            concat: {
                 options: {
                     beautify: true,
                     mangle: false,
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
                     banner: banner
                 },
                 files: {
-                    "drawLib.js": ["src/utils.js", "src/classes/**/*.js"]
+                    "pencil.js": ["src/utils.js", "src/classes/**/*.js"]
                 }
             },
             minify: {
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
                     banner: banner
                 },
                 files: {
-                    "drawLib.min.js": ["src/utils.js", "src/**/*.js"]
+                    "pencil.min.js": ["src/utils.js", "src/**/*.js"]
                 }
             }
         },
@@ -45,24 +45,14 @@ module.exports = function(grunt) {
                 updateConfigs: ["pkg"],
                 pushTo: "origin"
             }
-        },
-
-        git_deploy: {
-            release: {
-                options: {
-                    url: "https://github.com/GMartigny/drawLib.git",
-                    branch: "release",
-                    message: "Update to v<%= pkg.version %>"
-                }
-            }
         }
     });
 
     grunt.registerTask("jsdoc", ["jsdoc2md"]);
 
-    grunt.registerTask("default", ["uglify:normal", "uglify:minify", "jsdoc"]);
+    grunt.registerTask("default", ["uglify:concat", "uglify:minify", "jsdoc"]);
 
-    grunt.registerTask("patch", ["bump:patch", "git_deploy:release"]);
-    grunt.registerTask("minor", ["bump:minor", "git_deploy:release"]);
-    grunt.registerTask("major", ["bump:major", "git_deploy:release"]);
+    grunt.registerTask("patch", ["bump:patch"]);
+    grunt.registerTask("minor", ["bump:minor"]);
+    grunt.registerTask("major", ["bump:major"]);
 };

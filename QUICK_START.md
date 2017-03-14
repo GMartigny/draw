@@ -9,7 +9,7 @@ First of all you need to get the library file.
 
 Once you've got the file, add it to your HTML page with a script tag.
 ```html
-<script src="pathToLib/drawLib.js"></script>
+<script src="pathToLib/pencil.js"></script>
 ```
 
 You'll also need to add a canvas that'll be drawn into.
@@ -35,7 +35,7 @@ scene.startAnimation();
 
 ### Shape
 
-Then, you can add some shape to your scene. The full list and options is available at [the documentation](https://github.com/GMartigny/drawLib/blob/master/DOCUMENTATION.md).
+Then, you can add some shape to your scene. The full list and options is available at [the documentation](https://github.com/GMartigny/pencilJS/blob/master/DOCUMENTATION.md).
 ```js
 var circleCenter = scene.center();
 var radius = 200;

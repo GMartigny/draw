@@ -15,5 +15,5 @@ ratings:
     paths:
         - "src/**/*.js"
 exclude_paths:
-    - "drawLib*"
+    - "pencil*"
     - "examples/"
