@@ -21,7 +21,6 @@ function Arc (position, radius, startAngle, endAngle, clockwise, options) {
 Utils.extends(Arc, Shape, {
     /**
      * Trace the arc
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Arc#
      */

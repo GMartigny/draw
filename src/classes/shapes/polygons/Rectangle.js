@@ -31,7 +31,6 @@ Rectangle.fromPointToPoint = function(from, to, options) {
 Utils.extends(Rectangle, Polygon, {
     /**
      * Trace the rectangle
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Rectangle#
      */
@@ -63,7 +62,6 @@ Utils.extends(Rectangle, Polygon, {
     },
     /**
      * Get this rectangle's width
-     * @override
      * @returns {Number}
      * @memberOf Rectangle#
      */
@@ -72,7 +70,6 @@ Utils.extends(Rectangle, Polygon, {
     },
     /**
      * Get this rectangle's height
-     * @override
      * @returns {Number}
      * @memberOf Rectangle#
      */

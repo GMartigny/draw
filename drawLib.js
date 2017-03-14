@@ -299,7 +299,6 @@ LinearGradient.orientation = {
 Utils.extends(LinearGradient, Background, {
     /**
      * Build the gradient
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @param {Shape} shape - The holding shape
      * @return {CanvasGradient}
@@ -323,7 +322,6 @@ Utils.extends(LinearGradient, Background, {
     },
     /**
      * Get CSS string for this background
-     * @override
      * @returns {string}
      * @memberOf LinearGradient#
      */
@@ -360,7 +358,6 @@ function RadialGradient(center, params) {
 Utils.extends(RadialGradient, Background, {
     /**
      * Build the gradient
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @param {Shape} shape - The holding shape
      * @return {CanvasGradient}
@@ -381,7 +378,6 @@ Utils.extends(RadialGradient, Background, {
     },
     /**
      * Get CSS string for this background
-     * @override
      * @returns {string}
      * @memberOf RadialGradient#
      */
@@ -470,8 +466,8 @@ Utils.extends(Position, null, {
     },
     /**
      * Move this to a new position
-     * @param {Number} [x=0]
-     * @param {Number} [y=0]
+     * @param {Number} [x=0] - New value for x
+     * @param {Number} [y=0] - New value for y
      * @returns {*|Position}
      */
     setTo: function(x, y) {
@@ -840,7 +836,6 @@ function Arc(position, radius, startAngle, endAngle, clockwise, options) {
 Utils.extends(Arc, Shape, {
     /**
      * Trace the arc
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Arc#
      */
@@ -868,7 +863,6 @@ function Circle(position, radius, options) {
 Utils.extends(Circle, Arc, {
     /**
      * Get this circle's width
-     * @override
      * @returns {Number}
      * @memberOf Circle#
      */
@@ -877,7 +871,6 @@ Utils.extends(Circle, Arc, {
     },
     /**
      * Get this circle's height
-     * @override
      * @returns {Number}
      * @memberOf Circle#
      */
@@ -901,19 +894,16 @@ function Point(position, options) {
 Utils.extends(Point, Shape, {
     /**
      * One can't trace a point
-     * @override
      * @memberOf Point#
      */
     trace: Utils.noop,
     /**
      * One can't stroke a point
-     * @override
      * @memberOf Point#
      */
     stroke: Utils.noop,
     /**
      * Get point width
-     * @override
      * @returns {Number}
      * @memberOf Point#
      */
@@ -922,7 +912,6 @@ Utils.extends(Point, Shape, {
     },
     /**
      * Get point height
-     * @override
      * @returns {Number}
      * @memberOf Point#
      */
@@ -992,7 +981,6 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Trace the polygon
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Polygon#
      */
@@ -1008,7 +996,6 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Check if polygon can be animated
-     * @override
      * @param {Animation} animation - Any animation
      * @memberOf Polygon#
      */
@@ -1021,7 +1008,6 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Get this shape's width
-     * @override
      * @return {Number}
      * @memberOf Polygon#
      */
@@ -1030,7 +1016,6 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Get this shape's height
-     * @override
      * @return {Number}
      * @memberOf Polygon#
      */
@@ -1083,7 +1068,6 @@ Blob._getControlPoints = function(p0, p1, p2, tension) {
 Utils.extends(Blob, Polygon, {
     /**
      * Trace the blob
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Blob#
      */
@@ -1116,13 +1100,11 @@ function Line(startPoint, endPoint, options) {
 Utils.extends(Line, Polygon, {
     /**
      * One can't fill a line
-     * @override
      * @memberOf Line#
      */
     fill: Utils.noop,
     /**
      * Get the line x length
-     * @override
      * @return {Number}
      * @memberOf Line#
      */
@@ -1131,7 +1113,6 @@ Utils.extends(Line, Polygon, {
     },
     /**
      * Get the line y length
-     * @override
      * @return {Number}
      * @memberOf Line#
      */
@@ -1173,7 +1154,6 @@ Rectangle.fromPointToPoint = function(from, to, options) {
 Utils.extends(Rectangle, Polygon, {
     /**
      * Trace the rectangle
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Rectangle#
      */
@@ -1202,7 +1182,6 @@ Utils.extends(Rectangle, Polygon, {
     },
     /**
      * Get this rectangle's width
-     * @override
      * @returns {Number}
      * @memberOf Rectangle#
      */
@@ -1211,7 +1190,6 @@ Utils.extends(Rectangle, Polygon, {
     },
     /**
      * Get this rectangle's height
-     * @override
      * @returns {Number}
      * @memberOf Rectangle#
      */
@@ -1267,7 +1245,6 @@ function Star(center, radius, nbBranch, dropRatio, options) {
 Utils.extends(Star, Polygon, {
     /**
      * Get the star's width
-     * @override
      * @returns {Number}
      * @memberOf Star#
      */
@@ -1276,7 +1253,6 @@ Utils.extends(Star, Polygon, {
     },
     /**
      * Get the star's height
-     * @override
      * @returns {Number}
      * @memberOf Star#
      */
@@ -1328,7 +1304,6 @@ function Text(text, position, options) {
 Utils.extends(Text, Shape, {
     /**
      * Trace the text
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Text#
      */
@@ -1355,7 +1330,6 @@ Utils.extends(Text, Shape, {
     },
     /**
      * Stroke the text outline
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Text#
      */
@@ -1371,7 +1345,6 @@ Utils.extends(Text, Shape, {
     },
     /**
      * Get the text's width
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @returns {Number}
      * @memberOf Text#
@@ -1382,7 +1355,6 @@ Utils.extends(Text, Shape, {
     },
     /**
      * Get the text's height
-     * @override
      * @returns {Number}
      * @memberOf Text#
      */

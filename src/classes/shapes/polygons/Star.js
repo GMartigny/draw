@@ -33,7 +33,6 @@ function Star (center, radius, nbBranch, dropRatio, options) {
 Utils.extends(Star, Polygon, {
     /**
      * Get the star's width
-     * @override
      * @returns {Number}
      * @memberOf Star#
      */
@@ -42,7 +41,6 @@ Utils.extends(Star, Polygon, {
     },
     /**
      * Get the star's height
-     * @override
      * @returns {Number}
      * @memberOf Star#
      */

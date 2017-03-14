@@ -68,8 +68,8 @@ Utils.extends(Position, null, {
     },
     /**
      * Move this to a new position
-     * @param {Number} [x=0]
-     * @param {Number} [y=0]
+     * @param {Number} [x=0] - New value for x
+     * @param {Number} [y=0] - New value for y
      * @returns {*|Position}
      */
     setTo: function(x, y) {

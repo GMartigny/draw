@@ -12,19 +12,16 @@ function Point (position, options) {
 Utils.extends(Point, Shape, {
     /**
      * One can't trace a point
-     * @override
      * @memberOf Point#
      */
     trace: Utils.noop,
     /**
      * One can't stroke a point
-     * @override
      * @memberOf Point#
      */
     stroke: Utils.noop,
     /**
      * Get point width
-     * @override
      * @returns {Number}
      * @memberOf Point#
      */
@@ -33,7 +30,6 @@ Utils.extends(Point, Shape, {
     },
     /**
      * Get point height
-     * @override
      * @returns {Number}
      * @memberOf Point#
      */

@@ -26,7 +26,6 @@ function Text (text, position, options) {
 Utils.extends(Text, Shape, {
     /**
      * Trace the text
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Text#
      */
@@ -53,7 +52,6 @@ Utils.extends(Text, Shape, {
     },
     /**
      * Stroke the text outline
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Text#
      */
@@ -69,7 +67,6 @@ Utils.extends(Text, Shape, {
     },
     /**
      * Get the text's width
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @returns {Number}
      * @memberOf Text#
@@ -80,7 +77,6 @@ Utils.extends(Text, Shape, {
     },
     /**
      * Get the text's height
-     * @override
      * @returns {Number}
      * @memberOf Text#
      */

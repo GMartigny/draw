@@ -64,7 +64,6 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Trace the polygon
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @memberOf Polygon#
      */
@@ -82,7 +81,6 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Check if polygon can be animated
-     * @override
      * @param {Animation} animation - Any animation
      * @memberOf Polygon#
      */
@@ -96,7 +94,6 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Get this shape's width
-     * @override
      * @return {Number}
      * @memberOf Polygon#
      */
@@ -105,7 +102,6 @@ Utils.extends(Polygon, Shape, {
     },
     /**
      * Get this shape's height
-     * @override
      * @return {Number}
      * @memberOf Polygon#
      */

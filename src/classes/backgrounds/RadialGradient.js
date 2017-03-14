@@ -19,7 +19,6 @@ function RadialGradient (center, params) {
 Utils.extends(RadialGradient, Background, {
     /**
      * Build the gradient
-     * @override
      * @param {CanvasRenderingContext2D} ctx - A drawing context
      * @param {Shape} shape - The holding shape
      * @return {CanvasGradient}
@@ -43,7 +42,6 @@ Utils.extends(RadialGradient, Background, {
     },
     /**
      * Get CSS string for this background
-     * @override
      * @returns {string}
      * @memberOf RadialGradient#
      */

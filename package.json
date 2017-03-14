@@ -1,34 +1,35 @@
 {
-  "name": "draw-lib",
-  "version": "0.1.0",
-  "description": "The easiest to use drawing library.",
-  "main": "drawLib.js",
-  "directories": {
-    "example": "examples"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GMartigny/drawLib.git"
-  },
-  "keywords": [
-    "canvas",
-    "drawing",
-    "librairy"
-  ],
-  "author": "Guillaume Martigny",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/GMartigny/drawLib/issues"
-  },
-  "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-bump": "^0.8.0",
-    "grunt-contrib-uglify": "^2.2.0",
-    "grunt-git-deploy": "^0.3.1",
-    "grunt-jsdoc-to-markdown": "^2.0.0",
-    "jit-grunt": "^0.10.0"
-  }
+    "name": "draw-lib",
+    "version": "0.1.0",
+    "description": "The easiest to use drawing library.",
+    "main": "drawLib.js",
+    "directories": {
+        "example": "examples"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/GMartigny/drawLib.git"
+    },
+    "keywords": [
+        "canvas",
+        "drawing",
+        "librairy",
+        "html5"
+    ],
+    "author": "Guillaume Martigny",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/GMartigny/drawLib/issues"
+    },
+    "devDependencies": {
+        "grunt": "^1.0.1",
+        "grunt-bump": "^0.8.0",
+        "grunt-contrib-uglify": "^2.2.0",
+        "grunt-git-deploy": "^0.3.1",
+        "grunt-jsdoc-to-markdown": "^3.0.0",
+        "jit-grunt": "^0.10.0"
+    }
 }
