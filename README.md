@@ -1,3 +1,5 @@
+# :warning: [Deprecated] This is no longer maintained, you should use [Pencil.js](https://github.com/pencil-js/pencil.js) instead.
+
 [![Code Climate](https://codeclimate.com/github/GMartigny/pencilJS/badges/gpa.svg)](https://codeclimate.com/github/GMartigny/pencilJS)
 [![Inline docs](http://inch-ci.org/github/GMartigny/pencilJS.svg?branch=master)](http://inch-ci.org/github/GMartigny/pencilJS)
 
